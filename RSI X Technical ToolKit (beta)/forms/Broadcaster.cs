@@ -11,7 +11,8 @@ namespace RSI_X_Desktop
     {
         private forms.HelpingClass.FireBaseReader GetFireBase = new();
         internal static IntPtr LocalWinId;
-        public IntPtr RemoteWnd { get => LocalWinId; }
+        public IntPtr LocalWnd { get => LocalWinId; }
+        public IntPtr RemoteWnd { get; set; }
         private Devices devices;
         private ChatWnd chat = new ChatWnd();
 
@@ -42,6 +43,8 @@ namespace RSI_X_Desktop
                 AgoraObject.GetComplexToken().GetHostName,
                 AgoraObject.GetComplexToken().GetToken, 0, "");
 
+            RemoteWnd = pictureBoxRemoteVideo.Handle;
+
             AgoraObject.MuteLocalAudioStream(false);
             AgoraObject.MuteLocalVideoStream(false);
             labelMicrophone.ForeColor = Color.Red;
@@ -61,14 +64,14 @@ namespace RSI_X_Desktop
         }
         public void SetLocalVideoPreview()
         {
-            AgoraObject.Rtc.EnableLocalVideo(true);
-            pictureBoxRemoteVideo.Refresh();
+            //AgoraObject.Rtc.EnableLocalVideo(true);
+            //pictureBoxRemoteVideo.Refresh();
 
-            var canv = new VideoCanvas((ulong)LocalWinId, 0);
-            canv.renderMode = ((int)RENDER_MODE_TYPE.RENDER_MODE_FIT);
+            //var canv = new VideoCanvas((ulong)LocalWinId, 0);
+            //canv.renderMode = ((int)RENDER_MODE_TYPE.RENDER_MODE_FIT);
 
-            AgoraObject.Rtc.SetupLocalVideo(canv);
-            AgoraObject.Rtc.StartPreview();
+            //AgoraObject.Rtc.SetupLocalVideo(canv);
+            //AgoraObject.Rtc.StartPreview();
         }
         public void RefreshLocalWnd()
         {
