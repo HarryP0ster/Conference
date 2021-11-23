@@ -45,6 +45,7 @@ namespace RSI_X_Desktop
         public langHolder HostToken 
         { get => langCollectionTarget.ElementAt(0); }
         
+        /// Dict (ChannelName; ChannelToken)
         public Dictionary<string, string> GetLanguages
         { get => Languages; }
 

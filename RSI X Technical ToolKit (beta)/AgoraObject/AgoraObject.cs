@@ -304,9 +304,11 @@ namespace RSI_X_Desktop
             ChannelMediaOptions options = new();
             options.autoSubscribeAudio = true;
             options.autoSubscribeVideo = true;
-
-            ret = m_channelHost.JoinChannelWithUserAccount(token, NickName, options);
-            //ERROR_CODE ret = m_channelHost.JoinChannel(token, info, nUID, options);
+            Random rnd = new Random();
+            ret = m_channelHost.JoinChannelWithUserAccount(token, 
+                "Host",
+                options);
+            m_channelHost.Publish();
 
             m_channelHostJoin = (0 == ret);
             var code = m_channelHost.CreateDataStream(out _hostStreamID, true, true);
@@ -316,6 +318,7 @@ namespace RSI_X_Desktop
         public static void LeaveHostChannel()
         {
             if (m_channelHostJoin)
+                m_channelHost?.Unpublish();
                 m_channelHost?.LeaveChannel();
             m_channelHostJoin = false;
         }

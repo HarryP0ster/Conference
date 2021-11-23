@@ -43,7 +43,9 @@ namespace RSI_X_Desktop
 
         public override void OnUserJoined(uint uid, int elapsed)
         {
-            Console.WriteLine("OnUserJoined");
+            UserInfo info;
+
+            AgoraObject.Rtc.GetUserInfoByUid(uid, out info);
         }
 
         public override void OnUserOffline(uint uid, USER_OFFLINE_REASON_TYPE reason)

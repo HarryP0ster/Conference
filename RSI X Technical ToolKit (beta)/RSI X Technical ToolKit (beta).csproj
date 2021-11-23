@@ -163,7 +163,6 @@
     <PackageReference Include="FirebaseDatabase.net" Version="4.0.6" />
     <PackageReference Include="ManagedBass" Version="3.0.0" />
     <PackageReference Include="ManagedBass.Asio" Version="3.0.0" />
-    <PackageReference Include="MaterialSkin.2.NetCore" Version="2.2.1" />
     <PackageReference Include="ReaLTaiizor" Version="3.7.8.5" />
     <PackageReference Include="SocketIOClient" Version="2.2.3" />
     <PackageReference Include="SocketIOClient.Newtonsoft.Json" Version="2.2.1" />
@@ -171,12 +170,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\agorartc\agorartc\agorartc\agorartc.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Bass.Net">
-      <HintPath>library\Bass.Net.dll</HintPath>
-    </Reference>
   </ItemGroup>
   
     <ItemGroup>

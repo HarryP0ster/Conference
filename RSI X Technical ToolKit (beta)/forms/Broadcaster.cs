@@ -13,7 +13,6 @@ namespace RSI_X_Desktop
         internal static IntPtr LocalWinId;
         public IntPtr RemoteWnd { get => LocalWinId; }
         private Devices devices;
-        private ScreenSharing sharingDig;
         private ChatWnd chat = new ChatWnd();
 
         private bool IsSharingScreen = false;
@@ -36,9 +35,12 @@ namespace RSI_X_Desktop
             RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
 
             this.DoubleBuffered = true;
-            var ret = AgoraObject.JoinChannel(
+            //var ret = AgoraObject.JoinChannel(
+            //    AgoraObject.GetComplexToken().GetHostName,
+            //    AgoraObject.GetComplexToken().GetToken);
+            AgoraObject.JoinChannelHost(
                 AgoraObject.GetComplexToken().GetHostName,
-                AgoraObject.GetComplexToken().GetToken);
+                AgoraObject.GetComplexToken().GetToken, 0, "");
 
             AgoraObject.MuteLocalAudioStream(false);
             AgoraObject.MuteLocalVideoStream(false);

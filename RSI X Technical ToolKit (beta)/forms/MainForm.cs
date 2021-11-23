@@ -46,9 +46,9 @@ namespace RSI_X_Desktop.forms
             if (AgoraObject.JoinRoom(code))
             {
                 Hide();
-                Broadcaster broadcaster= new();
+                Broadcaster lang = new();
                 AgoraObject.CurrentForm = CurForm.FormBroadcaster;
-                broadcaster.Show(this);
+                lang.Show(this);
             }
         }
         private void timer1_Tick(object sender, EventArgs e)
