@@ -18,7 +18,7 @@ namespace RSI_X_Desktop
     };
     public class AGChannelEventHandler : IRtcChannelEventHandlerBase
     {
-        internal List<uint> hostBroacsters = new();
+        internal HashSet<uint> hostBroacsters = new();
         private IFormHostHolder form;
         public CHANNEL_TYPE chType { get; private set; }
 
@@ -237,7 +237,7 @@ namespace RSI_X_Desktop
                 case CHANNEL_TYPE.HOST:
                     //if (form.RemoteWnd == IntPtr.Zero) return;
 
-                    hostBroacsters.Add(uid);
+                    if (!hostBroacsters.Add(uid)) return;
                     canv = new((ulong)form.RemoteWnd, uid);
                     canv.renderMode = (int)RENDER_MODE_TYPE.RENDER_MODE_FIT;
                     canv.channelId = channelId;

@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Threading;
 using RSI_X_Desktop.forms;
+using System.Collections.Generic;
 using agorartc;
 
 namespace RSI_X_Desktop
@@ -17,6 +18,9 @@ namespace RSI_X_Desktop
         private ChatWnd chat = new ChatWnd();
 
         private bool IsSharingScreen = false;
+        private bool AddOrder = false;
+        private bool[] TakenPages = new bool[1];
+        private List<PictureBox> StreamBoxes = new();
 
         public Broadcaster()
         {
@@ -34,6 +38,8 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.EnableLocalVideo(true);
             AgoraObject.UpdateNickName("Host");
             RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
+            StreamBoxes.Add(pictureBoxLocalVideo);
+            TakenPages[0] = true;
 
             this.DoubleBuffered = true;
             //var ret = AgoraObject.JoinChannel(
@@ -305,11 +311,52 @@ namespace RSI_X_Desktop
             PictureBox newPreview = new();
 
             newPreview.Dock = DockStyle.Fill;
-            streamsTable.ColumnCount = 2;
-            streamsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50f));
-            streamsTable.ColumnStyles[0].Width = 50F;
-            streamsTable.ColumnStyles[1].Width = 50F;
-            streamsTable.Controls.Add(newPreview, 1, 0);
+            List<bool> temp_list = new List<bool>(TakenPages);
+            if (!temp_list.Contains(false))
+            {
+                if (AddOrder == false)
+                {
+                    streamsTable.ColumnCount++;
+                    streamsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+                    foreach (ColumnStyle col in streamsTable.ColumnStyles)
+                        col.Width = 100F;
+                    AddOrder = true;
+                }
+                else
+                {
+                    streamsTable.RowCount++;
+                    streamsTable.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+                    foreach (RowStyle row in streamsTable.RowStyles)
+                        row.Height = 100F;
+                    AddOrder = false;
+                }
+            }
+            int index = streamsTable.ColumnCount * streamsTable.RowCount;
+            StreamBoxes.Add(newPreview);
+            TakenPages = new bool[index];
+            streamsTable.Controls.Clear();
+
+            int current_row = 0;
+            int current_col = 0;
+            foreach (PictureBox hwnd in StreamBoxes)
+            {
+                for (int i = 0; i < TakenPages.Length; i++)
+                {
+                    if (TakenPages[i] == false)
+                    {
+                        TakenPages[i] = true;
+                        streamsTable.Controls.Add(hwnd, current_col, current_row);
+                        current_col++;
+                        if (current_col >= streamsTable.ColumnStyles.Count)
+                        {
+                            current_col = 0;
+                            current_row++;
+                        }
+                        break;
+                    }
+                }
+            }
+
             streamsTable.Refresh();
 
             var ret = new VideoCanvas((ulong)newPreview.Handle, uid);
