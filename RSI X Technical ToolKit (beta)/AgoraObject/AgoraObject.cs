@@ -306,7 +306,7 @@ namespace RSI_X_Desktop
             options.autoSubscribeVideo = true;
             Random rnd = new Random();
             ret = m_channelHost.JoinChannelWithUserAccount(token, 
-                "Host",
+                "Host2",
                 options);
             m_channelHost.Publish();
 

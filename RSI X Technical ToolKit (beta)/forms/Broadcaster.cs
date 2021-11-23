@@ -22,7 +22,7 @@ namespace RSI_X_Desktop
         {
             InitializeComponent();
             AgoraObject.SetWndEventHandler(this);
-            LocalWinId = pictureBoxRemoteVideo.Handle;
+            LocalWinId = pictureBoxLocalVideo.Handle;
         }
 
         private void Conference_Load(object sender, EventArgs e)
@@ -43,7 +43,10 @@ namespace RSI_X_Desktop
                 AgoraObject.GetComplexToken().GetHostName,
                 AgoraObject.GetComplexToken().GetToken, 0, "");
 
-            RemoteWnd = pictureBoxRemoteVideo.Handle;
+            //RemoteWnd = pictureBoxRemoteVideo.Handle;
+            //AgoraObject.Rtc.EnableVideo();
+            //pictureBoxRemoteVideo.Refresh();
+            //AgoraObject.MuteAllRemoteVideoStream(false);
 
             AgoraObject.MuteLocalAudioStream(false);
             AgoraObject.MuteLocalVideoStream(false);
@@ -64,18 +67,18 @@ namespace RSI_X_Desktop
         }
         public void SetLocalVideoPreview()
         {
-            //AgoraObject.Rtc.EnableLocalVideo(true);
-            //pictureBoxRemoteVideo.Refresh();
+            AgoraObject.Rtc.EnableLocalVideo(true);
+            pictureBoxLocalVideo.Refresh();
 
-            //var canv = new VideoCanvas((ulong)LocalWinId, 0);
-            //canv.renderMode = ((int)RENDER_MODE_TYPE.RENDER_MODE_FIT);
+            var canv = new VideoCanvas((ulong)LocalWinId, 0);
+            canv.renderMode = ((int)RENDER_MODE_TYPE.RENDER_MODE_FIT);
 
-            //AgoraObject.Rtc.SetupLocalVideo(canv);
-            //AgoraObject.Rtc.StartPreview();
+            AgoraObject.Rtc.SetupLocalVideo(canv);
+            AgoraObject.Rtc.StartPreview();
         }
         public void RefreshLocalWnd()
         {
-            pictureBoxRemoteVideo.Refresh();
+            pictureBoxLocalVideo.Refresh();
         }
         private void btnScreenShare_Click(object sender, EventArgs e)
         {
@@ -147,14 +150,14 @@ namespace RSI_X_Desktop
         {
             //pictureBoxRemoteVideo.Refresh();
             Thread.Sleep(delay);
-            pictureBoxRemoteVideo.SuspendLayout();
+            streamsTable.SuspendLayout();
             for (int ind = 0; ind < itterations; ind++)
             {
                 StreamLayout.ColumnStyles[1].Width = StreamLayout.ColumnStyles[1].Width - offset_x;
-                pictureBoxRemoteVideo.Size = new Size(pictureBoxRemoteVideo.Size.Width - offset_x, pictureBoxRemoteVideo.Size.Height);
+                streamsTable.Size = new Size(streamsTable.Size.Width - offset_x, streamsTable.Size.Height);
                 //Thread.Sleep(1);
             }
-            pictureBoxRemoteVideo.ResumeLayout();
+            streamsTable.ResumeLayout();
         }
         public void GetMessage(string message, string nickname, CHANNEL_TYPE channel)
         {
@@ -204,7 +207,7 @@ namespace RSI_X_Desktop
         private void labelVideo_Click(object sender, EventArgs e)
         {
             AgoraObject.MuteLocalVideoStream(!AgoraObject.IsLocalVideoMute);
-            pictureBoxRemoteVideo.Visible = !AgoraObject.IsLocalVideoMute;
+            pictureBoxLocalVideo.Visible = !AgoraObject.IsLocalVideoMute;
 
             labelVideo.ForeColor = AgoraObject.IsLocalVideoMute ?
                 Color.White :
@@ -281,6 +284,40 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.DisableVideo();
             AgoraObject.Rtc.DisableAudio();
             GC.Collect();
+        }
+        public void AddNewMember(string channelId, uint uid)
+        {
+            if (streamsTable.InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate
+                {
+                    SetupMember(channelId, uid);
+                });
+            }
+            else
+            {
+                SetupMember(channelId, uid);
+            }
+        }
+
+        private void SetupMember(string channelId, uint uid)
+        {
+            PictureBox newPreview = new();
+
+            newPreview.Dock = DockStyle.Fill;
+            streamsTable.ColumnCount = 2;
+            streamsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50f));
+            streamsTable.ColumnStyles[0].Width = 50F;
+            streamsTable.ColumnStyles[1].Width = 50F;
+            streamsTable.Controls.Add(newPreview, 1, 0);
+            streamsTable.Refresh();
+
+            var ret = new VideoCanvas((ulong)newPreview.Handle, uid);
+            ret.renderMode = (int)RENDER_MODE_TYPE.RENDER_MODE_FIT;
+            ret.channelId = channelId;
+            ret.uid = uid;
+
+            AgoraObject.Rtc.SetupRemoteVideo(ret);
         }
     }
 }
