@@ -279,7 +279,7 @@ namespace RSI_X_Desktop
         private void Broadcaster_FormClosed(object sender, FormClosedEventArgs e)
         {
             enableScreenShare(false);
-            AgoraObject.LeaveChannel();
+            AgoraObject.LeaveHostChannel();
             AgoraObject.Rtc.EnableLocalVideo(false);
             AgoraObject.Rtc.DisableVideo();
             AgoraObject.Rtc.DisableAudio();

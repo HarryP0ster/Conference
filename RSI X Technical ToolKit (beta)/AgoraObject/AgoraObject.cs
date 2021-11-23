@@ -306,13 +306,13 @@ namespace RSI_X_Desktop
             options.autoSubscribeVideo = true;
             Random rnd = new Random();
             ret = m_channelHost.JoinChannelWithUserAccount(token, 
-                "Host2",
+                "Host",
                 options);
+            
             m_channelHost.Publish();
+            m_channelHost.CreateDataStream(out _hostStreamID, true, true);
 
             m_channelHostJoin = (0 == ret);
-            var code = m_channelHost.CreateDataStream(out _hostStreamID, true, true);
-
             return 0 == ret;
         }
         public static void LeaveHostChannel()

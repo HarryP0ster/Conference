@@ -88,9 +88,6 @@ namespace RSI_X_Desktop
 
         public override void OnChannelUserJoined(string channelId, uint uid, int elapsed)
         {
-            UserInfo name;
-            AgoraObject.Rtc.GetUserInfoByUid(uid, out name);
-
             switch (chType) 
             {
                 case CHANNEL_TYPE.TRANSL:
