@@ -355,6 +355,7 @@ namespace RSI_X_Desktop
 
         public override void OnUserInfoUpdated(uint uid, UserInfo info)
         {
+            AgoraObject.UpdateHostUserInfo(uid, info);
             Console.WriteLine("OnUserInfoUpdated");
         }
 

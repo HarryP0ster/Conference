@@ -18,7 +18,6 @@ namespace RSI_X_Desktop
     };
     public class AGChannelEventHandler : IRtcChannelEventHandlerBase
     {
-        internal List<uint> hostBroacsters = new();
         private IFormHostHolder form;
         public CHANNEL_TYPE chType { get; private set; }
 
@@ -40,10 +39,10 @@ namespace RSI_X_Desktop
             switch (chType)
             {
                 case CHANNEL_TYPE.TRANSL:
+                case CHANNEL_TYPE.HOST:
                     AgoraObject.UpdateClientID(uid.ToString());
                     AgoraObject.UpdateRoomName(channelId);
                     break;
-                case CHANNEL_TYPE.HOST:
                 case CHANNEL_TYPE.DEST:
                 case CHANNEL_TYPE.SRC:
                 default:
@@ -56,10 +55,10 @@ namespace RSI_X_Desktop
             switch (chType)
             {
                 case CHANNEL_TYPE.TRANSL:
+                case CHANNEL_TYPE.HOST:
                     AgoraObject.UpdateClientID(uid.ToString());
                     AgoraObject.UpdateRoomName(channelId);
                     break;
-                case CHANNEL_TYPE.HOST:
                 case CHANNEL_TYPE.DEST:
                 case CHANNEL_TYPE.SRC:
                 default:
@@ -90,9 +89,12 @@ namespace RSI_X_Desktop
         {
             switch (chType) 
             {
+                case CHANNEL_TYPE.HOST:
+                    AgoraObject.Rtc.GetUserInfoByUid(uid, out UserInfo user);
+                    AgoraObject.NewUserOnHost(uid, user);
+                    break;
                 case CHANNEL_TYPE.TRANSL:
                 case CHANNEL_TYPE.DEST:
-                case CHANNEL_TYPE.HOST:
                 case CHANNEL_TYPE.SRC:
                 default:
                     break;
@@ -104,6 +106,8 @@ namespace RSI_X_Desktop
             switch (chType)
             {
                 case CHANNEL_TYPE.HOST:
+                    AgoraObject.RemoveHostUserInfo(uid);
+                    break;
                 case CHANNEL_TYPE.TRANSL:
                 case CHANNEL_TYPE.DEST:
                 case CHANNEL_TYPE.SRC:
@@ -227,9 +231,6 @@ namespace RSI_X_Desktop
 
         private void FirstFrameDecoding(string channelId, uint uid, REMOTE_VIDEO_STATE_REASON reason)
         {
-            UserInfo user;
-            AgoraObject.Rtc.GetUserInfoByUid(uid, out user);
-
             VideoCanvas canv;
 
             switch (chType)
