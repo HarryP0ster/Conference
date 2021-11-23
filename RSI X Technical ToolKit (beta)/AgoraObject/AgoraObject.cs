@@ -261,19 +261,26 @@ namespace RSI_X_Desktop
         internal static void NewUserOnHost(uint uid, UserInfo user)
         {
             if (hostBroacsters.ContainsKey(uid))
-                hostBroacsters[uid] = user;
+                hostBroacsters[uid] = user; 
             else
                 hostBroacsters.Add(uid, user);
+            workForm.NewBroadcaster(uid, user);
         }
         internal static void UpdateHostUserInfo(uint uid, UserInfo user)
         {
-            if (hostBroacsters.ContainsKey(uid))
+            if (hostBroacsters.ContainsKey(uid)) 
+            {
                 hostBroacsters[uid] = user;
+                workForm.BroadcasterUpdateInfo(uid, user);
+            }
         }
         internal static void RemoveHostUserInfo(uint uid)
         {
             if (hostBroacsters.ContainsKey(uid))
+            {
                 hostBroacsters.Remove(uid);
+                workForm.BroadcasterLeave(uid);
+            }
         }
         internal static void UpdateTargRoom(string langFull)
         {

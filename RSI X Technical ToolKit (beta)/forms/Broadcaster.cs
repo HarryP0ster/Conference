@@ -11,7 +11,6 @@ namespace RSI_X_Desktop
     {
         private forms.HelpingClass.FireBaseReader GetFireBase = new();
         internal static IntPtr LocalWinId;
-        public IntPtr RemoteWnd { get => LocalWinId; }
         private Devices devices;
         private ChatWnd chat = new ChatWnd();
 
@@ -35,9 +34,6 @@ namespace RSI_X_Desktop
             RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
 
             this.DoubleBuffered = true;
-            //var ret = AgoraObject.JoinChannel(
-            //    AgoraObject.GetComplexToken().GetHostName,
-            //    AgoraObject.GetComplexToken().GetToken);
             AgoraObject.JoinChannelHost(
                 AgoraObject.GetComplexToken().GetHostName,
                 AgoraObject.GetComplexToken().GetToken, 0, "");
@@ -57,7 +53,6 @@ namespace RSI_X_Desktop
                 chat.UpdateFireBase(GetFireBase);
                 GetFireBase.Connect();
             };
-
         }
         public void SetLocalVideoPreview()
         {
@@ -70,10 +65,14 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.SetupLocalVideo(canv);
             AgoraObject.Rtc.StartPreview();
         }
-        public void RefreshLocalWnd()
-        {
-            pictureBoxRemoteVideo.Refresh();
-        }
+        public void RefreshLocalWnd() => pictureBoxRemoteVideo.Refresh();
+        public void NewBroadcaster(uint uid, UserInfo info) 
+        { throw new NotImplementedException(); }
+        public void BroadcasterUpdateInfo(uint uid, UserInfo info)
+        { throw new NotImplementedException(); }
+        public void BroadcasterLeave(uint uid)
+        { throw new NotImplementedException(); }
+
         private void btnScreenShare_Click(object sender, EventArgs e)
         {
             if (AgoraObject.IsLocalVideoMute) return;
@@ -177,10 +176,8 @@ namespace RSI_X_Desktop
             labelSettings.ForeColor = Color.White;
             GC.Collect();
         }
-        public void SetTrackBarVolume(int volume)
-        {
-            trackBar1.Value = volume;
-        }
+        public void SetTrackBarVolume(int volume) => trackBar1.Value = volume;
+        
 
         private void labelVolume_Click(object sender, EventArgs e)
         {
@@ -215,14 +212,11 @@ namespace RSI_X_Desktop
         {
             labelSettings.ForeColor = Color.White;
             if (devices != null && !(devices.IsDisposed))
-            {
                 DevicesClosed(devices);
-                //Thread.Sleep(100);
-            }
             if (chat.Visible == false)
             {
-                CallSidePanel(chat);
                 chat.ButtonsVisibility(true);
+                CallSidePanel(chat);
                 labelChat.ForeColor = Color.Red;
             }
             else
@@ -232,7 +226,6 @@ namespace RSI_X_Desktop
                 labelChat.ForeColor = Color.White;
             }
         }
-
         private void nightControlBox1_MouseClick(object sender, MouseEventArgs e)
         {
             Point ptn = e.Location;
