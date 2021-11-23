@@ -304,15 +304,17 @@ namespace RSI_X_Desktop
             ChannelMediaOptions options = new();
             options.autoSubscribeAudio = true;
             options.autoSubscribeVideo = true;
-            Random rnd = new Random();
-            ret = m_channelHost.JoinChannelWithUserAccount(token, 
-                "Host",
+            Random rnd = new Random(); 
+            var str = string.Format("{0}_{1}", "HOST", (ulong)rnd.Next());
+
+            ret = m_channelHost.JoinChannelWithUserAccount(token,
+                str,
                 options);
+            
             m_channelHost.Publish();
+            m_channelHost.CreateDataStream(out _hostStreamID, true, true);
 
             m_channelHostJoin = (0 == ret);
-            var code = m_channelHost.CreateDataStream(out _hostStreamID, true, true);
-
             return 0 == ret;
         }
         public static void LeaveHostChannel()
