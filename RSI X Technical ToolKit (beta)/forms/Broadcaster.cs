@@ -4,30 +4,57 @@ using System.Drawing;
 using System.Threading;
 using RSI_X_Desktop.forms;
 using System.Collections.Generic;
+using RSI_X_Desktop.forms.HelpingClass;
 using agorartc;
 
 namespace RSI_X_Desktop
 {
     public partial class Broadcaster : Form, IFormHostHolder
     {
-        private forms.HelpingClass.FireBaseReader GetFireBase = new();
-        internal static IntPtr LocalWinId;
         private Devices devices;
         private ChatWnd chat = new ChatWnd();
+        private FireBaseReader GetFireBase = new();
+        internal static IntPtr LocalWinId;
 
         private bool IsSharingScreen = false;
         private bool AddOrder = false;
         private bool[] TakenPages = new bool[1];
         private Dictionary<uint, PictureBox> hostBroadcasters = new();
 
+        private int srcLangIndex = -1;
+
         public Broadcaster()
         {
             InitializeComponent();
             AgoraObject.SetWndEventHandler(this);
-            LocalWinId = pictureBoxLocalVideo.Handle;
         }
 
         private void Conference_Load(object sender, EventArgs e)
+        {
+            LangSelectDlg dlg = new();
+            dlg.ShowDialog();
+
+            if (dlg.GetOutCode) 
+            {
+                LocalWinId = pictureBoxLocalVideo.Handle;
+                srcLangIndex = dlg.PrimaryLang;
+
+                GetFireBase.SetChannelName(
+                    AgoraObject.GetComplexToken().GetHostName);
+                chat.HandleCreated += (s, e) =>
+                {
+                    chat.UpdateFireBase(GetFireBase);
+                    GetFireBase.Connect();
+                };
+
+                RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
+                Init();
+            } 
+            else
+                Close();
+        }
+
+        private void Init()
         {
             AgoraObject.Rtc.EnableVideo();
             AgoraObject.Rtc.EnableAudio();
@@ -35,8 +62,8 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.SetClientRole(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
             AgoraObject.Rtc.EnableLocalVideo(true);
             AgoraObject.UpdateNickName("Host");
-            RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
             hostBroadcasters.Add(0, pictureBoxLocalVideo);
+
             TakenPages[0] = true;
 
             this.DoubleBuffered = true;
@@ -44,27 +71,18 @@ namespace RSI_X_Desktop
                 AgoraObject.GetComplexToken().GetHostName,
                 AgoraObject.GetComplexToken().GetToken, 0, "");
 
-            //RemoteWnd = pictureBoxRemoteVideo.Handle;
-            //AgoraObject.Rtc.EnableVideo();
-            //pictureBoxRemoteVideo.Refresh();
-            //AgoraObject.MuteAllRemoteVideoStream(false);
-
             AgoraObject.MuteLocalAudioStream(false);
             AgoraObject.MuteLocalVideoStream(false);
+
             labelMicrophone.ForeColor = Color.Red;
             labelVideo.ForeColor = Color.Red;
+
             SetLocalVideoPreview();
             StreamLayout.ColumnStyles[1].SizeType = SizeType.Absolute;
             StreamLayout.ColumnStyles[0].Width = 100;
             StreamLayout.ColumnStyles[1].Width = 0;
-
-            GetFireBase.SetChannelName(
-                AgoraObject.GetComplexToken().GetHostName);
-            chat.HandleCreated += (s, e) => {
-                chat.UpdateFireBase(GetFireBase);
-                GetFireBase.Connect();
-            };
         }
+
         public void SetLocalVideoPreview()
         {
             AgoraObject.Rtc.EnableLocalVideo(true);
@@ -79,9 +97,9 @@ namespace RSI_X_Desktop
         public void RefreshLocalWnd() => pictureBoxLocalVideo.Refresh();
         public void NewBroadcaster(uint uid, UserInfo info) 
         {
-            //throw new NotImplementedException(); 
             if (info.userAccount.StartsWith("HOST") && !hostBroadcasters.ContainsKey(uid))
             {
+                if (IsDisposed) return;
                 if (InvokeRequired)
                     Invoke((MethodInvoker)delegate
                     {
@@ -93,9 +111,9 @@ namespace RSI_X_Desktop
         }
         public void BroadcasterUpdateInfo(uint uid, UserInfo info)
         {
-            //throw new NotImplementedException(); 
             if (info.userAccount.StartsWith("HOST") && !hostBroadcasters.ContainsKey(uid))
             {
+                if (IsDisposed) return;
                 if (InvokeRequired)
                     Invoke((MethodInvoker)delegate
                     {
@@ -107,9 +125,9 @@ namespace RSI_X_Desktop
         }
         public void BroadcasterLeave(uint uid)
         {
-            //throw new NotImplementedException(); 
             if (hostBroadcasters.ContainsKey(uid))
             {
+                if (IsDisposed) return;
                 if (InvokeRequired)
                     Invoke((MethodInvoker)delegate
                     {
@@ -318,6 +336,8 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.DisableVideo();
             AgoraObject.Rtc.DisableAudio();
             GC.Collect();
+
+            Owner.Show();
         }
 
         #region MembersControl
