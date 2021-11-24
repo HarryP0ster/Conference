@@ -329,6 +329,10 @@ namespace RSI_X_Desktop
             string channelId = AgoraObject.GetHostName();
 
             newPreview.Dock = DockStyle.Fill;
+            newPreview.BackgroundImage = Properties.Resources.video_call_empty;
+            newPreview.BackgroundImageLayout = ImageLayout.Center;
+            newPreview.BackColor = Color.FromArgb(85,85,85);
+            newPreview.Margin = Padding.Empty;
             List<bool> temp_list = new List<bool>(TakenPages);
             if (temp_list.Contains(false) == false)
             {

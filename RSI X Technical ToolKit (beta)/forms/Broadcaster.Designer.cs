@@ -423,7 +423,6 @@ namespace RSI_X_Desktop
             // 
             this.streamsTable.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.streamsTable.BackColor = System.Drawing.Color.Silver;
-            this.streamsTable.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("streamsTable.BackgroundImage")));
             this.streamsTable.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.streamsTable.ColumnCount = 1;
             this.streamsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -442,9 +441,10 @@ namespace RSI_X_Desktop
             this.pictureBoxLocalVideo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBoxLocalVideo.BackgroundImage")));
             this.pictureBoxLocalVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxLocalVideo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBoxLocalVideo.Location = new System.Drawing.Point(3, 3);
+            this.pictureBoxLocalVideo.Location = new System.Drawing.Point(0, 0);
+            this.pictureBoxLocalVideo.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBoxLocalVideo.Name = "pictureBoxLocalVideo";
-            this.pictureBoxLocalVideo.Size = new System.Drawing.Size(1048, 586);
+            this.pictureBoxLocalVideo.Size = new System.Drawing.Size(1054, 592);
             this.pictureBoxLocalVideo.TabIndex = 0;
             this.pictureBoxLocalVideo.TabStop = false;
             // 
