@@ -41,6 +41,7 @@ namespace RSI_X_Desktop
             this.labelVideo = new System.Windows.Forms.Label();
             this.labelVolume = new System.Windows.Forms.Label();
             this.labelScreenShare = new System.Windows.Forms.Label();
+            this.cmblang = new System.Windows.Forms.ComboBox();
             this.PanelTop = new ReaLTaiizor.Controls.LostPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.CloseButton = new ReaLTaiizor.Controls.Button();
@@ -53,7 +54,6 @@ namespace RSI_X_Desktop
             this.streamsTable = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBoxLocalVideo = new System.Windows.Forms.PictureBox();
             this.nightControlBox1 = new ReaLTaiizor.Controls.NightControlBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.formTheme1.SuspendLayout();
             this.MainLayout.SuspendLayout();
             this.PanelBot.SuspendLayout();
@@ -139,7 +139,7 @@ namespace RSI_X_Desktop
             this.tableLayoutPanel2.Controls.Add(this.labelVideo, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelVolume, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelScreenShare, 8, 0);
-            this.tableLayoutPanel2.Controls.Add(this.comboBox1, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cmblang, 7, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -264,6 +264,14 @@ namespace RSI_X_Desktop
             this.labelScreenShare.TabIndex = 20;
             this.labelScreenShare.Text = "SCREEN SHARE";
             this.labelScreenShare.Click += new System.EventHandler(this.btnScreenShare_Click);
+            // 
+            // cmblang
+            // 
+            this.cmblang.FormattingEnabled = true;
+            this.cmblang.Location = new System.Drawing.Point(849, 3);
+            this.cmblang.Name = "cmblang";
+            this.cmblang.Size = new System.Drawing.Size(151, 36);
+            this.cmblang.TabIndex = 21;
             // 
             // PanelTop
             // 
@@ -475,14 +483,6 @@ namespace RSI_X_Desktop
             this.nightControlBox1.TabIndex = 94;
             this.nightControlBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.nightControlBox1_MouseClick);
             // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(849, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(151, 36);
-            this.comboBox1.TabIndex = 21;
-            // 
             // Broadcaster
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -539,6 +539,6 @@ namespace RSI_X_Desktop
         private System.Windows.Forms.Label labelScreenShare;
         private System.Windows.Forms.TableLayoutPanel streamsTable;
         private System.Windows.Forms.PictureBox pictureBoxLocalVideo;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmblang;
     }
 }

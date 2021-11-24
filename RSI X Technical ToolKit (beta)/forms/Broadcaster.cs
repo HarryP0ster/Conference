@@ -47,6 +47,16 @@ namespace RSI_X_Desktop
                     GetFireBase.Connect();
                 };
 
+                List<string> langsShort = new();
+                foreach (var lang in AgoraObject.GetComplexToken().GetTranslLangs)
+                { langsShort.Add(lang.langShort); }
+                cmblang.DataSource = langsShort;
+
+                if (langsShort.Count < 0)
+                    cmblang.Enabled = false;
+                else
+                    cmblang.SelectedIndex = srcLangIndex;
+
                 RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
                 Init();
             } 

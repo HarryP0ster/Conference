@@ -30,16 +30,17 @@ namespace RSI_X_Desktop.forms
         public LangSelectDlg()
         {
             InitializeComponent();
-            var langsShort = new List<string>();
+            List<string> langsShort = new();
             foreach (var lang in AgoraObject.GetComplexToken().GetTranslLangs)
             {
-                langsShort.Append(lang.langShort);
+                langsShort.Add(lang.langShort);
             }
             cmblang.DataSource = langsShort;
+
             if (langsShort.Count == 0) 
             { return; }
             
-                cmblang.SelectedIndex = 0;
+            cmblang.SelectedIndex = 0;
             PrimaryLang = cmblang.SelectedIndex;
         }
 
