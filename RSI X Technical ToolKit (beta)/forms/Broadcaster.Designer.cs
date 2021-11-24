@@ -54,6 +54,7 @@ namespace RSI_X_Desktop
             this.streamsTable = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBoxLocalVideo = new System.Windows.Forms.PictureBox();
             this.nightControlBox1 = new ReaLTaiizor.Controls.NightControlBox();
+            this.Checkfloor = new System.Windows.Forms.CheckBox();
             this.formTheme1.SuspendLayout();
             this.MainLayout.SuspendLayout();
             this.PanelBot.SuspendLayout();
@@ -140,6 +141,7 @@ namespace RSI_X_Desktop
             this.tableLayoutPanel2.Controls.Add(this.labelVolume, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelScreenShare, 8, 0);
             this.tableLayoutPanel2.Controls.Add(this.cmblang, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.Checkfloor, 6, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -270,8 +272,9 @@ namespace RSI_X_Desktop
             this.cmblang.FormattingEnabled = true;
             this.cmblang.Location = new System.Drawing.Point(849, 3);
             this.cmblang.Name = "cmblang";
-            this.cmblang.Size = new System.Drawing.Size(151, 36);
+            this.cmblang.Size = new System.Drawing.Size(175, 36);
             this.cmblang.TabIndex = 21;
+            this.cmblang.SelectedIndexChanged += new System.EventHandler(this.cmblang_SelectedIndexChanged);
             // 
             // PanelTop
             // 
@@ -483,6 +486,17 @@ namespace RSI_X_Desktop
             this.nightControlBox1.TabIndex = 94;
             this.nightControlBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.nightControlBox1_MouseClick);
             // 
+            // Checkfloor
+            // 
+            this.Checkfloor.AutoSize = true;
+            this.Checkfloor.Location = new System.Drawing.Point(767, 3);
+            this.Checkfloor.Name = "Checkfloor";
+            this.Checkfloor.Size = new System.Drawing.Size(76, 32);
+            this.Checkfloor.TabIndex = 22;
+            this.Checkfloor.Text = "checkBox1";
+            this.Checkfloor.UseVisualStyleBackColor = true;
+            this.Checkfloor.CheckedChanged += new System.EventHandler(this.floor_CheckedChanged);
+            // 
             // Broadcaster
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -540,5 +554,6 @@ namespace RSI_X_Desktop
         private System.Windows.Forms.TableLayoutPanel streamsTable;
         private System.Windows.Forms.PictureBox pictureBoxLocalVideo;
         private System.Windows.Forms.ComboBox cmblang;
+        private System.Windows.Forms.CheckBox Checkfloor;
     }
 }

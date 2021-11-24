@@ -11,6 +11,9 @@ namespace RSI_X_Desktop
 {
     public partial class Broadcaster : Form, IFormHostHolder
     {
+        private const int MIN_VOLUME = 10;
+        private const int MAX_VOLUME = 100;
+
         private Devices devices;
         private ChatWnd chat = new ChatWnd();
         private FireBaseReader GetFireBase = new();
@@ -21,7 +24,7 @@ namespace RSI_X_Desktop
         private bool[] TakenPages = new bool[1];
         private Dictionary<uint, PictureBox> hostBroadcasters = new();
 
-        private int srcLangIndex = -1;
+        private int srcLangIndex = -2;
 
         public Broadcaster()
         {
@@ -37,7 +40,7 @@ namespace RSI_X_Desktop
             if (dlg.GetOutCode) 
             {
                 LocalWinId = pictureBoxLocalVideo.Handle;
-                srcLangIndex = dlg.PrimaryLang;
+                // srcLangIndex < 0 //IS HOST
 
                 GetFireBase.SetChannelName(
                     AgoraObject.GetComplexToken().GetHostName);
@@ -52,11 +55,25 @@ namespace RSI_X_Desktop
                 { langsShort.Add(lang.langShort); }
                 cmblang.DataSource = langsShort;
 
+                srcLangIndex = dlg.PrimaryLang - 1;
                 if (langsShort.Count < 0)
+                {
                     cmblang.Enabled = false;
+                    cmblang.Hide();
+                    Checkfloor.Enabled = false;
+                    Checkfloor.CheckState = CheckState.Checked;
+                    Checkfloor.Hide();
+                }
                 else
-                    cmblang.SelectedIndex = srcLangIndex;
+                {
+                    Checkfloor.CheckState = srcLangIndex < 0 ? 
+                        CheckState.Checked :
+                        CheckState.Unchecked;
 
+                    cmblang.SelectedIndex = Math.Max(0, srcLangIndex);
+
+                    floor_CheckedChanged(Checkfloor, new());
+                }
                 RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
                 Init();
             } 
@@ -117,6 +134,10 @@ namespace RSI_X_Desktop
                     });
                 else
                     AddNewMember(uid);
+
+                AgoraObject.UpdateUserVolume(uid, 
+                    Checkfloor.CheckState == CheckState.Checked ? MIN_VOLUME : MAX_VOLUME, 
+                    CHANNEL_TYPE.HOST);
             }
         }
         public void BroadcasterUpdateInfo(uint uid, UserInfo info)
@@ -131,6 +152,10 @@ namespace RSI_X_Desktop
                     });
                 else
                     AddNewMember(uid);
+
+                AgoraObject.UpdateUserVolume(uid,
+                    Checkfloor.CheckState == CheckState.Checked ? MIN_VOLUME : MAX_VOLUME,
+                    CHANNEL_TYPE.HOST);
             }
         }
         public void BroadcasterLeave(uint uid)
@@ -340,6 +365,8 @@ namespace RSI_X_Desktop
         }
         private void Broadcaster_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Owner.Show();
+
             enableScreenShare(false);
             AgoraObject.LeaveHostChannel();
             AgoraObject.Rtc.LeaveChannel();
@@ -348,12 +375,9 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.DisableAudio();
             if (!Owner.Visible) Application.Exit();
             GC.Collect();
-
-            Owner.Show();
         }
 
         #region MembersControl
-
         private void AddNewMember(uint uid)
         {
             PictureBox newPreview = new();
@@ -469,5 +493,36 @@ namespace RSI_X_Desktop
             streamsTable.Refresh();
         }
         #endregion
+        private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            srcLangIndex = cmblang.SelectedIndex;
+            var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
+
+            AgoraObject.JoinChannelSrc(l);
+        }
+
+        private void floor_CheckedChanged(object sender, EventArgs e)
+        {
+            switch (Checkfloor.CheckState)
+            {
+                case CheckState.Unchecked:
+                    foreach (var br in hostBroadcasters.Keys)
+                        AgoraObject.UpdateUserVolume(br, MIN_VOLUME, CHANNEL_TYPE.HOST);
+
+                    var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
+                    AgoraObject.JoinChannelSrc(l);
+                    cmblang.Enabled = true;
+                    break;
+                case CheckState.Checked:
+                    foreach (var br in hostBroadcasters.Keys)
+                        AgoraObject.UpdateUserVolume(br, MAX_VOLUME, CHANNEL_TYPE.HOST);
+                    AgoraObject.LeaveSrcChannel();
+                    cmblang.Enabled = false;
+                    break;
+                case CheckState.Indeterminate:
+                default: 
+                    break;
+            }
+        }
     }
 }

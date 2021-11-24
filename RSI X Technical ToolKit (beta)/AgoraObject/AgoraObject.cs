@@ -79,7 +79,7 @@ namespace RSI_X_Desktop
         private static void SetPublishProfile()
         {
             Rtc.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY, AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_CHATROOM_GAMING);
-            Rtc.SetVideoProfile(VIDEO_PROFILE_TYPE.VIDEO_PROFILE_LANDSCAPE_180P_3, false);
+            Rtc.SetVideoProfile(VIDEO_PROFILE_TYPE.VIDEO_PROFILE_LANDSCAPE_180P_4, false);
         }
 
         static public void UpdateNickName(string nick)
@@ -139,6 +139,22 @@ namespace RSI_X_Desktop
             m_channelHost?.MuteAllRemoteVideoStreams(mute);
 
             IsAllRemoteVideoMute = mute;
+        }
+        public static void UpdateUserVolume(uint uid, int volume, CHANNEL_TYPE channel)
+        {
+            switch (channel)
+            {
+                case CHANNEL_TYPE.TRANSL:
+                case CHANNEL_TYPE.SRC:
+                    m_channelSrc?.SetRemoteVoicePosition(uid, 0, volume);
+                    break;
+                case CHANNEL_TYPE.DEST:
+                case CHANNEL_TYPE.HOST:
+                    m_channelHost?.SetRemoteVoicePosition(uid, 0, volume);
+                    break;
+                default:
+                    break;
+            }
         }
         #endregion
 

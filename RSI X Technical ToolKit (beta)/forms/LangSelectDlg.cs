@@ -31,7 +31,8 @@ namespace RSI_X_Desktop.forms
         {
             InitializeComponent();
             List<string> langsShort = new();
-            foreach (var lang in AgoraObject.GetComplexToken().GetTranslLangs)
+            var t = AgoraObject.room;
+            foreach (var lang in AgoraObject.GetComplexToken().GetTargetLangs)
             {
                 langsShort.Add(lang.langShort);
             }
