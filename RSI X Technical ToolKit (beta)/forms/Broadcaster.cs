@@ -18,8 +18,7 @@ namespace RSI_X_Desktop
         private bool IsSharingScreen = false;
         private bool AddOrder = false;
         private bool[] TakenPages = new bool[1];
-        private List<PictureBox> StreamBoxes = new();
-        private HashSet<uint> hostBroadcasters = new();
+        private Dictionary<uint, PictureBox> hostBroadcasters = new();
 
         public Broadcaster()
         {
@@ -37,7 +36,7 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.EnableLocalVideo(true);
             AgoraObject.UpdateNickName("Host");
             RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
-            StreamBoxes.Add(pictureBoxLocalVideo);
+            hostBroadcasters.Add(0, pictureBoxLocalVideo);
             TakenPages[0] = true;
 
             this.DoubleBuffered = true;
@@ -81,20 +80,44 @@ namespace RSI_X_Desktop
         public void NewBroadcaster(uint uid, UserInfo info) 
         {
             //throw new NotImplementedException(); 
-
+            if (info.userAccount.StartsWith("HOST") && !hostBroadcasters.ContainsKey(uid))
+            {
+                if (InvokeRequired)
+                    Invoke((MethodInvoker)delegate
+                    {
+                        AddNewMember(uid);
+                    });
+                else
+                    AddNewMember(uid);
+            }
         }
         public void BroadcasterUpdateInfo(uint uid, UserInfo info)
         {
             //throw new NotImplementedException(); 
-            if (info.userAccount.StartsWith("HOST"))
+            if (info.userAccount.StartsWith("HOST") && !hostBroadcasters.ContainsKey(uid))
             {
-                AddNewMember(uid);
-                hostBroadcasters.Add(uid);
+                if (InvokeRequired)
+                    Invoke((MethodInvoker)delegate
+                    {
+                        AddNewMember(uid);
+                    });
+                else
+                    AddNewMember(uid);
             }
         }
         public void BroadcasterLeave(uint uid)
-        { 
+        {
             //throw new NotImplementedException(); 
+            if (hostBroadcasters.ContainsKey(uid))
+            {
+                if (InvokeRequired)
+                    Invoke((MethodInvoker)delegate
+                    {
+                        RemoveMember(uid);
+                    });
+                else
+                    RemoveMember(uid);
+            }
         }
 
         private void btnScreenShare_Click(object sender, EventArgs e)
@@ -296,22 +319,10 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.DisableAudio();
             GC.Collect();
         }
-        public void AddNewMember(uint uid)
-        {
-            if (streamsTable.InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate
-                {
-                    SetupMember(uid);
-                });
-            }
-            else
-            {
-                SetupMember(uid);
-            }
-        }
 
-        private void SetupMember(uint uid)
+        #region MembersControl
+
+        private void AddNewMember(uint uid)
         {
             PictureBox newPreview = new();
 
@@ -319,7 +330,7 @@ namespace RSI_X_Desktop
 
             newPreview.Dock = DockStyle.Fill;
             List<bool> temp_list = new List<bool>(TakenPages);
-            if (!temp_list.Contains(false))
+            if (temp_list.Contains(false) == false)
             {
                 if (AddOrder == false)
                 {
@@ -339,13 +350,13 @@ namespace RSI_X_Desktop
                 }
             }
             int index = streamsTable.ColumnCount * streamsTable.RowCount;
-            StreamBoxes.Add(newPreview);
+            hostBroadcasters.Add(uid, newPreview);
             TakenPages = new bool[index];
             streamsTable.Controls.Clear();
 
             int current_row = 0;
             int current_col = 0;
-            foreach (PictureBox hwnd in StreamBoxes)
+            foreach (PictureBox hwnd in hostBroadcasters.Values)
             {
                 for (int i = 0; i < TakenPages.Length; i++)
                 {
@@ -373,5 +384,56 @@ namespace RSI_X_Desktop
 
             AgoraObject.Rtc.SetupRemoteVideo(ret);
         }
+
+        private void RemoveMember(uint uid)
+        {
+            int index = streamsTable.ColumnCount * streamsTable.RowCount;
+            hostBroadcasters.Remove(uid);
+
+            if (index - hostBroadcasters.Count <= streamsTable.ColumnCount && AddOrder)
+            {
+                streamsTable.ColumnStyles.RemoveAt(streamsTable.ColumnStyles.Count - 1);
+                streamsTable.ColumnCount--;
+                foreach (ColumnStyle col in streamsTable.ColumnStyles)
+                    col.Width = 100F;
+                AddOrder = false;
+            }
+            else if (index - hostBroadcasters.Count <= streamsTable.RowCount && !AddOrder)
+            {
+                streamsTable.RowStyles.RemoveAt(streamsTable.RowStyles.Count - 1);
+                streamsTable.RowCount--;
+                foreach (RowStyle row in streamsTable.RowStyles)
+                    row.Height = 100F;
+                AddOrder = true;
+            }
+
+            index = streamsTable.ColumnCount * streamsTable.RowCount;
+            TakenPages = new bool[index];
+            streamsTable.Controls.Clear();
+
+            int current_row = 0;
+            int current_col = 0;
+            foreach (PictureBox hwnd in hostBroadcasters.Values)
+            {
+                for (int i = 0; i < TakenPages.Length; i++)
+                {
+                    if (TakenPages[i] == false)
+                    {
+                        TakenPages[i] = true;
+                        streamsTable.Controls.Add(hwnd, current_col, current_row);
+                        current_col++;
+                        if (current_col >= streamsTable.ColumnStyles.Count)
+                        {
+                            current_col = 0;
+                            current_row++;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            streamsTable.Refresh();
+        }
+        #endregion
     }
 }
