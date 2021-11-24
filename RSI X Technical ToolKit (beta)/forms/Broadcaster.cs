@@ -136,6 +136,7 @@ namespace RSI_X_Desktop
             {
                 AgoraObject.Rtc.StopScreenCapture();
                 labelScreenShare.ForeColor = Color.White;
+                pictureBoxLocalVideo.Refresh();
             }
             IsSharingScreen = !IsSharingScreen;
         }
@@ -250,6 +251,9 @@ namespace RSI_X_Desktop
             labelVideo.ForeColor = AgoraObject.IsLocalVideoMute ?
                 Color.White :
                 Color.Red;
+
+            if (AgoraObject.IsLocalVideoMute)
+                pictureBoxLocalVideo.Refresh();
 
             if (AgoraObject.IsLocalVideoMute)
                 enableScreenShare(false);
@@ -437,6 +441,50 @@ namespace RSI_X_Desktop
                 }
             }
             streamsTable.Refresh();
+        }
+
+        internal void UpdateMember(uint uid)
+        {
+            if (hostBroadcasters.ContainsKey(uid))
+            {
+                if (InvokeRequired)
+                {
+                    Invoke((MethodInvoker)delegate
+                    {
+                        hostBroadcasters[uid].Invalidate();
+                    });
+                }
+                else
+                    hostBroadcasters[uid].Invalidate();
+            }
+        }
+
+        internal void UpdateMember(uint uid, string channelId)
+        {
+            if (hostBroadcasters.ContainsKey(uid))
+            {
+                if (InvokeRequired)
+                {
+                    Invoke((MethodInvoker)delegate
+                    {
+                        var ret = new VideoCanvas((ulong)hostBroadcasters[uid].Handle, uid);
+                        ret.renderMode = (int)RENDER_MODE_TYPE.RENDER_MODE_FIT;
+                        ret.channelId = channelId;
+                        ret.uid = uid;
+
+                        AgoraObject.Rtc.SetupRemoteVideo(ret);
+                    });
+                }
+                else
+                {
+                    var ret = new VideoCanvas((ulong)hostBroadcasters[uid].Handle, uid);
+                    ret.renderMode = (int)RENDER_MODE_TYPE.RENDER_MODE_FIT;
+                    ret.channelId = channelId;
+                    ret.uid = uid;
+
+                    AgoraObject.Rtc.SetupRemoteVideo(ret);
+                }
+            }
         }
         #endregion
     }
