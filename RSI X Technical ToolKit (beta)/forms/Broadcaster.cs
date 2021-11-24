@@ -4,30 +4,84 @@ using System.Drawing;
 using System.Threading;
 using RSI_X_Desktop.forms;
 using System.Collections.Generic;
+using RSI_X_Desktop.forms.HelpingClass;
 using agorartc;
 
 namespace RSI_X_Desktop
 {
     public partial class Broadcaster : Form, IFormHostHolder
     {
-        private forms.HelpingClass.FireBaseReader GetFireBase = new();
-        internal static IntPtr LocalWinId;
+        private const int MIN_VOLUME = 10;
+        private const int MAX_VOLUME = 100;
+
         private Devices devices;
         private ChatWnd chat = new ChatWnd();
+        private FireBaseReader GetFireBase = new();
+        internal static IntPtr LocalWinId;
 
         private bool IsSharingScreen = false;
         private bool AddOrder = false;
         private bool[] TakenPages = new bool[1];
         private Dictionary<uint, PictureBox> hostBroadcasters = new();
 
+        private int srcLangIndex = -2;
+
         public Broadcaster()
         {
             InitializeComponent();
             AgoraObject.SetWndEventHandler(this);
-            LocalWinId = pictureBoxLocalVideo.Handle;
         }
 
         private void Conference_Load(object sender, EventArgs e)
+        {
+            LangSelectDlg dlg = new();
+            dlg.ShowDialog();
+
+            if (dlg.GetOutCode) 
+            {
+                LocalWinId = pictureBoxLocalVideo.Handle;
+                // srcLangIndex < 0 //IS HOST
+
+                GetFireBase.SetChannelName(
+                    AgoraObject.GetComplexToken().GetHostName);
+                chat.HandleCreated += (s, e) =>
+                {
+                    chat.UpdateFireBase(GetFireBase);
+                    GetFireBase.Connect();
+                };
+
+                List<string> langsShort = new();
+                foreach (var lang in AgoraObject.GetComplexToken().GetTranslLangs)
+                { langsShort.Add(lang.langShort); }
+                cmblang.DataSource = langsShort;
+
+                srcLangIndex = dlg.PrimaryLang - 1;
+                if (langsShort.Count < 0)
+                {
+                    cmblang.Enabled = false;
+                    cmblang.Hide();
+                    Checkfloor.Enabled = false;
+                    Checkfloor.CheckState = CheckState.Checked;
+                    Checkfloor.Hide();
+                }
+                else
+                {
+                    Checkfloor.CheckState = srcLangIndex < 0 ? 
+                        CheckState.Checked :
+                        CheckState.Unchecked;
+
+                    cmblang.SelectedIndex = Math.Max(0, srcLangIndex);
+
+                    floor_CheckedChanged(Checkfloor, new());
+                }
+                RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
+                Init();
+            } 
+            else
+                Close();
+        }
+
+        private void Init()
         {
             AgoraObject.Rtc.EnableVideo();
             AgoraObject.Rtc.EnableAudio();
@@ -35,8 +89,8 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.SetClientRole(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
             AgoraObject.Rtc.EnableLocalVideo(true);
             AgoraObject.UpdateNickName("Host");
-            RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
             hostBroadcasters.Add(0, pictureBoxLocalVideo);
+
             TakenPages[0] = true;
 
             this.DoubleBuffered = true;
@@ -44,27 +98,18 @@ namespace RSI_X_Desktop
                 AgoraObject.GetComplexToken().GetHostName,
                 AgoraObject.GetComplexToken().GetToken, 0, "");
 
-            //RemoteWnd = pictureBoxRemoteVideo.Handle;
-            //AgoraObject.Rtc.EnableVideo();
-            //pictureBoxRemoteVideo.Refresh();
-            //AgoraObject.MuteAllRemoteVideoStream(false);
-
             AgoraObject.MuteLocalAudioStream(false);
             AgoraObject.MuteLocalVideoStream(false);
+
             labelMicrophone.ForeColor = Color.Red;
             labelVideo.ForeColor = Color.Red;
+
             SetLocalVideoPreview();
             StreamLayout.ColumnStyles[1].SizeType = SizeType.Absolute;
             StreamLayout.ColumnStyles[0].Width = 100;
             StreamLayout.ColumnStyles[1].Width = 0;
-
-            GetFireBase.SetChannelName(
-                AgoraObject.GetComplexToken().GetHostName);
-            chat.HandleCreated += (s, e) => {
-                chat.UpdateFireBase(GetFireBase);
-                GetFireBase.Connect();
-            };
         }
+
         public void SetLocalVideoPreview()
         {
             AgoraObject.Rtc.EnableLocalVideo(true);
@@ -79,9 +124,9 @@ namespace RSI_X_Desktop
         public void RefreshLocalWnd() => pictureBoxLocalVideo.Refresh();
         public void NewBroadcaster(uint uid, UserInfo info) 
         {
-            //throw new NotImplementedException(); 
             if (info.userAccount.StartsWith("HOST") && !hostBroadcasters.ContainsKey(uid))
             {
+                if (IsDisposed) return;
                 if (InvokeRequired)
                     Invoke((MethodInvoker)delegate
                     {
@@ -89,13 +134,17 @@ namespace RSI_X_Desktop
                     });
                 else
                     AddNewMember(uid);
+
+                AgoraObject.UpdateUserVolume(uid, 
+                    Checkfloor.CheckState == CheckState.Checked ? MIN_VOLUME : MAX_VOLUME, 
+                    CHANNEL_TYPE.HOST);
             }
         }
         public void BroadcasterUpdateInfo(uint uid, UserInfo info)
         {
-            //throw new NotImplementedException(); 
             if (info.userAccount.StartsWith("HOST") && !hostBroadcasters.ContainsKey(uid))
             {
+                if (IsDisposed) return;
                 if (InvokeRequired)
                     Invoke((MethodInvoker)delegate
                     {
@@ -103,13 +152,17 @@ namespace RSI_X_Desktop
                     });
                 else
                     AddNewMember(uid);
+
+                AgoraObject.UpdateUserVolume(uid,
+                    Checkfloor.CheckState == CheckState.Checked ? MIN_VOLUME : MAX_VOLUME,
+                    CHANNEL_TYPE.HOST);
             }
         }
         public void BroadcasterLeave(uint uid)
         {
-            //throw new NotImplementedException(); 
             if (hostBroadcasters.ContainsKey(uid))
             {
+                if (IsDisposed) return;
                 if (InvokeRequired)
                     Invoke((MethodInvoker)delegate
                     {
@@ -316,6 +369,8 @@ namespace RSI_X_Desktop
         }
         private void Broadcaster_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Owner.Show();
+
             enableScreenShare(false);
             AgoraObject.LeaveHostChannel();
             AgoraObject.Rtc.LeaveChannel();
@@ -327,7 +382,6 @@ namespace RSI_X_Desktop
         }
 
         #region MembersControl
-
         private void AddNewMember(uint uid)
         {
             PictureBox newPreview = new();
@@ -487,5 +541,36 @@ namespace RSI_X_Desktop
             }
         }
         #endregion
+        private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            srcLangIndex = cmblang.SelectedIndex;
+            var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
+
+            AgoraObject.JoinChannelSrc(l);
+        }
+
+        private void floor_CheckedChanged(object sender, EventArgs e)
+        {
+            switch (Checkfloor.CheckState)
+            {
+                case CheckState.Unchecked:
+                    foreach (var br in hostBroadcasters.Keys)
+                        AgoraObject.UpdateUserVolume(br, MIN_VOLUME, CHANNEL_TYPE.HOST);
+
+                    var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
+                    AgoraObject.JoinChannelSrc(l);
+                    cmblang.Enabled = true;
+                    break;
+                case CheckState.Checked:
+                    foreach (var br in hostBroadcasters.Keys)
+                        AgoraObject.UpdateUserVolume(br, MAX_VOLUME, CHANNEL_TYPE.HOST);
+                    AgoraObject.LeaveSrcChannel();
+                    cmblang.Enabled = false;
+                    break;
+                case CheckState.Indeterminate:
+                default: 
+                    break;
+            }
+        }
     }
 }
