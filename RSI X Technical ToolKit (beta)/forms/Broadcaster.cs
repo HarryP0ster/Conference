@@ -314,9 +314,11 @@ namespace RSI_X_Desktop
         {
             enableScreenShare(false);
             AgoraObject.LeaveHostChannel();
+            AgoraObject.Rtc.LeaveChannel();
             AgoraObject.Rtc.EnableLocalVideo(false);
             AgoraObject.Rtc.DisableVideo();
             AgoraObject.Rtc.DisableAudio();
+            if (!Owner.Visible) Application.Exit();
             GC.Collect();
         }
 
