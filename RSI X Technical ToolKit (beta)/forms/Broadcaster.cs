@@ -402,7 +402,7 @@ namespace RSI_X_Desktop
                     col.Width = 100F;
                 AddOrder = false;
             }
-            else if (index - hostBroadcasters.Count <= streamsTable.RowCount && !AddOrder)
+            else if (index - hostBroadcasters.Count >= streamsTable.RowCount && !AddOrder)
             {
                 streamsTable.RowStyles.RemoveAt(streamsTable.RowStyles.Count - 1);
                 streamsTable.RowCount--;
