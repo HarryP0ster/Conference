@@ -91,7 +91,7 @@ namespace RSI_X_Desktop
             {
                 case CHANNEL_TYPE.HOST:
                     AgoraObject.Rtc.GetUserInfoByUid(uid, out UserInfo user);
-                    AgoraObject.NewUserOnHost(uid, user);
+                    AgoraObject.NewUserOnHost(uid, user, channelId);
                     break;
                 case CHANNEL_TYPE.TRANSL:
                 case CHANNEL_TYPE.DEST:
@@ -238,13 +238,12 @@ namespace RSI_X_Desktop
                 case CHANNEL_TYPE.HOST:
                     //if (form.RemoteWnd == IntPtr.Zero) return;
 
-                    if (!hostBroacsters.Add(uid)) return;
-                    canv = new((ulong)form.RemoteWnd, uid);
-                    canv.renderMode = (int)RENDER_MODE_TYPE.RENDER_MODE_FIT;
-                    canv.channelId = channelId;
+                    //canv = new((ulong)form.RemoteWnd, uid);
+                    //canv.renderMode = (int)RENDER_MODE_TYPE.RENDER_MODE_FIT;
+                    //canv.channelId = channelId;
 
-                    AgoraObject.Rtc.SetupRemoteVideo(canv);
-                    (form as Broadcaster).AddNewMember(channelId, uid);
+                    //AgoraObject.Rtc.SetupRemoteVideo(canv);
+                    //(form as Broadcaster).AddNewMember(channelId, uid);
                     break;
                 case CHANNEL_TYPE.TRANSL:
                 case CHANNEL_TYPE.DEST:

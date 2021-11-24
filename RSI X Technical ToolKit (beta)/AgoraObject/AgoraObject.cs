@@ -258,7 +258,7 @@ namespace RSI_X_Desktop
         }
         #endregion
 
-        internal static void NewUserOnHost(uint uid, UserInfo user)
+        internal static void NewUserOnHost(uint uid, UserInfo user, string channelId)
         {
             if (hostBroacsters.ContainsKey(uid))
                 hostBroacsters[uid] = user; 

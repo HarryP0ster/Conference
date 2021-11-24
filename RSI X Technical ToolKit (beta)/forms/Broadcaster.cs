@@ -19,6 +19,7 @@ namespace RSI_X_Desktop
         private bool AddOrder = false;
         private bool[] TakenPages = new bool[1];
         private List<PictureBox> StreamBoxes = new();
+        private HashSet<uint> hostBroadcasters = new();
 
         public Broadcaster()
         {
@@ -76,13 +77,25 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.SetupLocalVideo(canv);
             AgoraObject.Rtc.StartPreview();
         }
-        public void RefreshLocalWnd() => pictureBoxRemoteVideo.Refresh();
+        public void RefreshLocalWnd() => pictureBoxLocalVideo.Refresh();
         public void NewBroadcaster(uint uid, UserInfo info) 
-        { throw new NotImplementedException(); }
+        {
+            //throw new NotImplementedException(); 
+
+        }
         public void BroadcasterUpdateInfo(uint uid, UserInfo info)
-        { throw new NotImplementedException(); }
+        {
+            //throw new NotImplementedException(); 
+            if (info.userAccount.StartsWith("HOST"))
+            {
+                AddNewMember(uid);
+                hostBroadcasters.Add(uid);
+            }
+        }
         public void BroadcasterLeave(uint uid)
-        { throw new NotImplementedException(); }
+        { 
+            //throw new NotImplementedException(); 
+        }
 
         private void btnScreenShare_Click(object sender, EventArgs e)
         {
@@ -283,24 +296,26 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.DisableAudio();
             GC.Collect();
         }
-        public void AddNewMember(string channelId, uint uid)
+        public void AddNewMember(uint uid)
         {
             if (streamsTable.InvokeRequired)
             {
                 Invoke((MethodInvoker)delegate
                 {
-                    SetupMember(channelId, uid);
+                    SetupMember(uid);
                 });
             }
             else
             {
-                SetupMember(channelId, uid);
+                SetupMember(uid);
             }
         }
 
-        private void SetupMember(string channelId, uint uid)
+        private void SetupMember(uint uid)
         {
             PictureBox newPreview = new();
+
+            string channelId = AgoraObject.GetHostName();
 
             newPreview.Dock = DockStyle.Fill;
             List<bool> temp_list = new List<bool>(TakenPages);
