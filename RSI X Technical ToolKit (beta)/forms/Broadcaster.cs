@@ -379,14 +379,13 @@ namespace RSI_X_Desktop
                 }
             }
 
-            streamsTable.Refresh();
-
             var ret = new VideoCanvas((ulong)newPreview.Handle, uid);
             ret.renderMode = (int)RENDER_MODE_TYPE.RENDER_MODE_FIT;
             ret.channelId = channelId;
             ret.uid = uid;
 
             AgoraObject.Rtc.SetupRemoteVideo(ret);
+            streamsTable.Refresh();
         }
 
         private void RemoveMember(uint uid)
@@ -435,7 +434,6 @@ namespace RSI_X_Desktop
                     }
                 }
             }
-
             streamsTable.Refresh();
         }
         #endregion
