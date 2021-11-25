@@ -136,7 +136,7 @@ namespace RSI_X_Desktop
                     AddNewMember(uid);
 
                 AgoraObject.UpdateUserVolume(uid, 
-                    Checkfloor.CheckState == CheckState.Checked ? MIN_VOLUME : MAX_VOLUME, 
+                    Checkfloor.CheckState == CheckState.Checked ? MAX_VOLUME : MIN_VOLUME, 
                     CHANNEL_TYPE.HOST);
             }
         }
@@ -154,7 +154,7 @@ namespace RSI_X_Desktop
                     AddNewMember(uid);
 
                 AgoraObject.UpdateUserVolume(uid,
-                    Checkfloor.CheckState == CheckState.Checked ? MIN_VOLUME : MAX_VOLUME,
+                    Checkfloor.CheckState == CheckState.Checked ? MAX_VOLUME : MIN_VOLUME,
                     CHANNEL_TYPE.HOST);
             }
         }
