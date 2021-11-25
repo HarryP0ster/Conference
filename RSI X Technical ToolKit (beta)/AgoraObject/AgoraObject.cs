@@ -21,7 +21,6 @@ namespace RSI_X_Desktop
     {
 
         public const string AppID = "31f0e571a89542b09049087e3283417f";
-
         public static bool IsLocalAudioMute { get; private set; }
         public static bool IsLocalVideoMute { get; private set; }
         public static bool IsAllRemoteAudioMute { get; private set; }
@@ -75,7 +74,6 @@ namespace RSI_X_Desktop
 
             SetPublishProfile();
         }
-
         private static void SetPublishProfile()
         {
             Rtc.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY, AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_CHATROOM_GAMING);

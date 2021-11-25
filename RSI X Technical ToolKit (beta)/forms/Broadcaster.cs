@@ -498,7 +498,8 @@ namespace RSI_X_Desktop
             srcLangIndex = cmblang.SelectedIndex;
             var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
 
-            AgoraObject.JoinChannelSrc(l);
+            if (Checkfloor.CheckState == CheckState.Unchecked) 
+                AgoraObject.JoinChannelSrc(l);
         }
 
         private void floor_CheckedChanged(object sender, EventArgs e)
