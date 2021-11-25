@@ -73,6 +73,7 @@ namespace RSI_X_Desktop
                     cmblang.SelectedIndex = Math.Max(0, srcLangIndex);
 
                     floor_CheckedChanged(Checkfloor, new());
+                    cmblang_SelectedIndexChanged(cmblang, new());
                 }
                 RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
                 Init();
@@ -554,16 +555,22 @@ namespace RSI_X_Desktop
             switch (Checkfloor.CheckState)
             {
                 case CheckState.Unchecked:
-                    foreach (var br in hostBroadcasters.Keys)
+                    foreach (var br in hostBroadcasters.Keys) 
+                    {
+                        if (br == 0) continue;
                         AgoraObject.UpdateUserVolume(br, MIN_VOLUME, CHANNEL_TYPE.HOST);
+                    }
 
                     var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
                     AgoraObject.JoinChannelSrc(l);
                     cmblang.Enabled = true;
                     break;
                 case CheckState.Checked:
-                    foreach (var br in hostBroadcasters.Keys)
+                    foreach (var br in hostBroadcasters.Keys) 
+                    {
+                        if (br == 0) continue;
                         AgoraObject.UpdateUserVolume(br, MAX_VOLUME, CHANNEL_TYPE.HOST);
+                    }
                     AgoraObject.LeaveSrcChannel();
                     cmblang.Enabled = false;
                     break;
