@@ -71,9 +71,8 @@ namespace RSI_X_Desktop
                         CheckState.Unchecked;
 
                     cmblang.SelectedIndex = Math.Max(0, srcLangIndex);
-
-                    floor_CheckedChanged(Checkfloor, new());
                     cmblang_SelectedIndexChanged(cmblang, new());
+                    floor_CheckedChanged(Checkfloor, new());
                 }
                 RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
                 Init();
@@ -547,7 +546,8 @@ namespace RSI_X_Desktop
             srcLangIndex = cmblang.SelectedIndex;
             var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
 
-            AgoraObject.JoinChannelSrc(l);
+            if (Checkfloor.CheckState == CheckState.Unchecked)
+                AgoraObject.JoinChannelSrc(l);
         }
 
         private void floor_CheckedChanged(object sender, EventArgs e)
