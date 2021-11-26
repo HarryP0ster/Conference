@@ -54,6 +54,9 @@ namespace RSI_X_Desktop.forms
         public Devices()
         {
             InitializeComponent();
+
+            Recorders = getListAudioInputDevices();
+            VideoOut = getListVideoDevices();
         }
         public void updateRecordingDeviceManager(AgoraAudioRecordingDeviceManager mg) { }
         public void updatelaybackDeviceManager(AgoraAudioPlaybackDeviceManager mg) { }
