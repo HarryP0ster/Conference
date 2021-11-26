@@ -14,7 +14,7 @@ namespace RSI_X_Desktop
     {
         Process TargetPublisher = null;
 
-        private const int MIN_VOLUME = 10;
+        private const int MIN_VOLUME = 3;
         private const int MAX_VOLUME = 100;
 
         private Devices devices;
@@ -58,6 +58,7 @@ namespace RSI_X_Desktop
                 { langsShort.Add(lang.langShort); }
                 cmblang.DataSource = langsShort;
 
+
                 srcLangIndex = dlg.PrimaryLang - 1;
                 if (langsShort.Count < 0)
                 {
@@ -79,7 +80,7 @@ namespace RSI_X_Desktop
                 }
                 RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
                 Init();
-            } 
+            }
             else
                 Close();
         }
@@ -91,7 +92,6 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.SetChannelProfile(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
             AgoraObject.Rtc.SetClientRole(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
             AgoraObject.Rtc.EnableLocalVideo(true);
-            AgoraObject.UpdateNickName("Host");
             hostBroadcasters.Add(0, pictureBoxLocalVideo);
 
             TakenPages[0] = true;
