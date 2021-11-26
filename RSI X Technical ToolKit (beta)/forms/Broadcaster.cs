@@ -7,9 +7,15 @@ using System.Diagnostics;
 using RSI_X_Desktop.forms;
 using RSI_X_Desktop.forms.HelpingClass;
 using agorartc;
+using System.IO.Pipes;
 
 namespace RSI_X_Desktop
 {
+    enum TARGET_MESSAGES
+    { 
+        MUTE = 0,
+        UNMUTE = 1
+    }
     public partial class Broadcaster : Form, IFormHostHolder
     {
         Process TargetPublisher = null;
@@ -28,6 +34,7 @@ namespace RSI_X_Desktop
         private Dictionary<uint, PictureBox> hostBroadcasters = new();
 
         private int srcLangIndex = -2;
+        private const string PipeName = "PipeIn";
 
         public Broadcaster()
         {
@@ -294,9 +301,20 @@ namespace RSI_X_Desktop
         private void labelMicrophone_Click(object sender, EventArgs e)
         {
             AgoraObject.MuteLocalAudioStream(!AgoraObject.IsLocalAudioMute);
+            MuteTargetPublisher(AgoraObject.IsLocalAudioMute);
+
             labelMicrophone.ForeColor = AgoraObject.IsLocalAudioMute ?
                 Color.White :
                 Color.Red;
+        }
+
+        private void MuteTargetPublisher(bool mute)
+        {
+            var state = mute ?
+                TARGET_MESSAGES.MUTE :
+                TARGET_MESSAGES.UNMUTE;
+            TargetPublisher?.StandardInput
+                .WriteLine(String.Format("msg:{0}", (int)state));
         }
 
         private void labelVideo_Click(object sender, EventArgs e)
@@ -375,12 +393,14 @@ namespace RSI_X_Desktop
             Owner.Show();
 
             enableScreenShare(false);
+            stopPublishToTarget();
             AgoraObject.LeaveHostChannel();
             AgoraObject.Rtc.LeaveChannel();
             AgoraObject.Rtc.EnableLocalVideo(false);
             AgoraObject.Rtc.DisableVideo();
             AgoraObject.Rtc.DisableAudio();
             if (!Owner.Visible) Application.Exit();
+
             GC.Collect();
         }
 
@@ -606,6 +626,7 @@ namespace RSI_X_Desktop
             TargetPublisher.StartInfo.Arguments = arguments;
             TargetPublisher.StartInfo.CreateNoWindow = true;
             TargetPublisher.StartInfo.RedirectStandardOutput = true;
+            TargetPublisher.StartInfo.RedirectStandardInput = true;
             TargetPublisher.StartInfo.FileName = "appIn.exe";
             TargetPublisher.OutputDataReceived += TargetPublisher_OutputDataReceived;
 
@@ -620,10 +641,10 @@ namespace RSI_X_Desktop
 
             uint selfSpeakerUid = Convert.ToUInt32(
                 e.Data.Split(':')[1]);
+            MuteTargetPublisher(AgoraObject.IsLocalAudioMute);
 
             if (selfSpeakerUid != 0)
                 AgoraObject.UpdateUserVolume(selfSpeakerUid, 0, CHANNEL_TYPE.SRC);
-
         }
 
         private void stopPublishToTarget() 

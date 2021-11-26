@@ -1,48 +1,77 @@
 ﻿using System;
 using agorartc;
 using System.Threading;
+using System.IO.Pipes;
+using System.Threading.Tasks;
 
 namespace ConsoleAppIn
 {
+    enum TARGET_MESSAGES
+    {
+        MUTE = 0,
+        UNMUTE = 1
+    }
     class Program
     {
         static int parentID;
         static System.Diagnostics.Process proc;
+        const string PipeName = "PipeIn";
+        static XAgoraObject agoraObject;
         static void Main(string[] args)
         {
-            XAgoraObject agoraObject = new XAgoraObject();
+            agoraObject = new XAgoraObject();
 
             var retInput = agoraObject.SetupInputDevices(args[2]);
-            //Console.WriteLine(retInput);
-
-            var retPubl = agoraObject.Publish(args[0], args[1], "(S)" + args[3]);
-            //Console.WriteLine(retPubl);
+            var retPubl = agoraObject.Publish(args[0], args[1], "(S)" + args[4]);
 
             if (retInput != ERROR_CODE.ERR_OK ||
                 retPubl != ERROR_CODE.ERR_OK)
                 return;
-
-            parentID = System.Convert.ToInt32(args[3]);
+            
             proc = System.Diagnostics.Process.GetProcessById(parentID);
-            proc.WaitForExit();
+            parentID = System.Convert.ToInt32(args[3]);
 
-            //proc.Exited += ParentClose;
+            while (true)
+            {
+                string s = Console.ReadLine();
+                if (s.Contains(":") == false) return;
 
-            //Console.WriteLine(args[1]);
-            //Console.WriteLine(agoraObject.nameDevice);
+                switch (s.Split(':')[0])
+                {
+                    case "msg":
+                        NewMsg(s);
+                        break;
+                }
+            }
 
-            //while (true)
-            //    System.Threading.Thread.Sleep(100);
+            //proc.WaitForExit();
         }
 
-        private static void ParentClose(object sender, EventArgs e)
+        static void NewMsg(string msg) 
         {
-            System.Environment.Exit(0);
+            string index = msg.Split(':')[1];
+            TARGET_MESSAGES message =
+                (TARGET_MESSAGES)Convert.ToUInt32(index);
+
+            Console.WriteLine(message);
+
+            switch (message)
+            {
+                case TARGET_MESSAGES.MUTE:
+                    agoraObject.Rtc.MuteLocalAudioStream(true);
+                    break;
+                case TARGET_MESSAGES.UNMUTE:
+                    agoraObject.Rtc.MuteLocalAudioStream(false);
+                    break;
+                default:
+                    break;
+
+            }
         }
     }
     class XAgoraObject
     {
-        AgoraRtcEngine Rtc;
+        public AgoraRtcEngine Rtc;
         AgoraAudioRecordingDeviceManager audioInDeviceManager;
 
         public const string AppID = "31f0e571a89542b09049087e3283417f";
@@ -55,6 +84,9 @@ namespace ConsoleAppIn
             Rtc.InitEventHandler(new AEngineEventHandler());
             Rtc.MuteLocalVideoStream(true);
             Rtc.Initialize(new RtcEngineContext(AppID));
+            Rtc.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY, AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_CHATROOM_GAMING);
+
+
             audioInDeviceManager = Rtc.CreateAudioRecordingDeviceManager();
         }
 
@@ -67,6 +99,8 @@ namespace ConsoleAppIn
 
         public ERROR_CODE Publish(string token, string channel, string account)
         {
+            Rtc.MuteAllRemoteAudioStreams(true);
+            Rtc.MuteAllRemoteVideoStreams(true);
             ERROR_CODE res = Rtc.JoinChannelWithUserAccount(token, channel, account);
 
             if (res == ERROR_CODE.ERR_OK)
