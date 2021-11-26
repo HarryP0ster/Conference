@@ -23,33 +23,48 @@ namespace RSI_X_Desktop.forms
         //public int Volume { get => volume; }
 
         private IFormHostHolder workForm = AgoraObject.GetWorkForm;
-        private AgoraAudioRecordingDeviceManager RecordersManager;
-        private AgoraAudioPlaybackDeviceManager audioOutDeviceManager;
-        private AgoraVideoDeviceManager videoDeviceManager;
+        static private AgoraAudioRecordingDeviceManager RecordersManager;
+        static private AgoraAudioPlaybackDeviceManager audioOutDeviceManager;
+        static private AgoraVideoDeviceManager videoDeviceManager;
         static List<string> Recorders;
         static List<string> VideoOut;
 
-        private static int oldVolumeIn;
-        private static string oldRecorder;
-        private static string oldVideoOut;
+        public static int oldVolumeIn {get; private set;}
+        public static string oldRecorder {get; private set;}
+        public static string oldVideoOut { get; private set; }
 
+        public static void InitManager()
+        {
+            RecordersManager = AgoraObject.Rtc.CreateAudioRecordingDeviceManager();
+            audioOutDeviceManager = AgoraObject.Rtc.CreateAudioPlaybackDeviceManager();
+            videoDeviceManager = AgoraObject.Rtc.CreateVideoDeviceManager();
+
+            Recorders = getListAudioInputDevices();
+            VideoOut = getListVideoDevices();
+
+            bool hasOldRecorder = Recorders.Any((s) => s == oldRecorder);
+
+            int index = (oldRecorder != null) ?
+                Recorders.FindLastIndex((s) => s == oldRecorder) :
+                index = getActiveAudioInputDevice();
+
+            oldRecorder = Recorders[index];
+
+        }
         public Devices()
         {
             InitializeComponent();
         }
-
+        public void updateRecordingDeviceManager(AgoraAudioRecordingDeviceManager mg) { }
+        public void updatelaybackDeviceManager(AgoraAudioPlaybackDeviceManager mg) { }
+        public void updateVideoDeviceManager(AgoraVideoDeviceManager mg) { }
         private void NewDevices_Load(object sender, EventArgs e)
         {
 
-            RecordersManager    = AgoraObject.Rtc.CreateAudioRecordingDeviceManager();
-            audioOutDeviceManager   = AgoraObject.Rtc.CreateAudioPlaybackDeviceManager();
-            videoDeviceManager      = AgoraObject.Rtc.CreateVideoDeviceManager();
 
             oldVolumeIn = RecordersManager.GetDeviceVolume();
             trackBarSoundIn.Value = oldVolumeIn;
 
-            Recorders = getListAudioInputDevices();
-            VideoOut = getListVideoDevices();
             
             UpdateComboBoxRecorder();
             UpdateComboBoxVideoOut();
@@ -99,7 +114,7 @@ namespace RSI_X_Desktop.forms
 
         }
 
-        private int getActiveAudioInputDevice()
+        private static int getActiveAudioInputDevice()
         {
             int id = -1;
 
@@ -118,7 +133,7 @@ namespace RSI_X_Desktop.forms
             return id;
         }
 
-        private int getActiveAudioOutputDevice()
+        private static int getActiveAudioOutputDevice()
         {
             int id = -1;
 
@@ -137,7 +152,7 @@ namespace RSI_X_Desktop.forms
             return id;
         }
 
-        private int getActiveVideoDevice()
+        private static int getActiveVideoDevice()
         {
             int id = -1;
 
@@ -157,7 +172,7 @@ namespace RSI_X_Desktop.forms
         }
 
         #region getDevicesList
-        private List<string> getListAudioInputDevices()
+        private static List<string> getListAudioInputDevices()
         {
             List<string> devicesOut = new();
 
@@ -173,7 +188,7 @@ namespace RSI_X_Desktop.forms
             return devicesOut;
         }
 
-        private List<string> getListAudioOutDevices()
+        private static List<string> getListAudioOutDevices()
         {
             List<string> devicesOut = new();
 
@@ -190,7 +205,7 @@ namespace RSI_X_Desktop.forms
             return devicesOut;
         }
 
-        private List<string> getListVideoDevices()
+        private static List<string> getListVideoDevices()
         {
             List<string> devicesOut = new();
 

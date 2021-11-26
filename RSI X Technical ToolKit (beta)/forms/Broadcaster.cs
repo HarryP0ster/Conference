@@ -2,8 +2,9 @@
 using System.Windows.Forms;
 using System.Drawing;
 using System.Threading;
-using RSI_X_Desktop.forms;
 using System.Collections.Generic;
+using System.Diagnostics;
+using RSI_X_Desktop.forms;
 using RSI_X_Desktop.forms.HelpingClass;
 using agorartc;
 
@@ -11,6 +12,8 @@ namespace RSI_X_Desktop
 {
     public partial class Broadcaster : Form, IFormHostHolder
     {
+        Process TargetPublisher = null;
+
         private const int MIN_VOLUME = 10;
         private const int MAX_VOLUME = 100;
 
@@ -547,9 +550,11 @@ namespace RSI_X_Desktop
             var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
 
             if (Checkfloor.CheckState == CheckState.Unchecked) 
+            {
                 AgoraObject.JoinChannelSrc(l);
+                startPublishToTarget(l);
+            }
         }
-
         private void floor_CheckedChanged(object sender, EventArgs e)
         {
             switch (Checkfloor.CheckState)
@@ -563,6 +568,8 @@ namespace RSI_X_Desktop
 
                     var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
                     AgoraObject.JoinChannelSrc(l);
+                    startPublishToTarget(l);
+
                     cmblang.Enabled = true;
                     break;
                 case CheckState.Checked:
@@ -572,6 +579,8 @@ namespace RSI_X_Desktop
                         AgoraObject.UpdateUserVolume(br, MAX_VOLUME, CHANNEL_TYPE.HOST);
                     }
                     AgoraObject.LeaveSrcChannel();
+                    stopPublishToTarget();
+
                     cmblang.Enabled = false;
                     break;
                 case CheckState.Indeterminate:
@@ -579,5 +588,49 @@ namespace RSI_X_Desktop
                     break;
             }
         }
+        private void startPublishToTarget(langHolder lh) 
+        {
+            if (TargetPublisher != null)
+                stopPublishToTarget();
+
+            List<string> args = new() { 
+                lh.token, lh.langFull, 
+                Devices.oldRecorder,
+                Process.GetCurrentProcess().Id.ToString(),
+                AgoraObject.NickName};
+
+            string arguments = "";
+            foreach (var a in args)
+                arguments += "\"" + a + "\" ";
+            TargetPublisher = new Process();
+            TargetPublisher.StartInfo.Arguments = arguments;
+            TargetPublisher.StartInfo.CreateNoWindow = true;
+            TargetPublisher.StartInfo.RedirectStandardOutput = true;
+            TargetPublisher.StartInfo.FileName = "appIn.exe";
+            TargetPublisher.OutputDataReceived += TargetPublisher_OutputDataReceived;
+
+            TargetPublisher.Start();
+            TargetPublisher.BeginOutputReadLine();
+        }
+
+        private void TargetPublisher_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (e.Data == null ||
+                e.Data.StartsWith("uid:") == false) return;
+
+            uint selfSpeakerUid = Convert.ToUInt32(
+                e.Data.Split(':')[1]);
+
+            if (selfSpeakerUid != 0)
+                AgoraObject.UpdateUserVolume(selfSpeakerUid, 0, CHANNEL_TYPE.SRC);
+
+        }
+
+        private void stopPublishToTarget() 
+        {
+            TargetPublisher?.Kill();
+            TargetPublisher = null;
+        }
+
     }
 }

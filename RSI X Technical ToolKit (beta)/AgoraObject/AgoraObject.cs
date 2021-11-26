@@ -69,9 +69,14 @@ namespace RSI_X_Desktop
 
         static AgoraObject()
         {
+            Random rnd = new Random();
+            var str = string.Format("{0}_{1}", "HOST", (ulong)rnd.Next());
+            NickName = str;
+
             Rtc = AgoraRtcEngine.CreateRtcEngine();
             Rtc.Initialize(new RtcEngineContext(AppID));
-
+            
+            forms.Devices.InitManager();
             SetPublishProfile();
         }
         private static void SetPublishProfile()
@@ -247,10 +252,8 @@ namespace RSI_X_Desktop
             ChannelMediaOptions options = new();
             options.autoSubscribeAudio = true;
             options.autoSubscribeVideo = true;
-            Random rnd = new Random();
-            var str = string.Format("{0}_{1}", "HOST", (ulong)rnd.Next());
             ret = m_channelHost.JoinChannelWithUserAccount(token,
-                str,
+                NickName,
                 options);
 
             m_channelHost.Publish();

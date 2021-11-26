@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31815.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSI X Technical ToolKit (beta)", "RSI X Technical ToolKit (beta)\RSI X Technical ToolKit (beta).csproj", "{57F858BA-80AF-4DF0-AAA7-CF7576457F0A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A78DABB5-123B-4551-BB40-8CFD88040064} = {A78DABB5-123B-4551-BB40-8CFD88040064}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "agorartc", "agorartc\agorartc\agorartc\agorartc.csproj", "{E8DA8D25-6D32-42CE-9578-3CCB1155DBB3}"
 EndProject

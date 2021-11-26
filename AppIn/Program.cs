@@ -10,14 +10,13 @@ namespace ConsoleAppIn
         static System.Diagnostics.Process proc;
         static void Main(string[] args)
         {
-
             XAgoraObject agoraObject = new XAgoraObject();
 
             var retInput = agoraObject.SetupInputDevices(args[2]);
-            Console.WriteLine(retInput);
+            //Console.WriteLine(retInput);
 
-            var retPubl = agoraObject.Publish(args[0], args[1]);
-            Console.WriteLine(retPubl);
+            var retPubl = agoraObject.Publish(args[0], args[1], "(S)" + args[3]);
+            //Console.WriteLine(retPubl);
 
             if (retInput != ERROR_CODE.ERR_OK ||
                 retPubl != ERROR_CODE.ERR_OK)
@@ -53,6 +52,7 @@ namespace ConsoleAppIn
         public XAgoraObject()
         {
             Rtc = AgoraRtcEngine.CreateRtcEngine();
+            Rtc.InitEventHandler(new AEngineEventHandler());
             Rtc.MuteLocalVideoStream(true);
             Rtc.Initialize(new RtcEngineContext(AppID));
             audioInDeviceManager = Rtc.CreateAudioRecordingDeviceManager();
@@ -65,17 +65,16 @@ namespace ConsoleAppIn
             return audioInDeviceManager.SetCurrentDevice(ind);
         }
 
-        public ERROR_CODE Publish(string token, string name)
+        public ERROR_CODE Publish(string token, string channel, string account)
         {
-            ERROR_CODE res = Rtc.JoinChannel(token, name, "", 0);
+            ERROR_CODE res = Rtc.JoinChannelWithUserAccount(token, channel, account);
 
             if (res == ERROR_CODE.ERR_OK)
                 IsJoin = true;
+
             audioInDeviceManager.GetCurrentDeviceInfo(out string idOUT, out string nameOUT);
             nameDevice = nameOUT;
-
-            Console.WriteLine("\n\n\n\nHello World!");
-
+            //Console.WriteLine("\n\n\n\nHello World!");
             return res;
         }
 
