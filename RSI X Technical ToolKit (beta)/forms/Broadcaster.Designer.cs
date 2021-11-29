@@ -34,8 +34,6 @@ namespace RSI_X_Desktop
             this.MainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.PanelBot = new ReaLTaiizor.Controls.LostPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelFloor = new System.Windows.Forms.Label();
-            this.cmblang = new ReaLTaiizor.Controls.MaterialComboBox();
             this.trackBar1 = new ReaLTaiizor.Controls.DungeonTrackBar();
             this.labelChat = new System.Windows.Forms.Label();
             this.labelSettings = new System.Windows.Forms.Label();
@@ -43,6 +41,8 @@ namespace RSI_X_Desktop
             this.labelVideo = new System.Windows.Forms.Label();
             this.labelVolume = new System.Windows.Forms.Label();
             this.labelScreenShare = new System.Windows.Forms.Label();
+            this.labelFloor = new System.Windows.Forms.Label();
+            this.cmblang = new ReaLTaiizor.Controls.MaterialComboBox();
             this.PanelTop = new ReaLTaiizor.Controls.LostPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.CloseButton = new ReaLTaiizor.Controls.Button();
@@ -122,7 +122,7 @@ namespace RSI_X_Desktop
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.ColumnCount = 11;
+            this.tableLayoutPanel2.ColumnCount = 10;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -130,19 +130,19 @@ namespace RSI_X_Desktop
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 99F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.Controls.Add(this.trackBar1, 4, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelChat, 10, 0);
+            this.tableLayoutPanel2.Controls.Add(this.labelChat, 9, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelSettings, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelMicrophone, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelVideo, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelVolume, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelScreenShare, 9, 0);
+            this.tableLayoutPanel2.Controls.Add(this.labelScreenShare, 8, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelFloor, 6, 0);
-            this.tableLayoutPanel2.Controls.Add(this.cmblang, 8, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cmblang, 7, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -152,42 +152,6 @@ namespace RSI_X_Desktop
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1272, 71);
             this.tableLayoutPanel2.TabIndex = 10;
-            // 
-            // labelFloor
-            // 
-            this.labelFloor.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.labelFloor.AutoSize = true;
-            this.labelFloor.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFloor.Location = new System.Drawing.Point(835, 17);
-            this.labelFloor.Name = "labelFloor";
-            this.labelFloor.Size = new System.Drawing.Size(77, 36);
-            this.labelFloor.TabIndex = 12;
-            this.labelFloor.Text = "FLOOR";
-            this.labelFloor.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // cmblang
-            // 
-            this.cmblang.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.cmblang.AutoResize = false;
-            this.cmblang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cmblang.Depth = 0;
-            this.cmblang.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmblang.DropDownHeight = 174;
-            this.cmblang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmblang.DropDownWidth = 121;
-            this.cmblang.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.cmblang.ForeColor = System.Drawing.Color.White;
-            this.cmblang.FormattingEnabled = true;
-            this.cmblang.IntegralHeight = false;
-            this.cmblang.ItemHeight = 43;
-            this.cmblang.Location = new System.Drawing.Point(938, 19);
-            this.cmblang.MaxDropDownItems = 4;
-            this.cmblang.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.cmblang.Name = "cmblang";
-            this.cmblang.Size = new System.Drawing.Size(93, 49);
-            this.cmblang.StartIndex = 0;
-            this.cmblang.TabIndex = 11;
-            this.cmblang.SelectedIndexChanged += new System.EventHandler(this.cmblang_SelectedIndexChanged);
             // 
             // trackBar1
             // 
@@ -303,6 +267,42 @@ namespace RSI_X_Desktop
             this.labelScreenShare.TabIndex = 20;
             this.labelScreenShare.Text = "SCREEN SHARE";
             this.labelScreenShare.Click += new System.EventHandler(this.btnScreenShare_Click);
+            // 
+            // labelFloor
+            // 
+            this.labelFloor.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.labelFloor.AutoSize = true;
+            this.labelFloor.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelFloor.Location = new System.Drawing.Point(855, 17);
+            this.labelFloor.Name = "labelFloor";
+            this.labelFloor.Size = new System.Drawing.Size(77, 36);
+            this.labelFloor.TabIndex = 12;
+            this.labelFloor.Text = "FLOOR";
+            this.labelFloor.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // cmblang
+            // 
+            this.cmblang.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmblang.AutoResize = false;
+            this.cmblang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmblang.Depth = 0;
+            this.cmblang.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cmblang.DropDownHeight = 174;
+            this.cmblang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmblang.DropDownWidth = 121;
+            this.cmblang.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.cmblang.ForeColor = System.Drawing.Color.White;
+            this.cmblang.FormattingEnabled = true;
+            this.cmblang.IntegralHeight = false;
+            this.cmblang.ItemHeight = 43;
+            this.cmblang.Location = new System.Drawing.Point(938, 11);
+            this.cmblang.MaxDropDownItems = 4;
+            this.cmblang.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
+            this.cmblang.Name = "cmblang";
+            this.cmblang.Size = new System.Drawing.Size(93, 49);
+            this.cmblang.StartIndex = 0;
+            this.cmblang.TabIndex = 11;
+            this.cmblang.SelectedIndexChanged += new System.EventHandler(this.cmblang_SelectedIndexChanged);
             // 
             // PanelTop
             // 

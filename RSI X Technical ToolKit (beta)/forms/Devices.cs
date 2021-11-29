@@ -58,17 +58,11 @@ namespace RSI_X_Desktop.forms
             Recorders = getListAudioInputDevices();
             VideoOut = getListVideoDevices();
         }
-        public void updateRecordingDeviceManager(AgoraAudioRecordingDeviceManager mg) { }
-        public void updatelaybackDeviceManager(AgoraAudioPlaybackDeviceManager mg) { }
-        public void updateVideoDeviceManager(AgoraVideoDeviceManager mg) { }
         private void NewDevices_Load(object sender, EventArgs e)
         {
-
-
             oldVolumeIn = RecordersManager.GetDeviceVolume();
             trackBarSoundIn.Value = oldVolumeIn;
 
-            
             UpdateComboBoxRecorder();
             UpdateComboBoxVideoOut();
             
@@ -76,11 +70,21 @@ namespace RSI_X_Desktop.forms
         }
         private void UpdateComboBoxRecorder()
         {
+            Recorders = getListAudioInputDevices();
             bool hasOldRecorder = Recorders.Any((s) => s == oldRecorder);
 
-            int index = (oldRecorder != null) ?
+            int index = (oldRecorder != null && hasOldRecorder) ?
                 Recorders.FindLastIndex((s) => s == oldRecorder) :
-                index = getActiveAudioInputDevice();
+                getActiveAudioInputDevice();
+
+            if (index == -1) 
+                index = Recorders.Count > 0 ? 0 : - 1;
+
+            if (index == -1 || Recorders.Count == 0) 
+            {
+                comboBoxAudioInput.DataSource = new List<string> { "Record Devices Error" };
+                return;
+            }
 
             oldRecorder = Recorders[index];
 
@@ -89,11 +93,22 @@ namespace RSI_X_Desktop.forms
         }
         private void UpdateComboBoxVideoOut()
         {
+            VideoOut = getListVideoDevices();
             bool hasoldVideoOut = VideoOut.Any((s) => s == oldVideoOut);
 
             int index = (oldVideoOut != null) ?
                 VideoOut.FindLastIndex((s) => s == oldVideoOut) :
-                index = getActiveVideoDevice();
+                getActiveVideoDevice();
+
+            if (index == -1)
+                index = VideoOut.Count > 0 ? 0 : -1;
+
+            if (index == -1 || VideoOut.Count == 0)
+            {
+                comboBoxVideo.DataSource = new List<string> { "Video Devices Error" };
+                return;
+            }
+
 
             oldVideoOut = VideoOut[index];
             comboBoxVideo.DataSource = VideoOut;
@@ -133,6 +148,7 @@ namespace RSI_X_Desktop.forms
                 }
 
             }
+
             return id;
         }
 
@@ -291,15 +307,26 @@ namespace RSI_X_Desktop.forms
 
             CloseButton_Click(sender, e);
         }
-
+        public static void AcceptAllOldDevices() 
+        {
+            try
+            {
+                if (oldRecorder != null)
+                    RecordersManager.SetCurrentDevice(oldRecorder);
+                if (oldVideoOut != null)
+                    videoDeviceManager.SetCurrentDevice(oldVideoOut);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         internal void CloseButton_Click(object sender, EventArgs e)
         {
             trackBarSoundIn.Value = oldVolumeIn;
             trackBarSoundIn_ValueChanged();
-
-            RecordersManager.SetCurrentDevice(oldRecorder);
-            videoDeviceManager.SetCurrentDevice(oldVideoOut);
-
+            
+            AcceptAllOldDevices();
             AgoraObject.GetWorkForm?.DevicesClosed(this);
             Close();
         }
@@ -329,6 +356,14 @@ namespace RSI_X_Desktop.forms
             {
                 workForm?.SetLocalVideoPreview();
             }
+        }
+
+        public static void ClearOldDevices()
+        {
+            //oldRecorder = null;
+            //oldVideoOut = null;
+            Recorders?.Clear();
+            VideoOut?.Clear();
         }
     }
 }

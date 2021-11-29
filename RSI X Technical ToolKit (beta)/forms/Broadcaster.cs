@@ -91,6 +91,9 @@ namespace RSI_X_Desktop
                 }
                 RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
                 Init();
+                MuteMic(dlg.MicMute);
+                CamMute(dlg.CamMute);
+                Devices.AcceptAllOldDevices();
             }
             else
                 Close();
@@ -304,8 +307,13 @@ namespace RSI_X_Desktop
 
         private void labelMicrophone_Click(object sender, EventArgs e)
         {
-            AgoraObject.MuteLocalAudioStream(!AgoraObject.IsLocalAudioMute);
-            MuteTargetPublisher(AgoraObject.IsLocalAudioMute);
+            MuteMic(!AgoraObject.IsLocalAudioMute);
+        }
+
+        private void MuteMic(bool mute)
+        {
+            MuteTargetPublisher(mute);
+            AgoraObject.MuteLocalAudioStream(mute);
 
             labelMicrophone.ForeColor = AgoraObject.IsLocalAudioMute ?
                 Color.White :
@@ -323,18 +331,23 @@ namespace RSI_X_Desktop
 
         private void labelVideo_Click(object sender, EventArgs e)
         {
-            AgoraObject.MuteLocalVideoStream(!AgoraObject.IsLocalVideoMute);
-            pictureBoxLocalVideo.Visible = !AgoraObject.IsLocalVideoMute;
+            CamMute(!AgoraObject.IsLocalVideoMute);
+        }
+
+        private void CamMute(bool mute)
+        {
+            AgoraObject.MuteLocalVideoStream(mute);
+            pictureBoxLocalVideo.Visible = !mute;
 
             labelVideo.ForeColor = AgoraObject.IsLocalVideoMute ?
                 Color.White :
                 Color.Red;
 
-            if (AgoraObject.IsLocalVideoMute)
+            if (AgoraObject.IsLocalVideoMute) 
+            {
                 pictureBoxLocalVideo.Refresh();
-
-            if (AgoraObject.IsLocalVideoMute)
                 enableScreenShare(false);
+            }
         }
 
         private void labelChat_Click(object sender, EventArgs e)
@@ -404,6 +417,8 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.DisableVideo();
             AgoraObject.Rtc.DisableAudio();
             if (!Owner.Visible) Application.Exit();
+
+            Devices.ClearOldDevices();
 
             GC.Collect();
         }

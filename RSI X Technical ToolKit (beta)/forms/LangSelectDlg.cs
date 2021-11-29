@@ -14,6 +14,8 @@ namespace RSI_X_Desktop.forms
     {
         const int MAX_NICK_LEN = 16;
         public bool GetOutCode { get; private set; } = false;
+        public bool MicMute { get { return !CheckBoxMic.Checked; } }
+        public bool CamMute { get { return !CheckBoxCam.Checked; } }
         public int PrimaryLang = -1;
         public langHolder getPrimaryLang { 
             get 
@@ -47,41 +49,26 @@ namespace RSI_X_Desktop.forms
 
         private void BAccept_Click(object sender, EventArgs e)
         {
-#if false
-            NickName = textBoxNickName.Text;
-
-            if (NickName == "")
-            {
-                MessageBox.Show("Your name must be longer");
-                return;
-            }
-            else if (NickName.Length > MAX_NICK_LEN)
-            {
-                MessageBox.Show("Your name is too long");
-                return;
-            }
-            else if (NickName == "Your name")
-            {
-                MessageBox.Show("Invalid name");
-                return;
-            }
-            foreach (var ch in NickName)
-            {
-                if (Convert.ToInt32(ch) > 255)
-                {
-                    MessageBox.Show("Nickname contains unsupported characters");
-                    return;
-                }
-            }
-#endif
             GetOutCode = true;
             Close();
         }
         private void BClose_Click(object sender, EventArgs e)
-        { Close(); }
+        { 
+            Close();
+        }
         private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
         {
             PrimaryLang = cmblang.SelectedIndex;
+        }
+
+        private void CheckBoxMic_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CheckBoxCam_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
