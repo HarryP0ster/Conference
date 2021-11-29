@@ -16,6 +16,12 @@ namespace RSI_X_Desktop
         MUTE = 0,
         UNMUTE = 1
     }
+    enum STATE 
+    {
+        UNDEFINED,
+        FLOOR,
+        TRANSl
+    }
     public partial class Broadcaster : Form, IFormHostHolder
     {
         Process TargetPublisher = null;
@@ -34,7 +40,7 @@ namespace RSI_X_Desktop
         private Dictionary<uint, PictureBox> hostBroadcasters = new();
 
         private int srcLangIndex = -2;
-        private const string PipeName = "PipeIn";
+        private STATE getAudioFrom = STATE.UNDEFINED;
 
         public Broadcaster()
         {
@@ -71,19 +77,17 @@ namespace RSI_X_Desktop
                 {
                     cmblang.Enabled = false;
                     cmblang.Hide();
-                    Checkfloor.Enabled = false;
-                    Checkfloor.CheckState = CheckState.Checked;
-                    Checkfloor.Hide();
+                    getAudioFrom = STATE.FLOOR;
                 }
                 else
                 {
-                    Checkfloor.CheckState = srcLangIndex < 0 ? 
-                        CheckState.Checked :
-                        CheckState.Unchecked;
+                    getAudioFrom = srcLangIndex < 0 ? 
+                        STATE.FLOOR:
+                        STATE.TRANSl;
 
                     cmblang.SelectedIndex = Math.Max(0, srcLangIndex);
                     cmblang_SelectedIndexChanged(cmblang, new());
-                    floor_CheckedChanged(Checkfloor, new());
+                    label1_Click(labelFloor, new());
                 }
                 RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
                 Init();
@@ -146,7 +150,7 @@ namespace RSI_X_Desktop
                     AddNewMember(uid);
 
                 AgoraObject.UpdateUserVolume(uid, 
-                    Checkfloor.CheckState == CheckState.Checked ? MAX_VOLUME : MIN_VOLUME, 
+                    getAudioFrom == STATE.FLOOR ? MAX_VOLUME : MIN_VOLUME, 
                     CHANNEL_TYPE.HOST);
             }
         }
@@ -164,7 +168,7 @@ namespace RSI_X_Desktop
                     AddNewMember(uid);
 
                 AgoraObject.UpdateUserVolume(uid,
-                    Checkfloor.CheckState == CheckState.Checked ? MAX_VOLUME : MIN_VOLUME,
+                    getAudioFrom == STATE.FLOOR ? MAX_VOLUME : MIN_VOLUME,
                     CHANNEL_TYPE.HOST);
             }
         }
@@ -569,17 +573,24 @@ namespace RSI_X_Desktop
             srcLangIndex = cmblang.SelectedIndex;
             var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
 
-            if (Checkfloor.CheckState == CheckState.Unchecked) 
+            if (getAudioFrom == STATE.TRANSl) 
             {
                 AgoraObject.JoinChannelSrc(l);
                 startPublishToTarget(l);
             }
         }
-        private void floor_CheckedChanged(object sender, EventArgs e)
+
+        private void label1_Click(object sender, EventArgs e)
         {
-            switch (Checkfloor.CheckState)
+            floor_CheckedChanged(getAudioFrom);
+            getAudioFrom = getAudioFrom == STATE.FLOOR ?
+                STATE.TRANSl : STATE.FLOOR;
+        }
+        private void floor_CheckedChanged(STATE state)
+        {
+            switch (state)
             {
-                case CheckState.Unchecked:
+                case STATE.TRANSl:
                     foreach (var br in hostBroadcasters.Keys) 
                     {
                         if (br == 0) continue;
@@ -591,8 +602,9 @@ namespace RSI_X_Desktop
                     startPublishToTarget(l);
 
                     cmblang.Enabled = true;
+                    labelFloor.ForeColor = Color.White;
                     break;
-                case CheckState.Checked:
+                case STATE.FLOOR:
                     foreach (var br in hostBroadcasters.Keys) 
                     {
                         if (br == 0) continue;
@@ -602,8 +614,9 @@ namespace RSI_X_Desktop
                     stopPublishToTarget();
 
                     cmblang.Enabled = false;
+                    labelFloor.ForeColor = Color.Red;
                     break;
-                case CheckState.Indeterminate:
+                case STATE.UNDEFINED:
                 default: 
                     break;
             }
@@ -652,6 +665,5 @@ namespace RSI_X_Desktop
             TargetPublisher?.Kill();
             TargetPublisher = null;
         }
-
     }
 }
