@@ -39,6 +39,7 @@ namespace RSI_X_Desktop
             this.labelSettings = new System.Windows.Forms.Label();
             this.labelMicrophone = new System.Windows.Forms.Label();
             this.labelVideo = new System.Windows.Forms.Label();
+            this.Checkfloor = new ReaLTaiizor.Controls.MaterialSwitch();
             this.labelVolume = new System.Windows.Forms.Label();
             this.labelScreenShare = new System.Windows.Forms.Label();
             this.cmblang = new System.Windows.Forms.ComboBox();
@@ -54,7 +55,6 @@ namespace RSI_X_Desktop
             this.streamsTable = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBoxLocalVideo = new System.Windows.Forms.PictureBox();
             this.nightControlBox1 = new ReaLTaiizor.Controls.NightControlBox();
-            this.Checkfloor = new System.Windows.Forms.CheckBox();
             this.formTheme1.SuspendLayout();
             this.MainLayout.SuspendLayout();
             this.PanelBot.SuspendLayout();
@@ -128,9 +128,9 @@ namespace RSI_X_Desktop
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 99F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 82F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.Controls.Add(this.trackBar1, 4, 0);
@@ -138,10 +138,10 @@ namespace RSI_X_Desktop
             this.tableLayoutPanel2.Controls.Add(this.labelSettings, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelMicrophone, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelVideo, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.Checkfloor, 6, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelVolume, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelScreenShare, 8, 0);
             this.tableLayoutPanel2.Controls.Add(this.cmblang, 7, 0);
-            this.tableLayoutPanel2.Controls.Add(this.Checkfloor, 6, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -237,6 +237,24 @@ namespace RSI_X_Desktop
             this.labelVideo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelVideo.Click += new System.EventHandler(this.labelVideo_Click);
             // 
+            // Checkfloor
+            // 
+            this.Checkfloor.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.Checkfloor.AutoSize = true;
+            this.Checkfloor.Depth = 0;
+            this.Checkfloor.Location = new System.Drawing.Point(851, 17);
+            this.Checkfloor.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.Checkfloor.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.Checkfloor.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
+            this.Checkfloor.Name = "Checkfloor";
+            this.Checkfloor.Ripple = true;
+            this.Checkfloor.Size = new System.Drawing.Size(91, 37);
+            this.Checkfloor.TabIndex = 11;
+            this.Checkfloor.Text = "floor";
+            this.Checkfloor.UseAccentColor = false;
+            this.Checkfloor.UseVisualStyleBackColor = true;
+            this.Checkfloor.CheckedChanged += new System.EventHandler(this.floor_CheckedChanged);
+            // 
             // labelVolume
             // 
             this.labelVolume.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -259,7 +277,7 @@ namespace RSI_X_Desktop
             this.labelScreenShare.AutoSize = true;
             this.labelScreenShare.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelScreenShare.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelScreenShare.Location = new System.Drawing.Point(1037, 17);
+            this.labelScreenShare.Location = new System.Drawing.Point(1038, 17);
             this.labelScreenShare.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelScreenShare.Name = "labelScreenShare";
             this.labelScreenShare.Size = new System.Drawing.Size(159, 36);
@@ -270,9 +288,9 @@ namespace RSI_X_Desktop
             // cmblang
             // 
             this.cmblang.FormattingEnabled = true;
-            this.cmblang.Location = new System.Drawing.Point(849, 3);
+            this.cmblang.Location = new System.Drawing.Point(948, 3);
             this.cmblang.Name = "cmblang";
-            this.cmblang.Size = new System.Drawing.Size(175, 36);
+            this.cmblang.Size = new System.Drawing.Size(83, 36);
             this.cmblang.TabIndex = 21;
             this.cmblang.SelectedIndexChanged += new System.EventHandler(this.cmblang_SelectedIndexChanged);
             // 
@@ -486,17 +504,6 @@ namespace RSI_X_Desktop
             this.nightControlBox1.TabIndex = 94;
             this.nightControlBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.nightControlBox1_MouseClick);
             // 
-            // Checkfloor
-            // 
-            this.Checkfloor.AutoSize = true;
-            this.Checkfloor.Location = new System.Drawing.Point(767, 3);
-            this.Checkfloor.Name = "Checkfloor";
-            this.Checkfloor.Size = new System.Drawing.Size(76, 32);
-            this.Checkfloor.TabIndex = 22;
-            this.Checkfloor.Text = "checkBox1";
-            this.Checkfloor.UseVisualStyleBackColor = true;
-            this.Checkfloor.CheckedChanged += new System.EventHandler(this.floor_CheckedChanged);
-            // 
             // Broadcaster
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -554,6 +561,6 @@ namespace RSI_X_Desktop
         private System.Windows.Forms.TableLayoutPanel streamsTable;
         private System.Windows.Forms.PictureBox pictureBoxLocalVideo;
         private System.Windows.Forms.ComboBox cmblang;
-        private System.Windows.Forms.CheckBox Checkfloor;
+        private ReaLTaiizor.Controls.MaterialSwitch Checkfloor;
     }
 }
