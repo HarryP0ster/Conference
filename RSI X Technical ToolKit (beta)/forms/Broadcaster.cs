@@ -23,6 +23,7 @@ namespace RSI_X_Desktop
         private bool AddOrder = false;
         private bool[] TakenPages = new bool[1];
         private Dictionary<uint, PictureBox> hostBroadcasters = new();
+        LangSelectDlg dlg = new();
 
         private int srcLangIndex = -2;
 
@@ -34,10 +35,22 @@ namespace RSI_X_Desktop
 
         private void Conference_Load(object sender, EventArgs e)
         {
-            LangSelectDlg dlg = new();
-            dlg.ShowDialog();
+            StreamLayout.ColumnStyles[1].SizeType = SizeType.Absolute;
+            StreamLayout.ColumnStyles[0].Width = 100;
+            StreamLayout.ColumnStyles[1].Width = 0;
+            RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
+            AgoraObject.Rtc.EnableVideo();
+            AgoraObject.Rtc.EnableAudio();
+            AgoraObject.Rtc.EnableLocalVideo(true);
+            AgoraObject.MuteLocalAudioStream(true);
+            AgoraObject.MuteLocalVideoStream(true);
+            dlg.Show(this);
+            dlg.BringToFront();
+        }
 
-            if (dlg.GetOutCode) 
+        internal void ChildClosed()
+        {
+            if (dlg.GetOutCode)
             {
                 LocalWinId = pictureBoxLocalVideo.Handle;
                 // srcLangIndex < 0 //IS HOST
@@ -66,7 +79,7 @@ namespace RSI_X_Desktop
                 }
                 else
                 {
-                    Checkfloor.CheckState = srcLangIndex < 0 ? 
+                    Checkfloor.CheckState = srcLangIndex < 0 ?
                         CheckState.Checked :
                         CheckState.Unchecked;
 
@@ -74,20 +87,22 @@ namespace RSI_X_Desktop
                     cmblang_SelectedIndexChanged(cmblang, new());
                     floor_CheckedChanged(Checkfloor, new());
                 }
-                RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
                 Init();
-            } 
+            }
             else
-                Close();
+            {
+                Owner.Show();
+                Dispose();
+                GC.Collect();
+            }
+                
+                //ResetButton_Click(this, new EventArgs());
         }
 
         private void Init()
         {
-            AgoraObject.Rtc.EnableVideo();
-            AgoraObject.Rtc.EnableAudio();
             AgoraObject.Rtc.SetChannelProfile(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
             AgoraObject.Rtc.SetClientRole(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
-            AgoraObject.Rtc.EnableLocalVideo(true);
             AgoraObject.UpdateNickName("Host");
             hostBroadcasters.Add(0, pictureBoxLocalVideo);
 
@@ -98,16 +113,18 @@ namespace RSI_X_Desktop
                 AgoraObject.GetComplexToken().GetHostName,
                 AgoraObject.GetComplexToken().GetToken, 0, "");
 
-            AgoraObject.MuteLocalAudioStream(false);
-            AgoraObject.MuteLocalVideoStream(false);
+            AgoraObject.MuteLocalAudioStream(AgoraObject.IsLocalAudioMute);
+            AgoraObject.MuteLocalVideoStream(AgoraObject.IsLocalVideoMute);
 
-            labelMicrophone.ForeColor = Color.Red;
-            labelVideo.ForeColor = Color.Red;
+            labelVideo.ForeColor = AgoraObject.IsLocalVideoMute ?
+                Color.White :
+                Color.Red;
+
+            labelMicrophone.ForeColor = AgoraObject.IsLocalAudioMute ?
+                Color.White :
+                Color.Red;
 
             SetLocalVideoPreview();
-            StreamLayout.ColumnStyles[1].SizeType = SizeType.Absolute;
-            StreamLayout.ColumnStyles[0].Width = 100;
-            StreamLayout.ColumnStyles[1].Width = 0;
         }
 
         public void SetLocalVideoPreview()

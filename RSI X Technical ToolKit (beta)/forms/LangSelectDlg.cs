@@ -78,10 +78,43 @@ namespace RSI_X_Desktop.forms
             Close();
         }
         private void BClose_Click(object sender, EventArgs e)
-        { Close(); }
+        {
+           
+        }
         private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
         {
             PrimaryLang = cmblang.SelectedIndex;
+        }
+
+        private void LangSelectDlg_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+        }
+
+        private void textBoxNickName_Enter(object sender, EventArgs e)
+        {
+            if (textBoxNickName.Text == "Your name")
+            {
+                textBoxNickName.Text = "";
+                textBoxNickName.ForeColor = Color.Black;
+            }
+        }
+
+        private void textBoxNickName_Leave(object sender, EventArgs e)
+        {
+            if (textBoxNickName.Text == "")
+            {
+                textBoxNickName.Text = "Your name";
+                textBoxNickName.ForeColor = Color.Gainsboro;
+            }
+        }
+
+        private void LangSelectDlg_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AgoraObject.MuteLocalAudioStream(!CheckBoxMic.Checked);
+            AgoraObject.MuteLocalVideoStream(!CheckBoxCam.Checked);
+            (Owner as Broadcaster).ChildClosed();
+            Dispose();
         }
     }
 }
