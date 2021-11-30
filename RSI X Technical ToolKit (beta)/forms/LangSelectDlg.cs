@@ -68,15 +68,6 @@ namespace RSI_X_Desktop.forms
         {
 
         }
-        private void BClose_Click(object sender, EventArgs e)
-        {
-           
-        }
-        private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void LangSelectDlg_FormClosed(object sender, FormClosedEventArgs e)
         {
 
