@@ -321,7 +321,7 @@ namespace RSI_X_Desktop.forms
             this.trackBarSoundOut.DrawValueString = false;
             this.trackBarSoundOut.EmptyBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.trackBarSoundOut.FillBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(99)))), ((int)(((byte)(50)))));
-            this.trackBarSoundOut.JumpToMouse = false;
+            this.trackBarSoundOut.JumpToMouse = true;
             this.trackBarSoundOut.Location = new System.Drawing.Point(2, 174);
             this.trackBarSoundOut.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.trackBarSoundOut.Maximum = 100;
@@ -333,10 +333,10 @@ namespace RSI_X_Desktop.forms
             this.trackBarSoundOut.Text = "dungeonTrackBar1";
             this.trackBarSoundOut.ThumbBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
             this.trackBarSoundOut.ThumbBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.trackBarSoundOut.Value = 100;
-            this.trackBarSoundOut.ValueDivison = ReaLTaiizor.Controls.DungeonTrackBar.ValueDivisor.By100;
-            this.trackBarSoundOut.ValueToSet = 1F;
-            this.trackBarSoundOut.Visible = false;
+            this.trackBarSoundOut.Value = 50;
+            this.trackBarSoundOut.ValueDivison = ReaLTaiizor.Controls.DungeonTrackBar.ValueDivisor.By1;
+            this.trackBarSoundOut.ValueToSet = 50F;
+            this.trackBarSoundOut.ValueChanged += new ReaLTaiizor.Controls.DungeonTrackBar.ValueChangedEventHandler(this.trackBarSoundOut_ValueChanged);
             // 
             // Dynamic
             // 
@@ -366,7 +366,6 @@ namespace RSI_X_Desktop.forms
             this.comboBoxAudioOutput.Name = "comboBoxAudioOutput";
             this.comboBoxAudioOutput.Size = new System.Drawing.Size(344, 26);
             this.comboBoxAudioOutput.TabIndex = 0;
-            this.comboBoxAudioOutput.Visible = false;
             this.comboBoxAudioOutput.SelectedIndexChanged += new System.EventHandler(this.comboBoxAudioOutput_SelectedIndexChanged);
             // 
             // tableLayoutPanel2

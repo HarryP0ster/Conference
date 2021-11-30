@@ -17,6 +17,8 @@ namespace ConsoleAppIn
         static System.Diagnostics.Process proc;
         const string PipeName = "PipeIn";
         static XAgoraObject agoraObject;
+
+        //appIn [token] [channelId] [record device] [name]
         static void Main(string[] args)
         {
             agoraObject = new XAgoraObject();
@@ -97,11 +99,16 @@ namespace ConsoleAppIn
             return audioInDeviceManager.SetCurrentDevice(ind);
         }
 
-        public ERROR_CODE Publish(string token, string channel, string account)
+        public ERROR_CODE Publish(string token, string channel, string account = null)
         {
             Rtc.MuteAllRemoteAudioStreams(true);
             Rtc.MuteAllRemoteVideoStreams(true);
-            ERROR_CODE res = Rtc.JoinChannelWithUserAccount(token, channel, account);
+            ERROR_CODE res = ERROR_CODE.ERR_NOT_READY;
+
+            if (account == null)
+                res = Rtc.JoinChannel(token, channel, "", 0);
+            else
+                res = Rtc.JoinChannelWithUserAccount(token, channel, account);
 
             if (res == ERROR_CODE.ERR_OK)
                 IsJoin = true;
