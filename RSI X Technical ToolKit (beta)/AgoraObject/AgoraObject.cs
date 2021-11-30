@@ -304,7 +304,7 @@ namespace RSI_X_Desktop
         }
         public static void SendMessageToHost(string msg)
         {
-            Rtc.SendStreamMessage(_hostStreamID, utf8enc.GetBytes(msg));
+            m_channelHost.SendStreamMessage(_hostStreamID, utf8enc.GetBytes(msg));
         }
     }
 }
