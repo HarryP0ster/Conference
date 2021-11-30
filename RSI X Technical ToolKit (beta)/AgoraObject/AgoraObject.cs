@@ -21,7 +21,6 @@ namespace RSI_X_Desktop
     {
 
         public const string AppID = "31f0e571a89542b09049087e3283417f";
-
         public static bool IsLocalAudioMute { get; private set; }
         public static bool IsLocalVideoMute { get; private set; }
         public static bool IsAllRemoteAudioMute { get; private set; }
@@ -70,12 +69,16 @@ namespace RSI_X_Desktop
 
         static AgoraObject()
         {
+            Random rnd = new Random();
+            var str = string.Format("{0}_{1}", "HOST", (ulong)rnd.Next());
+            NickName = str;
+
             Rtc = AgoraRtcEngine.CreateRtcEngine();
             Rtc.Initialize(new RtcEngineContext(AppID));
-
+            
+            forms.Devices.InitManager();
             SetPublishProfile();
         }
-
         private static void SetPublishProfile()
         {
             Rtc.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY, AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_CHATROOM_GAMING);
@@ -249,10 +252,8 @@ namespace RSI_X_Desktop
             ChannelMediaOptions options = new();
             options.autoSubscribeAudio = true;
             options.autoSubscribeVideo = true;
-            Random rnd = new Random();
-            var str = string.Format("{0}_{1}", "HOST", (ulong)rnd.Next());
             ret = m_channelHost.JoinChannelWithUserAccount(token,
-                str,
+                NickName,
                 options);
 
             m_channelHost.Publish();
@@ -303,7 +304,7 @@ namespace RSI_X_Desktop
         }
         public static void SendMessageToHost(string msg)
         {
-            Rtc.SendStreamMessage(_hostStreamID, utf8enc.GetBytes(msg));
+            m_channelHost.SendStreamMessage(_hostStreamID, utf8enc.GetBytes(msg));
         }
     }
 }

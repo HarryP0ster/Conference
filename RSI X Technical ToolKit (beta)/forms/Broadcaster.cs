@@ -2,16 +2,31 @@
 using System.Windows.Forms;
 using System.Drawing;
 using System.Threading;
-using RSI_X_Desktop.forms;
 using System.Collections.Generic;
+using System.Diagnostics;
+using RSI_X_Desktop.forms;
 using RSI_X_Desktop.forms.HelpingClass;
 using agorartc;
+using System.IO.Pipes;
 
 namespace RSI_X_Desktop
 {
+    enum TARGET_MESSAGES
+    { 
+        MUTE = 0,
+        UNMUTE = 1
+    }
+    enum STATE 
+    {
+        UNDEFINED,
+        FLOOR,
+        TRANSl
+    }
     public partial class Broadcaster : Form, IFormHostHolder
     {
-        private const int MIN_VOLUME = 10;
+        Process TargetPublisher = null;
+
+        private const int MIN_VOLUME = 3;
         private const int MAX_VOLUME = 100;
 
         private Devices devices;
@@ -26,6 +41,7 @@ namespace RSI_X_Desktop
         LangSelectDlg dlg = new();
 
         private int srcLangIndex = -2;
+        private STATE getAudioFrom = STATE.UNDEFINED;
 
         public Broadcaster()
         {
@@ -68,24 +84,23 @@ namespace RSI_X_Desktop
                 { langsShort.Add(lang.langShort); }
                 cmblang.DataSource = langsShort;
 
+
                 srcLangIndex = dlg.PrimaryLang - 1;
                 if (langsShort.Count < 0)
                 {
                     cmblang.Enabled = false;
                     cmblang.Hide();
-                    Checkfloor.Enabled = false;
-                    Checkfloor.CheckState = CheckState.Checked;
-                    Checkfloor.Hide();
+                    getAudioFrom = STATE.FLOOR;
                 }
                 else
                 {
-                    Checkfloor.CheckState = srcLangIndex < 0 ?
-                        CheckState.Checked :
-                        CheckState.Unchecked;
+                    getAudioFrom = srcLangIndex < 0 ? 
+                        STATE.FLOOR:
+                        STATE.TRANSl;
 
                     cmblang.SelectedIndex = Math.Max(0, srcLangIndex);
                     cmblang_SelectedIndexChanged(cmblang, new());
-                    floor_CheckedChanged(Checkfloor, new());
+                    floor_CheckedChanged(getAudioFrom);
                 }
                 Init();
             }
@@ -103,6 +118,7 @@ namespace RSI_X_Desktop
         {
             AgoraObject.Rtc.SetChannelProfile(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
             AgoraObject.Rtc.SetClientRole(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+            AgoraObject.Rtc.EnableLocalVideo(true);
             AgoraObject.UpdateNickName("Host");
             hostBroadcasters.Add(0, pictureBoxLocalVideo);
 
@@ -153,7 +169,7 @@ namespace RSI_X_Desktop
                     AddNewMember(uid);
 
                 AgoraObject.UpdateUserVolume(uid, 
-                    Checkfloor.CheckState == CheckState.Checked ? MAX_VOLUME : MIN_VOLUME, 
+                    getAudioFrom == STATE.FLOOR ? MAX_VOLUME : MIN_VOLUME, 
                     CHANNEL_TYPE.HOST);
             }
         }
@@ -171,7 +187,7 @@ namespace RSI_X_Desktop
                     AddNewMember(uid);
 
                 AgoraObject.UpdateUserVolume(uid,
-                    Checkfloor.CheckState == CheckState.Checked ? MAX_VOLUME : MIN_VOLUME,
+                    getAudioFrom == STATE.FLOOR ? MAX_VOLUME : MIN_VOLUME,
                     CHANNEL_TYPE.HOST);
             }
         }
@@ -307,26 +323,47 @@ namespace RSI_X_Desktop
 
         private void labelMicrophone_Click(object sender, EventArgs e)
         {
-            AgoraObject.MuteLocalAudioStream(!AgoraObject.IsLocalAudioMute);
+            MuteMic(!AgoraObject.IsLocalAudioMute);
+        }
+
+        private void MuteMic(bool mute)
+        {
+            MuteTargetPublisher(mute);
+            AgoraObject.MuteLocalAudioStream(mute);
+
             labelMicrophone.ForeColor = AgoraObject.IsLocalAudioMute ?
                 Color.White :
                 Color.Red;
         }
 
+        private void MuteTargetPublisher(bool mute)
+        {
+            var state = mute ?
+                TARGET_MESSAGES.MUTE :
+                TARGET_MESSAGES.UNMUTE;
+            TargetPublisher?.StandardInput
+                .WriteLine(String.Format("msg:{0}", (int)state));
+        }
+
         private void labelVideo_Click(object sender, EventArgs e)
         {
-            AgoraObject.MuteLocalVideoStream(!AgoraObject.IsLocalVideoMute);
-            pictureBoxLocalVideo.Visible = !AgoraObject.IsLocalVideoMute;
+            CamMute(!AgoraObject.IsLocalVideoMute);
+        }
+
+        private void CamMute(bool mute)
+        {
+            AgoraObject.MuteLocalVideoStream(mute);
+            pictureBoxLocalVideo.Visible = !mute;
 
             labelVideo.ForeColor = AgoraObject.IsLocalVideoMute ?
                 Color.White :
                 Color.Red;
 
-            if (AgoraObject.IsLocalVideoMute)
+            if (AgoraObject.IsLocalVideoMute) 
+            {
                 pictureBoxLocalVideo.Refresh();
-
-            if (AgoraObject.IsLocalVideoMute)
                 enableScreenShare(false);
+            }
         }
 
         private void labelChat_Click(object sender, EventArgs e)
@@ -389,12 +426,16 @@ namespace RSI_X_Desktop
             Owner.Show();
 
             enableScreenShare(false);
+            stopPublishToTarget();
             AgoraObject.LeaveHostChannel();
             AgoraObject.Rtc.LeaveChannel();
             AgoraObject.Rtc.EnableLocalVideo(false);
             AgoraObject.Rtc.DisableVideo();
             AgoraObject.Rtc.DisableAudio();
             if (!Owner.Visible) Application.Exit();
+
+            Devices.ClearOldDevices();
+
             GC.Collect();
         }
 
@@ -563,15 +604,25 @@ namespace RSI_X_Desktop
             srcLangIndex = cmblang.SelectedIndex;
             var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
 
-            if (Checkfloor.CheckState == CheckState.Unchecked)
+            if (getAudioFrom == STATE.TRANSl) 
+            {
                 AgoraObject.JoinChannelSrc(l);
+                startPublishToTarget(l);
+            }
         }
 
-        private void floor_CheckedChanged(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
-            switch (Checkfloor.CheckState)
+            getAudioFrom = getAudioFrom == STATE.FLOOR ?
+                STATE.TRANSl : STATE.FLOOR;
+
+            floor_CheckedChanged(getAudioFrom);
+        }
+        private void floor_CheckedChanged(STATE state)
+        {
+            switch (state)
             {
-                case CheckState.Unchecked:
+                case STATE.TRANSl:
                     foreach (var br in hostBroadcasters.Keys) 
                     {
                         if (br == 0) continue;
@@ -580,21 +631,71 @@ namespace RSI_X_Desktop
 
                     var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
                     AgoraObject.JoinChannelSrc(l);
+                    startPublishToTarget(l);
+
                     cmblang.Enabled = true;
+                    labelFloor.ForeColor = Color.White;
                     break;
-                case CheckState.Checked:
+                case STATE.FLOOR:
                     foreach (var br in hostBroadcasters.Keys) 
                     {
                         if (br == 0) continue;
                         AgoraObject.UpdateUserVolume(br, MAX_VOLUME, CHANNEL_TYPE.HOST);
                     }
                     AgoraObject.LeaveSrcChannel();
+                    stopPublishToTarget();
+
                     cmblang.Enabled = false;
+                    labelFloor.ForeColor = Color.Red;
                     break;
-                case CheckState.Indeterminate:
+                case STATE.UNDEFINED:
                 default: 
                     break;
             }
+        }
+        private void startPublishToTarget(langHolder lh) 
+        {
+            if (TargetPublisher != null)
+                stopPublishToTarget();
+
+            List<string> args = new() { 
+                lh.token, lh.langFull, 
+                Devices.oldRecorder,
+                Process.GetCurrentProcess().Id.ToString(),
+                AgoraObject.NickName};
+
+            string arguments = "";
+            foreach (var a in args)
+                arguments += "\"" + a + "\" ";
+            TargetPublisher = new Process();
+            TargetPublisher.StartInfo.Arguments = arguments;
+            TargetPublisher.StartInfo.CreateNoWindow = true;
+            TargetPublisher.StartInfo.RedirectStandardOutput = true;
+            TargetPublisher.StartInfo.RedirectStandardInput = true;
+            TargetPublisher.StartInfo.FileName = "appIn.exe";
+            TargetPublisher.OutputDataReceived += TargetPublisher_OutputDataReceived;
+
+            TargetPublisher.Start();
+            TargetPublisher.BeginOutputReadLine();
+        }
+
+        private void TargetPublisher_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (e.Data == null ||
+                e.Data.StartsWith("uid:") == false) return;
+
+            uint selfSpeakerUid = Convert.ToUInt32(
+                e.Data.Split(':')[1]);
+            MuteTargetPublisher(AgoraObject.IsLocalAudioMute);
+
+            if (selfSpeakerUid != 0)
+                AgoraObject.UpdateUserVolume(selfSpeakerUid, 0, CHANNEL_TYPE.SRC);
+        }
+
+        private void stopPublishToTarget() 
+        {
+            TargetPublisher?.Kill();
+            TargetPublisher = null;
         }
     }
 }

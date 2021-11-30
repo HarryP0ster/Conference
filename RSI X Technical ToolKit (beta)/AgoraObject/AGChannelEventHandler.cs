@@ -192,7 +192,6 @@ namespace RSI_X_Desktop
             REMOTE_VIDEO_STATE_REASON reason, int elapsed)
         {
             
-            //TODO: добавить очистку окон коллег через state == REMOTE_VIDEO_STATE_STOPPED
             switch (state) {
                 case REMOTE_VIDEO_STATE.REMOTE_VIDEO_STATE_DECODING:
                     if (chType == CHANNEL_TYPE.HOST)
