@@ -87,7 +87,7 @@ namespace RSI_X_Desktop
 
                     cmblang.SelectedIndex = Math.Max(0, srcLangIndex);
                     cmblang_SelectedIndexChanged(cmblang, new());
-                    label1_Click(labelFloor, new());
+                    floor_CheckedChanged(getAudioFrom);
                 }
                 RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
                 Init();
@@ -597,9 +597,10 @@ namespace RSI_X_Desktop
 
         private void label1_Click(object sender, EventArgs e)
         {
-            floor_CheckedChanged(getAudioFrom);
             getAudioFrom = getAudioFrom == STATE.FLOOR ?
                 STATE.TRANSl : STATE.FLOOR;
+
+            floor_CheckedChanged(getAudioFrom);
         }
         private void floor_CheckedChanged(STATE state)
         {
