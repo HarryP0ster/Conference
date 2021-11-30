@@ -272,6 +272,7 @@ namespace RSI_X_Desktop
             // 
             this.labelFloor.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.labelFloor.AutoSize = true;
+            this.labelFloor.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelFloor.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.labelFloor.Location = new System.Drawing.Point(909, 21);
             this.labelFloor.Name = "labelFloor";
@@ -285,6 +286,7 @@ namespace RSI_X_Desktop
             this.cmblang.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cmblang.AutoResize = false;
             this.cmblang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmblang.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmblang.Depth = 0;
             this.cmblang.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.cmblang.DropDownHeight = 174;
@@ -295,7 +297,7 @@ namespace RSI_X_Desktop
             this.cmblang.FormattingEnabled = true;
             this.cmblang.IntegralHeight = false;
             this.cmblang.ItemHeight = 43;
-            this.cmblang.Location = new System.Drawing.Point(979, 10);
+            this.cmblang.Location = new System.Drawing.Point(979, 11);
             this.cmblang.MaxDropDownItems = 4;
             this.cmblang.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.cmblang.Name = "cmblang";

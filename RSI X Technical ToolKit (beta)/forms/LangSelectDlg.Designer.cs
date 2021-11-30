@@ -58,7 +58,7 @@
             this.formTheme1.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.formTheme1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(142)))), ((int)(((byte)(142)))));
             this.formTheme1.Location = new System.Drawing.Point(0, 0);
-            this.formTheme1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.formTheme1.Margin = new System.Windows.Forms.Padding(2);
             this.formTheme1.Name = "formTheme1";
             this.formTheme1.Padding = new System.Windows.Forms.Padding(2, 18, 2, 18);
             this.formTheme1.Sizable = true;
@@ -172,11 +172,11 @@
             this.tableLayoutPanel2.Controls.Add(this.BAccept, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(364, 2);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(176, 30);
             this.tableLayoutPanel2.TabIndex = 96;
             // 
@@ -228,7 +228,7 @@
             this.tableLayoutPanel1.Controls.Add(this.CheckBoxCam, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.CheckBoxMic, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(213, 81);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -300,7 +300,7 @@
             this.ClientSize = new System.Drawing.Size(600, 292);
             this.Controls.Add(this.formTheme1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(94, 32);
             this.Name = "LangSelectDlg";
             this.Text = "formTheme1";
