@@ -31,7 +31,10 @@ namespace RSI_X_Desktop.forms
 
         public LangSelectDlg()
         {
+            StartPosition = FormStartPosition.CenterScreen;
+
             InitializeComponent();
+
             List<string> langsShort = new();
             var t = AgoraObject.room;
             foreach (var lang in AgoraObject.GetComplexToken().GetTargetLangs)

@@ -58,10 +58,11 @@
             this.formTheme1.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.formTheme1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(142)))), ((int)(((byte)(142)))));
             this.formTheme1.Location = new System.Drawing.Point(0, 0);
+            this.formTheme1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.formTheme1.Name = "formTheme1";
-            this.formTheme1.Padding = new System.Windows.Forms.Padding(3, 28, 3, 28);
+            this.formTheme1.Padding = new System.Windows.Forms.Padding(2, 18, 2, 18);
             this.formTheme1.Sizable = true;
-            this.formTheme1.Size = new System.Drawing.Size(800, 450);
+            this.formTheme1.Size = new System.Drawing.Size(600, 292);
             this.formTheme1.SmartBounds = false;
             this.formTheme1.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.formTheme1.TabIndex = 0;
@@ -70,23 +71,22 @@
             // ConfigLayout
             // 
             this.ConfigLayout.ColumnCount = 3;
-            this.ConfigLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.ConfigLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.ConfigLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.ConfigLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.ConfigLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.ConfigLayout.Controls.Add(this.tableLayoutPanel4, 1, 0);
             this.ConfigLayout.Controls.Add(this.RadioBtnsTable, 1, 4);
             this.ConfigLayout.Controls.Add(this.tableLayoutPanel1, 1, 2);
             this.ConfigLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ConfigLayout.Location = new System.Drawing.Point(3, 28);
-            this.ConfigLayout.Margin = new System.Windows.Forms.Padding(4);
+            this.ConfigLayout.Location = new System.Drawing.Point(2, 18);
             this.ConfigLayout.Name = "ConfigLayout";
             this.ConfigLayout.RowCount = 5;
             this.ConfigLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.55374F));
-            this.ConfigLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ConfigLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
             this.ConfigLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.ConfigLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.44626F));
-            this.ConfigLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.ConfigLayout.Size = new System.Drawing.Size(794, 394);
+            this.ConfigLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
+            this.ConfigLayout.Size = new System.Drawing.Size(596, 256);
             this.ConfigLayout.TabIndex = 98;
             // 
             // tableLayoutPanel4
@@ -96,13 +96,12 @@
             this.tableLayoutPanel4.Controls.Add(this.foxLabel3, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.cmblang, 0, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(36, 4);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(27, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(722, 94);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(542, 60);
             this.tableLayoutPanel4.TabIndex = 10;
             // 
             // foxLabel3
@@ -110,10 +109,10 @@
             this.foxLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.foxLabel3.Font = new System.Drawing.Font("Bahnschrift Condensed", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.foxLabel3.ForeColor = System.Drawing.Color.White;
-            this.foxLabel3.Location = new System.Drawing.Point(258, 5);
-            this.foxLabel3.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.foxLabel3.Location = new System.Drawing.Point(194, 3);
+            this.foxLabel3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.foxLabel3.Name = "foxLabel3";
-            this.foxLabel3.Size = new System.Drawing.Size(205, 37);
+            this.foxLabel3.Size = new System.Drawing.Size(154, 24);
             this.foxLabel3.TabIndex = 7;
             this.foxLabel3.Text = "Select your booth";
             // 
@@ -140,11 +139,11 @@
             this.cmblang.HoverSelectionColor = System.Drawing.Color.Empty;
             this.cmblang.IntegralHeight = false;
             this.cmblang.ItemHeight = 20;
-            this.cmblang.Location = new System.Drawing.Point(274, 57);
-            this.cmblang.Margin = new System.Windows.Forms.Padding(6, 10, 6, 5);
+            this.cmblang.Location = new System.Drawing.Point(205, 36);
+            this.cmblang.Margin = new System.Windows.Forms.Padding(4, 6, 4, 3);
             this.cmblang.MaxDropDownItems = 16;
             this.cmblang.Name = "cmblang";
-            this.cmblang.Size = new System.Drawing.Size(174, 26);
+            this.cmblang.Size = new System.Drawing.Size(132, 26);
             this.cmblang.StartIndex = 0;
             this.cmblang.TabIndex = 10;
             this.cmblang.SelectedIndexChanged += new System.EventHandler(this.cmblang_SelectedIndexChanged);
@@ -155,14 +154,13 @@
             this.RadioBtnsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.RadioBtnsTable.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.RadioBtnsTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RadioBtnsTable.Location = new System.Drawing.Point(36, 337);
-            this.RadioBtnsTable.Margin = new System.Windows.Forms.Padding(4);
+            this.RadioBtnsTable.Location = new System.Drawing.Point(27, 219);
             this.RadioBtnsTable.Name = "RadioBtnsTable";
             this.RadioBtnsTable.RowCount = 1;
             this.RadioBtnsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.RadioBtnsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
-            this.RadioBtnsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
-            this.RadioBtnsTable.Size = new System.Drawing.Size(722, 53);
+            this.RadioBtnsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.RadioBtnsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.RadioBtnsTable.Size = new System.Drawing.Size(542, 34);
             this.RadioBtnsTable.TabIndex = 1;
             // 
             // tableLayoutPanel2
@@ -173,12 +171,13 @@
             this.tableLayoutPanel2.Controls.Add(this.BClose, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.BAccept, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(484, 3);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(364, 2);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(235, 47);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(176, 30);
             this.tableLayoutPanel2.TabIndex = 96;
             // 
             // BClose
@@ -191,11 +190,11 @@
             this.BClose.Image = null;
             this.BClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BClose.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
-            this.BClose.Location = new System.Drawing.Point(3, 3);
-            this.BClose.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.BClose.Location = new System.Drawing.Point(2, 2);
+            this.BClose.Margin = new System.Windows.Forms.Padding(2, 2, 2, 6);
             this.BClose.Name = "BClose";
             this.BClose.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(165)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.BClose.Size = new System.Drawing.Size(111, 34);
+            this.BClose.Size = new System.Drawing.Size(84, 22);
             this.BClose.TabIndex = 6;
             this.BClose.Text = "Close";
             this.BClose.TextAlignment = System.Drawing.StringAlignment.Center;
@@ -211,11 +210,11 @@
             this.BAccept.Image = null;
             this.BAccept.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BAccept.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
-            this.BAccept.Location = new System.Drawing.Point(120, 3);
-            this.BAccept.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.BAccept.Location = new System.Drawing.Point(90, 2);
+            this.BAccept.Margin = new System.Windows.Forms.Padding(2, 2, 2, 6);
             this.BAccept.Name = "BAccept";
             this.BAccept.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(165)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.BAccept.Size = new System.Drawing.Size(112, 34);
+            this.BAccept.Size = new System.Drawing.Size(84, 22);
             this.BAccept.TabIndex = 7;
             this.BAccept.Text = "Continue";
             this.BAccept.TextAlignment = System.Drawing.StringAlignment.Center;
@@ -228,12 +227,13 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.CheckBoxCam, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.CheckBoxMic, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(283, 125);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(213, 81);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(227, 84);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(170, 55);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
             // CheckBoxCam
@@ -247,10 +247,10 @@
             this.CheckBoxCam.Font = new System.Drawing.Font("Bahnschrift Condensed", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.CheckBoxCam.ForeColor = System.Drawing.Color.White;
             this.CheckBoxCam.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(156)))), ((int)(((byte)(218)))));
-            this.CheckBoxCam.Location = new System.Drawing.Point(6, 47);
-            this.CheckBoxCam.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.CheckBoxCam.Location = new System.Drawing.Point(4, 30);
+            this.CheckBoxCam.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.CheckBoxCam.Name = "CheckBoxCam";
-            this.CheckBoxCam.Size = new System.Drawing.Size(215, 34);
+            this.CheckBoxCam.Size = new System.Drawing.Size(161, 22);
             this.CheckBoxCam.TabIndex = 13;
             this.CheckBoxCam.Text = "Enable camera";
             this.CheckBoxCam.CheckedChanged += new ReaLTaiizor.Util.FoxBase.CheckControlEdit.CheckedChangedEventHandler(this.CheckBoxCam_CheckedChanged);
@@ -266,10 +266,10 @@
             this.CheckBoxMic.Font = new System.Drawing.Font("Bahnschrift Condensed", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.CheckBoxMic.ForeColor = System.Drawing.Color.White;
             this.CheckBoxMic.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(156)))), ((int)(((byte)(218)))));
-            this.CheckBoxMic.Location = new System.Drawing.Point(6, 5);
-            this.CheckBoxMic.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.CheckBoxMic.Location = new System.Drawing.Point(4, 3);
+            this.CheckBoxMic.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.CheckBoxMic.Name = "CheckBoxMic";
-            this.CheckBoxMic.Size = new System.Drawing.Size(215, 32);
+            this.CheckBoxMic.Size = new System.Drawing.Size(161, 21);
             this.CheckBoxMic.TabIndex = 12;
             this.CheckBoxMic.Text = "Enable microphone";
             this.CheckBoxMic.CheckedChanged += new ReaLTaiizor.Util.FoxBase.CheckControlEdit.CheckedChangedEventHandler(this.CheckBoxMic_CheckedChanged);
@@ -285,8 +285,7 @@
             this.controlBox1.EnableMaximizeButton = false;
             this.controlBox1.EnableMinimizeButton = true;
             this.controlBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.controlBox1.Location = new System.Drawing.Point(697, 0);
-            this.controlBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.controlBox1.Location = new System.Drawing.Point(523, 0);
             this.controlBox1.MaximizeHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(74)))), ((int)(((byte)(74)))));
             this.controlBox1.MinimizeHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.controlBox1.Name = "controlBox1";
@@ -296,12 +295,13 @@
             // 
             // LangSelectDlg
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(600, 292);
             this.Controls.Add(this.formTheme1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MinimumSize = new System.Drawing.Size(126, 50);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MinimumSize = new System.Drawing.Size(94, 32);
             this.Name = "LangSelectDlg";
             this.Text = "formTheme1";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
