@@ -22,7 +22,7 @@ namespace RSI_X_Desktop.forms
 
         private IFormHostHolder workForm = AgoraObject.GetWorkForm;
         static private AgoraAudioRecordingDeviceManager RecordersManager;
-        static private AgoraAudioPlaybackDeviceManager SpeakersDeviceManager;
+        static private AgoraAudioPlaybackDeviceManager SpeakersManager;
         static private AgoraVideoDeviceManager videoDeviceManager;
         static List<string> Recorders;
         static List<string> VideoOut;
@@ -37,7 +37,7 @@ namespace RSI_X_Desktop.forms
         public static void InitManager()
         {
             RecordersManager = AgoraObject.Rtc.CreateAudioRecordingDeviceManager();
-            SpeakersDeviceManager = AgoraObject.Rtc.CreateAudioPlaybackDeviceManager();
+            SpeakersManager = AgoraObject.Rtc.CreateAudioPlaybackDeviceManager();
             videoDeviceManager = AgoraObject.Rtc.CreateVideoDeviceManager();
 
             Recorders = getListAudioInputDevices();
@@ -184,11 +184,11 @@ namespace RSI_X_Desktop.forms
         {
             int id = -1;
 
-            SpeakersDeviceManager.GetCurrentDeviceInfo(out string idAcvite, out string nameAcitve);
+            SpeakersManager.GetCurrentDeviceInfo(out string idAcvite, out string nameAcitve);
 
-            for (int i = 0; i < SpeakersDeviceManager.GetDeviceCount(); i++)
+            for (int i = 0; i < SpeakersManager.GetDeviceCount(); i++)
             {
-                var ret = SpeakersDeviceManager.GetDeviceInfoByIndex(i, out string name, out string deviceid);
+                var ret = SpeakersManager.GetDeviceInfoByIndex(i, out string name, out string deviceid);
                 if (idAcvite == deviceid)
                 {
                     id = i;
@@ -239,11 +239,11 @@ namespace RSI_X_Desktop.forms
         {
             List<string> devicesOut = new();
 
-            for (int i = 0; i < SpeakersDeviceManager.GetDeviceCount(); i++)
+            for (int i = 0; i < SpeakersManager.GetDeviceCount(); i++)
             {
                 string device, id;
 
-                var ret = SpeakersDeviceManager.GetDeviceInfoByIndex(i, out device, out id);
+                var ret = SpeakersManager.GetDeviceInfoByIndex(i, out device, out id);
 
                 if (ret == ERROR_CODE.ERR_OK)
                     devicesOut.Add(device);
@@ -277,7 +277,7 @@ namespace RSI_X_Desktop.forms
             string name, id;
 
             RecordersManager.GetDeviceInfoByIndex(ind, out name, out id);
-            //audioInDeviceManager.SetCurrentDevice(id);
+            RecordersManager.SetCurrentDevice(id);
         }
 
         private void comboBoxAudioOutput_SelectedIndexChanged(object sender, EventArgs e)
@@ -285,8 +285,8 @@ namespace RSI_X_Desktop.forms
             int ind = ((ComboBox)sender).SelectedIndex;
             string name, id;
 
-            SpeakersDeviceManager.GetDeviceInfoByIndex(ind, out name, out id);
-            //audioOutDeviceManager.SetCurrentDevice(id);
+            SpeakersManager.GetDeviceInfoByIndex(ind, out name, out id);
+            SpeakersManager.SetCurrentDevice(id);
         }
 
         private void comboBoxVideo_SelectedIndexChanged(object sender, EventArgs e)
@@ -337,6 +337,7 @@ namespace RSI_X_Desktop.forms
         private void AcceptButton_Click(object sender, EventArgs e)
         {
             oldRecorder = Recorders[comboBoxAudioInput.SelectedIndex];
+            oldSpeaker = Speakers[comboBoxAudioOutput.SelectedIndex];
             oldVideoOut = VideoOut[comboBoxVideo.SelectedIndex];
             oldVolumeIn = trackBarSoundIn.Value;
             oldVolumeOut = trackBarSoundOut.Value;
@@ -347,16 +348,40 @@ namespace RSI_X_Desktop.forms
         {
             try
             {
-                if (oldRecorder != null)
-                    RecordersManager.SetCurrentDevice(oldRecorder);
-                if (oldVideoOut != null)
-                    videoDeviceManager.SetCurrentDevice(oldVideoOut);
+                AcceptNewRecordDevice();
+                AcceptNewSpeakerDevice();
+                AcceptNewVideoRecDevice();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private static void AcceptNewVideoRecDevice()
+        {
+            videoDeviceManager.GetDeviceInfoByIndex(
+                VideoOut.FindLastIndex((s) => s == oldVideoOut),
+                out string _, out string videoID);
+            videoDeviceManager.SetCurrentDevice(videoID);
+        }
+
+        private static void AcceptNewSpeakerDevice()
+        {
+            SpeakersManager.GetDeviceInfoByIndex(
+                Speakers.FindLastIndex((s) => s == oldSpeaker),
+                out string _, out string speakID);
+            SpeakersManager.SetCurrentDevice(speakID);
+        }
+
+        private static void AcceptNewRecordDevice()
+        {
+            RecordersManager.GetDeviceInfoByIndex(
+                                Recorders.FindLastIndex((s) => s == oldRecorder),
+                                out string _, out string recID);
+            RecordersManager.SetCurrentDevice(recID);
+        }
+
         internal void CloseButton_Click(object sender, EventArgs e)
         {
             trackBarSoundIn.Value = oldVolumeIn;
