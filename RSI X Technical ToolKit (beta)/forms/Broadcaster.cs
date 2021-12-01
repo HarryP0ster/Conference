@@ -42,7 +42,7 @@ namespace RSI_X_Desktop
 
         private int srcLangIndex = -2;
         private STATE getAudioFrom = STATE.UNDEFINED;
-
+        internal string nickName = "";
         public Broadcaster()
         {
             InitializeComponent();
@@ -119,7 +119,7 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.SetChannelProfile(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
             AgoraObject.Rtc.SetClientRole(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
             AgoraObject.Rtc.EnableLocalVideo(true);
-            AgoraObject.UpdateNickName("Host");
+            AgoraObject.UpdateNickName("HOST_" + nickName);
             hostBroadcasters.Add(0, pictureBoxLocalVideo);
 
             TakenPages[0] = true;

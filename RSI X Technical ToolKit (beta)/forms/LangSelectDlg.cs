@@ -52,6 +52,34 @@ namespace RSI_X_Desktop.forms
 
         private void BAccept_Click(object sender, EventArgs e)
         {
+            NickName = textBoxNickName.Text;
+
+            if (NickName == "")
+            {
+                MessageBox.Show("Your name must be longer");
+                return;
+            }
+            else if (NickName.Length > 16) //If you change this, consider also chaning limit in IChannel
+            {
+                MessageBox.Show("Your name is too long");
+                return;
+            }
+            else if (NickName == "Your name")
+            {
+                MessageBox.Show("Invalid name");
+                return;
+            }
+            foreach (var ch in NickName)
+            {
+                if (Convert.ToInt32(ch) > 255)
+                {
+                    MessageBox.Show("Nickname contains unsupported characters");
+                    return;
+                }
+            }
+
+            (Owner as Broadcaster).nickName = NickName;
+
             GetOutCode = true;
             Close();
         }
