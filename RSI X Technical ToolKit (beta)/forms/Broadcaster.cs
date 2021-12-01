@@ -140,7 +140,7 @@ namespace RSI_X_Desktop
                 Color.White :
                 Color.Red;
 
-            SetLocalVideoPreview();
+            CamMute(AgoraObject.IsLocalVideoMute);
         }
 
         public void SetLocalVideoPreview()
@@ -353,7 +353,8 @@ namespace RSI_X_Desktop
         private void CamMute(bool mute)
         {
             AgoraObject.MuteLocalVideoStream(mute);
-            pictureBoxLocalVideo.Visible = !mute;
+            //pictureBoxLocalVideo.Visible = !mute;
+            
 
             labelVideo.ForeColor = AgoraObject.IsLocalVideoMute ?
                 Color.White :
@@ -363,6 +364,14 @@ namespace RSI_X_Desktop
             {
                 pictureBoxLocalVideo.Refresh();
                 enableScreenShare(false);
+                AgoraObject.Rtc.SetupLocalVideo(new VideoCanvas(0, 0));
+                pictureBoxLocalVideo.BackgroundImage = Properties.Resources.video_call_empty;
+                pictureBoxLocalVideo.BackgroundImageLayout = ImageLayout.Center;
+                pictureBoxLocalVideo.BackColor = Color.FromArgb(85, 85, 85);
+            }
+            else
+            {
+                SetLocalVideoPreview();
             }
         }
 
