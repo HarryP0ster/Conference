@@ -84,6 +84,19 @@ namespace RSI_X_Desktop.forms.HelpingClass
             Controls.Add(Sender, 0, 0);
         }
 
+        public MessagePanelL(string text)
+        {
+            this.AutoSize = true;
+            Width = 10;
+            Height = 65;
+            Sender = new Label();
+
+            Sender.AutoSize = true;
+            Sender.TextAlign = ContentAlignment.BottomLeft;
+
+            Date = new Label();
+        }
+
         public void Bubble_SizeChanged(object sender, EventArgs e)
         {
             //foreach (Control ctr in Owner.Controls)

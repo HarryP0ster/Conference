@@ -140,9 +140,9 @@ namespace RSI_X_Desktop
             this.tableLayoutPanel2.Controls.Add(this.labelMicrophone, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelVideo, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelVolume, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelScreenShare, 8, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelFloor, 6, 0);
             this.tableLayoutPanel2.Controls.Add(this.cmblang, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.labelScreenShare, 8, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);

@@ -233,10 +233,10 @@ namespace RSI_X_Desktop.forms
                     controls[i].Location = new Point(controls[i].Location.X, ((Control)sender).Height - controls[i].Height);
                 prev_ctr = controls[i];
                 ((Control)sender).Controls.Add(controls[i]);
-                Region reg = new Region(new System.Drawing.Rectangle(0,controls[i].Location.Y, controls[i].Width, controls[i].Height));
+                Region reg = new Region(new System.Drawing.Rectangle(0, controls[i].Location.Y, (((Control)sender)).Width, controls[i].Height));
                 if (reg != null)
                 {
-                    Invalidate(reg);
+                    (((Control)sender)).Invalidate(reg);
                     (((Control)sender)).Update();
                 }
             }
