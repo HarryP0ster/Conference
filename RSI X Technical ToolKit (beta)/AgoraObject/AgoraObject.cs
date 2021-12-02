@@ -69,9 +69,6 @@ namespace RSI_X_Desktop
 
         static AgoraObject()
         {
-            Random rnd = new Random();
-            var str = string.Format("{0}_{1}", "HOST", (ulong)rnd.Next());
-            NickName = str;
 
             Rtc = AgoraRtcEngine.CreateRtcEngine();
             Rtc.Initialize(new RtcEngineContext(AppID));
@@ -86,7 +83,13 @@ namespace RSI_X_Desktop
         }
 
         static public void UpdateNickName(string nick)
-        { NickName = nick; }
+        { 
+            //NickName = nick;
+
+            Random rnd = new Random();
+            var str = string.Format("{0}_{1}", "HOST", (ulong)rnd.Next());
+            NickName = str;
+        }
         static public void UpdateRoomName(string name)
         { RoomName = name; }
         static public void UpdateClientID(string uid)

@@ -33,8 +33,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.cmblang = new ReaLTaiizor.Controls.PoisonComboBox();
             this.labelLng = new System.Windows.Forms.Label();
+            this.cmblang = new ReaLTaiizor.Controls.PoisonComboBox();
             this.textBoxNickName = new ReaLTaiizor.Controls.DungeonTextBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.BAccept = new ReaLTaiizor.Controls.Button();
@@ -131,26 +131,6 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(286, 86);
             this.tableLayoutPanel5.TabIndex = 99;
             // 
-            // cmblang
-            // 
-            this.cmblang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
-            this.cmblang.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmblang.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmblang.DropDownHeight = 100;
-            this.cmblang.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.cmblang.ForeColor = System.Drawing.Color.Black;
-            this.cmblang.FormattingEnabled = true;
-            this.cmblang.IntegralHeight = false;
-            this.cmblang.ItemHeight = 23;
-            this.cmblang.Location = new System.Drawing.Point(46, 49);
-            this.cmblang.Margin = new System.Windows.Forms.Padding(4, 6, 4, 3);
-            this.cmblang.MaxDropDownItems = 16;
-            this.cmblang.Name = "cmblang";
-            this.cmblang.Size = new System.Drawing.Size(192, 29);
-            this.cmblang.TabIndex = 10;
-            this.cmblang.UseSelectable = true;
-            this.cmblang.SelectedIndexChanged += new System.EventHandler(this.cmblang_SelectedIndexChanged);
-            // 
             // labelLng
             // 
             this.labelLng.AutoSize = true;
@@ -163,6 +143,26 @@
             this.labelLng.TabIndex = 1;
             this.labelLng.Text = "Source language";
             this.labelLng.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cmblang
+            // 
+            this.cmblang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
+            this.cmblang.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmblang.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmblang.DropDownHeight = 100;
+            this.cmblang.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.cmblang.ForeColor = System.Drawing.Color.Black;
+            this.cmblang.FormattingEnabled = true;
+            this.cmblang.IntegralHeight = false;
+            this.cmblang.ItemHeight = 24;
+            this.cmblang.Location = new System.Drawing.Point(46, 49);
+            this.cmblang.Margin = new System.Windows.Forms.Padding(4, 6, 4, 3);
+            this.cmblang.MaxDropDownItems = 16;
+            this.cmblang.Name = "cmblang";
+            this.cmblang.Size = new System.Drawing.Size(192, 30);
+            this.cmblang.TabIndex = 10;
+            this.cmblang.UseSelectable = true;
+            this.cmblang.SelectedIndexChanged += new System.EventHandler(this.cmblang_SelectedIndexChanged);
             // 
             // textBoxNickName
             // 
@@ -178,11 +178,12 @@
             this.textBoxNickName.Multiline = false;
             this.textBoxNickName.Name = "textBoxNickName";
             this.textBoxNickName.ReadOnly = false;
-            this.textBoxNickName.Size = new System.Drawing.Size(286, 36);
+            this.textBoxNickName.Size = new System.Drawing.Size(286, 42);
             this.textBoxNickName.TabIndex = 100;
             this.textBoxNickName.Text = "Your name";
             this.textBoxNickName.TextAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBoxNickName.UseSystemPasswordChar = false;
+            this.textBoxNickName.Visible = false;
             this.textBoxNickName.Enter += new System.EventHandler(this.textBoxNickName_Enter);
             this.textBoxNickName.Leave += new System.EventHandler(this.textBoxNickName_Leave);
             // 
@@ -274,7 +275,6 @@
             this.Text = "Conference settings";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LangSelectDlg_FormClosing);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LangSelectDlg_FormClosed);
             this.formTheme1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);

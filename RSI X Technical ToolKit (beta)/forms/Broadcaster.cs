@@ -38,11 +38,9 @@ namespace RSI_X_Desktop
         private bool AddOrder = false;
         private bool[] TakenPages = new bool[1];
         private Dictionary<uint, PictureBox> hostBroadcasters = new();
-        LangSelectDlg dlg = new();
 
         private int srcLangIndex = -2;
         private STATE getAudioFrom = STATE.UNDEFINED;
-        internal string nickName = "";
         public Broadcaster()
         {
             InitializeComponent();
@@ -55,17 +53,12 @@ namespace RSI_X_Desktop
             StreamLayout.ColumnStyles[0].Width = 100;
             StreamLayout.ColumnStyles[1].Width = 0;
             RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
-            AgoraObject.Rtc.EnableVideo();
-            AgoraObject.Rtc.EnableAudio();
-            AgoraObject.Rtc.EnableLocalVideo(true);
-            AgoraObject.MuteLocalAudioStream(true);
-            AgoraObject.MuteLocalVideoStream(true);
-            dlg.Show(this);
+            
+            LangSelectDlg dlg = new();
+            Show();
+            dlg.ShowDialog(this);
             dlg.BringToFront();
-        }
 
-        internal void ChildClosed()
-        {
             if (dlg.GetOutCode)
             {
                 LocalWinId = pictureBoxLocalVideo.Handle;
@@ -84,7 +77,6 @@ namespace RSI_X_Desktop
                 { langsShort.Add(lang.langShort); }
                 cmblang.DataSource = langsShort;
 
-
                 srcLangIndex = dlg.PrimaryLang - 1;
                 if (langsShort.Count < 0)
                 {
@@ -102,7 +94,11 @@ namespace RSI_X_Desktop
                     cmblang_SelectedIndexChanged(cmblang, new());
                     floor_CheckedChanged(getAudioFrom);
                 }
+
                 Init();
+
+                MuteMic(dlg.MicMute);
+                CamMute(dlg.CamMute);
             }
             else
             {
@@ -116,10 +112,13 @@ namespace RSI_X_Desktop
 
         private void Init()
         {
+            AgoraObject.Rtc.EnableVideo();
+            AgoraObject.Rtc.EnableAudio();
+            AgoraObject.Rtc.EnableLocalVideo(true);
+            AgoraObject.MuteLocalAudioStream(true);
+            AgoraObject.MuteLocalVideoStream(true);
             AgoraObject.Rtc.SetChannelProfile(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
             AgoraObject.Rtc.SetClientRole(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
-            AgoraObject.Rtc.EnableLocalVideo(true);
-            AgoraObject.UpdateNickName("HOST_" + nickName);
             hostBroadcasters.Add(0, pictureBoxLocalVideo);
 
             TakenPages[0] = true;
