@@ -233,8 +233,7 @@ namespace RSI_X_Desktop.forms
                 else
                     controls[i].Location = new Point(controls[i].Location.X, ((Control)sender).Height - controls[i].Height);
                 prev_ctr = controls[i];
-                ((Control)sender).Controls.Add(controls[i]);
-                if (i+1 < ctr.Length && (controls[i+1].Height < ctr[i+1].Height || controls[i+1].Width < ctr[i+1].Width))
+                if (i + 1 < ctr.Length && (controls[i + 1].Height < ctr[i + 1].Height || controls[i + 1].Width < ctr[i + 1].Width))
                 {
                     Region reg = new Region(new System.Drawing.Rectangle(ctr[i].Location.X, ctr[i].Location.Y, ctr[i].Width, ctr[i].Height));
                     if (reg != null)
@@ -243,6 +242,7 @@ namespace RSI_X_Desktop.forms
                         (((Control)sender)).Update();
                     }
                 }
+                ((Control)sender).Controls.Add(controls[i]);
             }
         }
 
