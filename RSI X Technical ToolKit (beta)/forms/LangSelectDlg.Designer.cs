@@ -154,12 +154,12 @@
             this.cmblang.ForeColor = System.Drawing.Color.Black;
             this.cmblang.FormattingEnabled = true;
             this.cmblang.IntegralHeight = false;
-            this.cmblang.ItemHeight = 24;
+            this.cmblang.ItemHeight = 23;
             this.cmblang.Location = new System.Drawing.Point(46, 49);
             this.cmblang.Margin = new System.Windows.Forms.Padding(4, 6, 4, 3);
             this.cmblang.MaxDropDownItems = 16;
             this.cmblang.Name = "cmblang";
-            this.cmblang.Size = new System.Drawing.Size(192, 30);
+            this.cmblang.Size = new System.Drawing.Size(192, 29);
             this.cmblang.TabIndex = 10;
             this.cmblang.UseSelectable = true;
             this.cmblang.SelectedIndexChanged += new System.EventHandler(this.cmblang_SelectedIndexChanged);
@@ -178,12 +178,11 @@
             this.textBoxNickName.Multiline = false;
             this.textBoxNickName.Name = "textBoxNickName";
             this.textBoxNickName.ReadOnly = false;
-            this.textBoxNickName.Size = new System.Drawing.Size(286, 42);
+            this.textBoxNickName.Size = new System.Drawing.Size(286, 36);
             this.textBoxNickName.TabIndex = 100;
             this.textBoxNickName.Text = "Your name";
             this.textBoxNickName.TextAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBoxNickName.UseSystemPasswordChar = false;
-            this.textBoxNickName.Visible = false;
             this.textBoxNickName.Enter += new System.EventHandler(this.textBoxNickName_Enter);
             this.textBoxNickName.Leave += new System.EventHandler(this.textBoxNickName_Leave);
             // 

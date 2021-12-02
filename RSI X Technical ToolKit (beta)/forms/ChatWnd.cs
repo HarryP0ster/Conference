@@ -159,9 +159,9 @@ namespace RSI_X_Desktop.forms
         {
             if (InvokeRequired)
                 Invoke((MethodInvoker)delegate
-                    { chat_NewMessage(message, nickname, channel); });
+                    { chat_NewMessage(message, "Host", channel); });
             else
-                chat_NewMessage(message, nickname,channel);
+                chat_NewMessage(message, "Host",channel);
         }
         private void chat_NewMessage(string message, string nickname, CHANNEL_TYPE channel) 
         {
@@ -233,10 +233,10 @@ namespace RSI_X_Desktop.forms
                     controls[i].Location = new Point(controls[i].Location.X, ((Control)sender).Height - controls[i].Height);
                 prev_ctr = controls[i];
                 ((Control)sender).Controls.Add(controls[i]);
-                Region reg = new Region(new System.Drawing.Rectangle(0, controls[i].Location.Y, (((Control)sender)).Width, controls[i].Height));
+                Region reg = new Region(new System.Drawing.Rectangle(0, prev_ctr.Location.Y, (((Control)sender)).Width, prev_ctr.Height));
                 if (reg != null)
                 {
-                    (((Control)sender)).Invalidate(reg);
+                    (((Control)sender)).Invalidate(reg, false);
                     (((Control)sender)).Update();
                 }
             }

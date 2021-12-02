@@ -56,6 +56,7 @@ namespace RSI_X_Desktop
             
             LangSelectDlg dlg = new();
             Show();
+            CenterToScreen();
             dlg.ShowDialog(this);
             dlg.BringToFront();
 

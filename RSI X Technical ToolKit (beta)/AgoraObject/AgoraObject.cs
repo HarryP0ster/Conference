@@ -87,7 +87,7 @@ namespace RSI_X_Desktop
             //NickName = nick;
 
             Random rnd = new Random();
-            var str = string.Format("{0}_{1}", "HOST", (ulong)rnd.Next());
+            var str = string.Format("{0}_{1}", "HOST", nick);
             NickName = str;
         }
         static public void UpdateRoomName(string name)

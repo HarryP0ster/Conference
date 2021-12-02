@@ -52,7 +52,7 @@ namespace RSI_X_Desktop.forms
 
         private void BAccept_Click(object sender, EventArgs e)
         {
-            UpdateNick("host");
+            UpdateNick(textBoxNickName.Text);
 
             GetOutCode = true;
             Close();
