@@ -55,7 +55,7 @@ namespace RSI_X_Desktop
             RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
             
             LangSelectDlg dlg = new();
-            Hide();
+            Show();
             dlg.ShowDialog(this);
             dlg.BringToFront();
 
