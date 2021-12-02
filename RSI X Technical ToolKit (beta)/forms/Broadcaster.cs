@@ -95,7 +95,6 @@ namespace RSI_X_Desktop
                     cmblang_SelectedIndexChanged(cmblang, new());
                     floor_CheckedChanged(getAudioFrom);
                 }
-
                 Init();
 
                 MuteMic(dlg.MicMute);

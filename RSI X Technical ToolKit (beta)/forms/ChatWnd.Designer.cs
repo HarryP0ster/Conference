@@ -160,9 +160,9 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(563, 755);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
@@ -204,6 +204,7 @@ namespace RSI_X_Desktop.forms
             this.toTheESP.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.toTheESP.TabIndex = 0;
             this.toTheESP.Text = "To the end";
+            this.toTheESP.Visible = false;
             this.toTheESP.Click += new System.EventHandler(this.toTheESP_Click);
             // 
             // toTheBSP
@@ -244,6 +245,7 @@ namespace RSI_X_Desktop.forms
             this.toTheBSP.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.toTheBSP.TabIndex = 1;
             this.toTheBSP.Text = "To the beginning";
+            this.toTheBSP.Visible = false;
             this.toTheBSP.Click += new System.EventHandler(this.toTheBSP_Click);
             // 
             // PSupport
@@ -360,9 +362,9 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.Size = new System.Drawing.Size(563, 755);
             this.tableLayoutPanel2.TabIndex = 5;
             // 
@@ -404,6 +406,7 @@ namespace RSI_X_Desktop.forms
             this.toTheEG.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.toTheEG.TabIndex = 5;
             this.toTheEG.Text = "To the end";
+            this.toTheEG.Visible = false;
             this.toTheEG.Click += new System.EventHandler(this.skyButton2_Click);
             // 
             // toTheBG
@@ -444,6 +447,7 @@ namespace RSI_X_Desktop.forms
             this.toTheBG.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.toTheBG.TabIndex = 4;
             this.toTheBG.Text = "To the beginning";
+            this.toTheBG.Visible = false;
             this.toTheBG.Click += new System.EventHandler(this.skyButton1_Click);
             // 
             // PGeneral

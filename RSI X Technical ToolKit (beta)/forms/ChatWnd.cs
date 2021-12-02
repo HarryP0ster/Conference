@@ -212,7 +212,8 @@ namespace RSI_X_Desktop.forms
         internal void Chat_SizeChanged(object sender, EventArgs e) //Actually Updates chat wnd
         {
             Control prev_ctr = null;
-            
+            Control[] ctr = new Control[((Control)sender).Controls.Count];
+            ((Control)sender).Controls.CopyTo(ctr, 0);
             ((Control)sender).Controls.Clear();
 
             int ind;
@@ -233,11 +234,14 @@ namespace RSI_X_Desktop.forms
                     controls[i].Location = new Point(controls[i].Location.X, ((Control)sender).Height - controls[i].Height);
                 prev_ctr = controls[i];
                 ((Control)sender).Controls.Add(controls[i]);
-                Region reg = new Region(new System.Drawing.Rectangle(0, prev_ctr.Location.Y, (((Control)sender)).Width, prev_ctr.Height));
-                if (reg != null)
+                if (i+1 < ctr.Length && (controls[i+1].Height < ctr[i+1].Height || controls[i+1].Width < ctr[i+1].Width))
                 {
-                    (((Control)sender)).Invalidate(reg, false);
-                    (((Control)sender)).Update();
+                    Region reg = new Region(new System.Drawing.Rectangle(ctr[i].Location.X, ctr[i].Location.Y, ctr[i].Width, ctr[i].Height));
+                    if (reg != null)
+                    {
+                        (((Control)sender)).Invalidate(reg, false);
+                        (((Control)sender)).Update();
+                    }
                 }
             }
         }
