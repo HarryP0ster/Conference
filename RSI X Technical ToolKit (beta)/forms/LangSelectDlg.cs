@@ -52,24 +52,29 @@ namespace RSI_X_Desktop.forms
 
         private void BAccept_Click(object sender, EventArgs e)
         {
-            NickName = textBoxNickName.Text;
+            //UpdateNick(textBoxNickName.Text);
 
-            if (NickName == "")
+            GetOutCode = true;
+            Close();
+        }
+        private void UpdateNick(string nick) 
+        {
+            if (nick == "")
             {
                 MessageBox.Show("Your name must be longer");
                 return;
             }
-            else if (NickName.Length > 16) //If you change this, consider also chaning limit in IChannel
+            else if (nick.Length > 16) //If you change this, consider also chaning limit in IChannel
             {
                 MessageBox.Show("Your name is too long");
                 return;
             }
-            else if (NickName == "Your name")
+            else if (nick == "Your name")
             {
                 MessageBox.Show("Invalid name");
                 return;
             }
-            foreach (var ch in NickName)
+            foreach (var ch in nick)
             {
                 if (Convert.ToInt32(ch) > 255)
                 {
@@ -78,10 +83,7 @@ namespace RSI_X_Desktop.forms
                 }
             }
 
-            (Owner as Broadcaster).nickName = NickName;
-
-            GetOutCode = true;
-            Close();
+            AgoraObject.UpdateNickName(nick);
         }
         private void BClose_Click(object sender, EventArgs e)
         { 
@@ -90,15 +92,6 @@ namespace RSI_X_Desktop.forms
         private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
         {
             PrimaryLang = cmblang.SelectedIndex;
-        }
-
-        private void CheckBoxMic_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void LangSelectDlg_FormClosed(object sender, FormClosedEventArgs e)
-        {
-
         }
 
         private void textBoxNickName_Enter(object sender, EventArgs e)
@@ -123,7 +116,6 @@ namespace RSI_X_Desktop.forms
         {
             AgoraObject.MuteLocalAudioStream(!CheckBoxMic.Checked);
             AgoraObject.MuteLocalVideoStream(!CheckBoxCam.Checked);
-            (Owner as Broadcaster).ChildClosed();
             Dispose();
         }
     }
