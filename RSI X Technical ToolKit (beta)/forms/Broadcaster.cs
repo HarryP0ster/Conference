@@ -208,7 +208,7 @@ namespace RSI_X_Desktop
         private void btnScreenShare_Click(object sender, EventArgs e)
         {
             if (AgoraObject.IsLocalVideoMute) return;
-            enableScreenShare(!IsSharingScreen);
+            enableScreenShare(IsSharingScreen);
         }
         public void enableScreenShare(bool enable)
         {
