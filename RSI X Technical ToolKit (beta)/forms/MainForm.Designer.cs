@@ -125,7 +125,7 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.tableLayoutPanel1.Controls.Add(this.VersionLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.LocalTimeLabel, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.TimeLabel, 2, 0);
@@ -134,7 +134,7 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(838, 34);
             this.tableLayoutPanel1.TabIndex = 93;
             // 
@@ -304,7 +304,7 @@ namespace RSI_X_Desktop.forms
             this.NewTextBox.TabIndex = 91;
             this.NewTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.NewTextBox.Click += new System.EventHandler(this.NewTextBox_Click);
-            this.NewTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NewTextBox_KeyPress);
+            this.NewTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NewTextBox_KeyDown);
             // 
             // tableLayoutPanelLogo
             // 
@@ -329,7 +329,7 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanelVersions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 54.94295F));
             this.tableLayoutPanelVersions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 97F));
             this.tableLayoutPanelVersions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.05704F));
-            this.tableLayoutPanelVersions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            this.tableLayoutPanelVersions.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanelVersions.Controls.Add(this.labelVersion, 1, 0);
             this.tableLayoutPanelVersions.Controls.Add(this.labelBeta, 3, 0);
             this.tableLayoutPanelVersions.Dock = System.Windows.Forms.DockStyle.Fill;
