@@ -78,6 +78,7 @@ namespace RSI_X_Desktop.forms
                 else
                     return;
             }
+
             switch (materialShowTabControl1.SelectedIndex)
             {
                 case (int)PANEL.GENERAL:
@@ -212,11 +213,9 @@ namespace RSI_X_Desktop.forms
         internal void Chat_SizeChanged(object sender, EventArgs e) //Actually Updates chat wnd
         {
             Control prev_ctr = null;
-            Control[] ctr = new Control[((Control)sender).Controls.Count];
-            ((Control)sender).Controls.CopyTo(ctr, 0);
             ((Control)sender).Controls.Clear();
-
             int ind;
+
             if (((Control)sender) == PGeneral)
                 ind = (int)PANEL.GENERAL;
             else if (((Control)sender) == PSupport)
@@ -225,24 +224,21 @@ namespace RSI_X_Desktop.forms
                 return;
 
             var controls = messages_list[ind].ToArray();
-            
+
+
             for (int i = messages_list[ind].Count - 1 - scroll_offset[ind]; i >= 0; i--)
             {
                 if (prev_ctr != null)
                     controls[i].Location = new Point(controls[i].Location.X, prev_ctr.Location.Y - controls[i].Height);
                 else
                     controls[i].Location = new Point(controls[i].Location.X, ((Control)sender).Height - controls[i].Height);
+
                 prev_ctr = controls[i];
-                if (i + 1 < ctr.Length && (controls[i + 1].Height < ctr[i + 1].Height || controls[i + 1].Width < ctr[i + 1].Width))
-                {
-                    Region reg = new Region(new System.Drawing.Rectangle(ctr[i].Location.X, ctr[i].Location.Y, ctr[i].Width, ctr[i].Height));
-                    if (reg != null)
-                    {
-                        (((Control)sender)).Invalidate(reg, false);
-                        (((Control)sender)).Update();
-                    }
-                }
+                controls[i].Width = ((Control)sender).Width;
+                
                 ((Control)sender).Controls.Add(controls[i]);
+                ((Control)sender).Controls[((Control)sender).Controls.Count - 1].Update();
+                if (controls[i].Location.Y > ((Control)sender).Height || controls[i].Location.Y < 0) return;
             }
         }
 
