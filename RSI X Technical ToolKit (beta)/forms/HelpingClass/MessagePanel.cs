@@ -30,7 +30,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
         {
             Owner = owner;
             this.AutoSize = true;
-            Width = 10;
+            Width = ((Control)owner).Width;
             Height = 65;
             Sender = new Label();
 
@@ -44,11 +44,15 @@ namespace RSI_X_Desktop.forms.HelpingClass
 
             if (sender == MyOwn)
             {
+                ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                ColumnStyles[0].SizeType = SizeType.Percent;
+                ColumnStyles[0].Width = 100;
                 labelR = new ChatBubbleRight();
                 labelR.SizeAuto = true;
                 labelR.SizeAutoW = true;
                 labelR.SizeAutoH = true;
                 labelR.SizeChanged += Bubble_SizeChanged;
+                Sender.TextAlign = ContentAlignment.BottomRight;
 
                 if (text.Length > 0) labelR.Text += text[0];
 
@@ -61,7 +65,8 @@ namespace RSI_X_Desktop.forms.HelpingClass
 
                 labelR.Show();
                 Name = "Right";
-                Controls.Add(labelR, 0, 1);
+                Controls.Add(labelR, 1, 1);
+                Controls.Add(Sender, 1, 0);
             }
             else
             {
@@ -82,47 +87,14 @@ namespace RSI_X_Desktop.forms.HelpingClass
                 labelL.Show();
                 Name = "Left";
                 Controls.Add(labelL, 0, 1);
+                Controls.Add(Sender, 0, 0);
             }
-            Controls.Add(Sender, 0, 0);
-        }
-
-        public MessagePanelL(string text)
-        {
-            this.AutoSize = true;
-            Width = 10;
-            Height = 65;
-            Sender = new Label();
-
-            Sender.AutoSize = true;
-            Sender.TextAlign = ContentAlignment.BottomLeft;
-
-            Date = new Label();
         }
 
         public void Bubble_SizeChanged(object sender, EventArgs e)
         {
-            //foreach (Control ctr in Owner.Controls)
-            //{
-            //    if (this == ctr)
-            //        ctr.Location = new Point(Owner.Width - ActualWidth, ctr.Location.Y);
-            //}
-
-            //Owner.Controls.Add(this);
-
             actual_width = ((Control)sender).Width + 25;
-
-            //foreach (Control ctr in Owner.Controls)
-            //{
-            //    if (ctr.Name == "Right")
-            //        ctr.Location = new Point(ctr.Location.X, ctr.Location.Y - ((Control)sender).Height);
-            //    else
-            //        ctr.Location = new Point(5, ctr.Location.Y - ((Control)sender).Height);
-            //}
-            if (Name == "Left")
-                Location = new Point(5, Owner.Height - Height);
-            else
-                Location = new Point(Owner.Width - ActualWidth, Owner.Height - Height);
-
+            Location = new Point(5, Owner.Height - Height);
             (AgoraObject.GetWorkForm as Broadcaster).RebuildChatPanel(Owner);
         }
     }

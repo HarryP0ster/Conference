@@ -231,10 +231,9 @@ namespace RSI_X_Desktop.forms
                 if (prev_ctr != null)
                     controls[i].Location = new Point(controls[i].Location.X, prev_ctr.Location.Y - controls[i].Height);
                 else
-                    controls[i].Location = new Point(controls[i].Location.X, ((Control)sender).Height - controls[i].Height);
+                    controls[i].Location = new Point(controls[i].Location.X, ((Control)sender).Height - controls[i].Height - 5);
 
                 prev_ctr = controls[i];
-                controls[i].Width = ((Control)sender).Width;
                 
                 ((Control)sender).Controls.Add(controls[i]);
                 ((Control)sender).Controls[((Control)sender).Controls.Count - 1].Update();
