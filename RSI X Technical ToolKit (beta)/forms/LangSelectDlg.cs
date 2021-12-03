@@ -52,38 +52,41 @@ namespace RSI_X_Desktop.forms
 
         private void BAccept_Click(object sender, EventArgs e)
         {
-            UpdateNick(textBoxNickName.Text);
-
-            GetOutCode = true;
-            Close();
+            if (UpdateNick(textBoxNickName.Text)) 
+            {
+                GetOutCode = true;
+                Close();
+            }
         }
-        private void UpdateNick(string nick) 
+        private bool UpdateNick(string nick) 
         {
+
             if (nick == "")
             {
                 MessageBox.Show("Your name must be longer");
-                return;
+                return false;
             }
             else if (nick.Length > 16) //If you change this, consider also chaning limit in IChannel
             {
                 MessageBox.Show("Your name is too long");
-                return;
+                return false;
             }
             else if (nick == "Your name")
             {
                 MessageBox.Show("Invalid name");
-                return;
+                return false;
             }
             foreach (var ch in nick)
             {
                 if (Convert.ToInt32(ch) > 255)
                 {
                     MessageBox.Show("Nickname contains unsupported characters");
-                    return;
+                    return false;
                 }
             }
 
             AgoraObject.UpdateNickName(nick);
+            return true;
         }
         private void BClose_Click(object sender, EventArgs e)
         { 
