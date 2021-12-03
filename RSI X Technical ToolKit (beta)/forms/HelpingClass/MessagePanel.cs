@@ -37,6 +37,8 @@ namespace RSI_X_Desktop.forms.HelpingClass
             Sender.Text = sender;
             Sender.AutoSize = true;
             Sender.TextAlign = ContentAlignment.BottomLeft;
+            BackColor = Color.FromArgb(240, 240, 240);
+
 
             Date = new Label();
 
