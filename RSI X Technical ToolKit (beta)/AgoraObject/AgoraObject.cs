@@ -182,7 +182,7 @@ namespace RSI_X_Desktop
             region.width = wdth;
             region.height = hgt;
             capParam.bitrate = 1200;
-            capParam.frameRate = 30;
+            capParam.frameRate = 15;
             Rtc.StartScreenCaptureByScreenRect(region, region, capParam);
             return true;
         }
