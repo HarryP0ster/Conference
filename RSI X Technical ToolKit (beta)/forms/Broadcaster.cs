@@ -156,7 +156,8 @@ namespace RSI_X_Desktop
         public void RefreshLocalWnd() => pictureBoxLocalVideo.Refresh();
         public void NewBroadcaster(uint uid, UserInfo info) 
         {
-            if (info.userAccount.StartsWith("HOST") && !hostBroadcasters.ContainsKey(uid))
+            if (NickCenter.IsHost(info.userAccount) &&
+                !hostBroadcasters.ContainsKey(uid))
             {
                 if (IsDisposed) return;
                 if (InvokeRequired)
@@ -174,7 +175,8 @@ namespace RSI_X_Desktop
         }
         public void BroadcasterUpdateInfo(uint uid, UserInfo info)
         {
-            if (info.userAccount.StartsWith("HOST") && !hostBroadcasters.ContainsKey(uid))
+            if (NickCenter.IsHost(info.userAccount) && 
+                !hostBroadcasters.ContainsKey(uid))
             {
                 if (IsDisposed) return;
                 if (InvokeRequired)

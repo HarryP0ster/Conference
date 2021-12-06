@@ -8,6 +8,14 @@ using HWND = System.IntPtr;
 
 namespace RSI_X_Desktop
 {
+    public enum CHANNEL_TYPE
+    {
+        SRC,
+        TRANSL,
+        DEST,
+        HOST,
+        UNKNOWN
+    };
     enum CurForm
     {
         workFormater,
@@ -17,6 +25,7 @@ namespace RSI_X_Desktop
         FormEngineer2,
         None
     }
+
     static class AgoraObject
     {
 
@@ -189,7 +198,7 @@ namespace RSI_X_Desktop
             IsScreenCapture = 
                 ERROR_CODE.ERR_OK == Rtc.StartScreenCaptureByScreenRect(region, region, capParam);
 
-            System.Diagnostics.Debug.WriteLine($"screen sharing enable ({IsScreenCapture})");
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: screen sharing enable ({IsScreenCapture})");
             return IsScreenCapture;
         }
         public static bool EnableWindowCapture(HWND index)
@@ -293,6 +302,8 @@ namespace RSI_X_Desktop
             else
                 hostBroacsters.Add(uid, user);
             workForm.NewBroadcaster(uid, user);
+            
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: New user {user.userAccount} {uid}");
         }
         internal static void UpdateHostUserInfo(uint uid, UserInfo user)
         {
@@ -300,6 +311,7 @@ namespace RSI_X_Desktop
             {
                 hostBroacsters[uid] = user;
                 workForm.BroadcasterUpdateInfo(uid, user);
+                System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: update user {user.userAccount} {uid}");
             }
         }
         internal static void RemoveHostUserInfo(uint uid)
@@ -308,6 +320,8 @@ namespace RSI_X_Desktop
             {
                 hostBroacsters.Remove(uid);
                 workForm.BroadcasterLeave(uid);
+
+                System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: remove conf {uid}");
             }
         }
         internal static void UpdateTargRoom(string langFull)

@@ -9,13 +9,6 @@ using System.Windows.Forms;
 
 namespace RSI_X_Desktop
 {
-    public enum CHANNEL_TYPE
-    {
-        SRC,
-        TRANSL,
-        DEST,
-        HOST,
-    };
     public class AGChannelEventHandler : IRtcChannelEventHandlerBase
     {
         private IFormHostHolder form;

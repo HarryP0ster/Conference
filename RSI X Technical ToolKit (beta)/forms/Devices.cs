@@ -335,12 +335,14 @@ namespace RSI_X_Desktop.forms
         {
             var res = resComboBox.SelectedValue;
             UpdateResolution(res.ToString());
+
+            pictureBoxLocalVideoTest.Refresh();
         }
         #endregion
         private static void UpdateResolution(string res)
         {
             AgoraObject.Rtc.SetVideoProfile(resolutions[res], false);
-            System.Diagnostics.Debug.WriteLine($"select resolution: {res}");
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select resolution: {res}");
 
             if (AgoraObject.IsScreenCapture)
                 AgoraObject.EnableScreenCapture(resolutionsSize[res]);
@@ -427,7 +429,7 @@ namespace RSI_X_Desktop.forms
                 out string devName, out string videoID);
             videoDeviceManager.SetCurrentDevice(videoID);
 
-            System.Diagnostics.Debug.WriteLine($"select video: {devName}");
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select video: {devName}");
         }
 
         private static void AcceptNewSpeakerDevice()
@@ -437,7 +439,7 @@ namespace RSI_X_Desktop.forms
                 out string devName, out string speakID);
             SpeakersManager.SetCurrentDevice(speakID);
 
-            System.Diagnostics.Debug.WriteLine($"select speaker: {devName}");
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select speaker: {devName}");
         }
 
         private static void AcceptNewRecordDevice()
@@ -447,7 +449,7 @@ namespace RSI_X_Desktop.forms
                                 out string devName, out string recID);
             RecordersManager.SetCurrentDevice(recID);
 
-            System.Diagnostics.Debug.WriteLine($"select recorder: {devName}");
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select recorder: {devName}");
         }
 
         internal void CloseButton_Click(object sender, EventArgs e)
