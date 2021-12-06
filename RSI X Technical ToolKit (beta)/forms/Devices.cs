@@ -537,9 +537,9 @@ namespace RSI_X_Desktop.forms
         {
             
             Bass.BASS_StreamPutData(output, buffer, length);
-            if (prebuf < 0)
+            if (prebuf > 0)
             { // still prebuffering
-                prebuf += length;
+                prebuf -= length;
             }
             else
             {
