@@ -91,8 +91,8 @@ namespace RSI_X_Desktop.forms
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            //для того, чтобы форма не вылетала при сворачивании ее в панель инстурментов
-            //НЕ УДАЛЯТЬ!
+            // для того, чтобы форма не вылетала при сворачивании ее в панель инстурментов
+            // НЕ УДАЛЯТЬ!
             if (this.WindowState == FormWindowState.Minimized)
             {
                 NewTextBox.Hide();

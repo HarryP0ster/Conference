@@ -17,6 +17,17 @@ namespace RSI_X_Desktop.forms
 {
     public partial class Devices : Form
     {
+        private static readonly Dictionary<string, VIDEO_PROFILE_TYPE> resolutions = new()
+        {
+            [" 120 * 120 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_120P_3,
+            [" 180 * 180 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_180P_3,
+            [" 240 * 240 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_240P_3, 
+            [" 360 * 360 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_360P_3,
+            [" 480 * 480 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_480P_3,
+            [" 960 * 720 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_LANDSCAPE_720P_5,
+            ["1920 * 1080"] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_LANDSCAPE_1080P,
+        };
+
         [DllImport("winmm.dll")]
         public static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume); //Контроль громкости
 
@@ -33,6 +44,7 @@ namespace RSI_X_Desktop.forms
         public static string oldSpeaker { get; private set; }
         public static string oldRecorder {get; private set;}
         public static string oldVideoOut { get; private set; }
+        public static string oldResolution { get; private set; }
 
         public static void InitManager()
         {
@@ -52,6 +64,8 @@ namespace RSI_X_Desktop.forms
 
             oldRecorder = Recorders[index];
 
+            oldResolution = resolutions.Keys.ToArray()[3]; // 360p
+            UpdateResolution(oldResolution);
         }
         public Devices()
         {
@@ -60,6 +74,9 @@ namespace RSI_X_Desktop.forms
             Recorders = getListAudioInputDevices();
             Speakers = getListAudioOutDevices();
             VideoOut = getListVideoDevices();
+
+            resComboBox.DataSource = new List<string>(resolutions.Keys);
+
         }
         private void NewDevices_Load(object sender, EventArgs e)
         {
@@ -300,8 +317,17 @@ namespace RSI_X_Desktop.forms
             workForm.RefreshLocalWnd();
         }
 
-
+        private void resComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var res = resComboBox.SelectedValue;
+            UpdateResolution(res.ToString());
+        }
         #endregion
+        private static void UpdateResolution(string res)
+        {
+            AgoraObject.Rtc.SetVideoProfile(resolutions[res], false);
+            System.Diagnostics.Debug.WriteLine($"select resolution: {res}");
+        }
 
         private void NewDevices_FormClosed(object sender, FormClosedEventArgs e)
         {
