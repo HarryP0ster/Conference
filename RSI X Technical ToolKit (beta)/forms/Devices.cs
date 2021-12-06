@@ -19,7 +19,28 @@ namespace RSI_X_Desktop.forms
 {
     public partial class Devices : Form
     {
-        [DllImport("winmm.dll")]
+        public static readonly Dictionary<string, VIDEO_PROFILE_TYPE> resolutions = new()
+        {
+            [" 120 * 120 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_120P_3,
+            [" 180 * 180 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_180P_3,
+            [" 240 * 240 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_240P_3, 
+            [" 360 * 360 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_360P_3,
+            [" 480 * 480 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_480P_3,
+            [" 960 * 720 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_LANDSCAPE_720P_5,
+            ["1920 * 1080"] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_LANDSCAPE_1080P,
+        };
+        public static readonly Dictionary<string, ScreenCaptureParameters> resolutionsSize = new()
+        {
+            [" 120 * 120 "] = new(120, 120) { bitrate = 50, frameRate = 15 },
+            [" 180 * 180 "] = new(180, 180) { bitrate = 100, frameRate = 15 },
+            [" 240 * 240 "] = new(240, 240) { bitrate = 140, frameRate = 15 },
+            [" 360 * 360 "] = new(360, 360) { bitrate = 260, frameRate = 15 },
+            [" 480 * 480 "] = new(480, 480) { bitrate = 400, frameRate = 15 },
+            [" 960 * 720 "] = new(960, 720) { bitrate = 910, frameRate = 15 },
+            ["1920 * 1080"] = new(1920, 1080) { bitrate = 2080, frameRate = 15 },
+        };
+    
+    [DllImport("winmm.dll")]
         public static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume); //Контроль громкости
 
         private IFormHostHolder workForm = AgoraObject.GetWorkForm;
@@ -35,6 +56,8 @@ namespace RSI_X_Desktop.forms
         public static string oldSpeaker { get; private set; }
         public static string oldRecorder {get; private set;}
         public static string oldVideoOut { get; private set; }
+        public static string oldResolution { get; private set; }
+        private static int oldIndexResolution = 3; //360p
 
         bool IsAudioTest = false;
         int output;
@@ -58,6 +81,8 @@ namespace RSI_X_Desktop.forms
 
             oldRecorder = Recorders[index];
 
+            oldResolution = resolutions.Keys.ToArray()[oldIndexResolution];
+            UpdateResolution(oldResolution);
         }
         public Devices()
         {
@@ -66,6 +91,9 @@ namespace RSI_X_Desktop.forms
             Recorders = getListAudioInputDevices();
             Speakers = getListAudioOutDevices();
             VideoOut = getListVideoDevices();
+
+            resComboBox.DataSource = new List<string>(resolutions.Keys);
+            resComboBox.SelectedIndex = oldIndexResolution;
         }
         private void NewDevices_Load(object sender, EventArgs e)
         {
@@ -300,14 +328,31 @@ namespace RSI_X_Desktop.forms
             int ind = ((ComboBox)sender).SelectedIndex;
             string name, id;
 
-            videoDeviceManager.GetDeviceInfoByIndex(ind, out name, out id);
-            videoDeviceManager.SetCurrentDevice(id);
-
+            if (false == AgoraObject.IsScreenCapture) 
+            {
+                videoDeviceManager.GetDeviceInfoByIndex(ind, out name, out id);
+                videoDeviceManager.SetCurrentDevice(id);
+            }
             workForm.RefreshLocalWnd();
         }
 
+        private void resComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var res = resComboBox.SelectedValue;
+            UpdateResolution(res.ToString());
 
+            pictureBoxLocalVideoTest.Refresh();
+        }
         #endregion
+        private static void UpdateResolution(string res)
+        {
+            AgoraObject.Rtc.SetVideoProfile(resolutions[res], false);
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select resolution: {res}");
+
+            if (AgoraObject.IsScreenCapture)
+                AgoraObject.EnableScreenCapture(resolutionsSize[res]);
+
+        }
 
         private void NewDevices_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -348,6 +393,8 @@ namespace RSI_X_Desktop.forms
             oldVideoOut = VideoOut[comboBoxVideo.SelectedIndex];
             oldVolumeIn = trackBarSoundIn.Value;
             oldVolumeOut = trackBarSoundOut.Value;
+            oldResolution = resComboBox.SelectedValue.ToString();
+            oldIndexResolution = resComboBox.SelectedIndex;
 
             CloseButton_Click(sender, e);
         }
@@ -358,6 +405,7 @@ namespace RSI_X_Desktop.forms
                 AcceptNewRecordDevice();
                 AcceptNewSpeakerDevice();
                 AcceptNewVideoRecDevice();
+                AcceptNewResolution();
             }
             catch (Exception ex)
             {
@@ -365,28 +413,49 @@ namespace RSI_X_Desktop.forms
             }
         }
 
+        private static void AcceptNewResolution()
+        {
+            UpdateResolution(oldResolution);
+        }
+        public static void tryReAcceptVideoDevice() 
+        {
+            try
+            {
+                AcceptNewVideoRecDevice();
+            }
+            catch (Exception e)
+            { 
+                MessageBox.Show(e.Message);
+            }
+        }
         private static void AcceptNewVideoRecDevice()
         {
             videoDeviceManager.GetDeviceInfoByIndex(
                 VideoOut.FindLastIndex((s) => s == oldVideoOut),
-                out string _, out string videoID);
+                out string devName, out string videoID);
             videoDeviceManager.SetCurrentDevice(videoID);
+
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select video: {devName}");
         }
 
         private static void AcceptNewSpeakerDevice()
         {
             SpeakersManager.GetDeviceInfoByIndex(
                 Speakers.FindLastIndex((s) => s == oldSpeaker),
-                out string _, out string speakID);
+                out string devName, out string speakID);
             SpeakersManager.SetCurrentDevice(speakID);
+
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select speaker: {devName}");
         }
 
         private static void AcceptNewRecordDevice()
         {
             RecordersManager.GetDeviceInfoByIndex(
                                 Recorders.FindLastIndex((s) => s == oldRecorder),
-                                out string _, out string recID);
+                                out string devName, out string recID);
             RecordersManager.SetCurrentDevice(recID);
+
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select recorder: {devName}");
         }
 
         internal void CloseButton_Click(object sender, EventArgs e)
@@ -499,5 +568,15 @@ namespace RSI_X_Desktop.forms
             IsAudioTest = false;
             MicTestBtn.Text = "Test";
         }
+        public static void Clear() 
+        {
+            oldVolumeIn = 100;
+            oldVolumeOut = 100;
+            oldSpeaker = null;
+            oldRecorder = null;
+            oldVideoOut = null;
+            oldResolution = null;
+            oldIndexResolution = 3; //360p        
+    }
     }
 }
