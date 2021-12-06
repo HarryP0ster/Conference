@@ -449,12 +449,12 @@ namespace RSI_X_Desktop.forms
                 Bass.BASS_RecordInit(comboBoxAudioInput.SelectedIndex);
                 Bass.BASS_Init(comboBoxAudioOutput.SelectedIndex + 2, 44100, BASSInit.BASS_DEVICE_SPEAKERS, IntPtr.Zero);
                 //STREAMPROC stream = new STREAMPROC(BASSStreamProc.STREAMPROC_PUSH, null);
-                output = Bass.BASS_StreamCreate(44100, 1, BASSFlag.BASS_DEFAULT, BASSStreamProc.STREAMPROC_PUSH);
+                output = Bass.BASS_StreamCreate(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, BASSStreamProc.STREAMPROC_PUSH);
                 Bass.BASS_ChannelSetDevice(output, comboBoxAudioOutput.SelectedIndex + 2);
                 BASS_INFO info = Bass.BASS_GetInfo();
                 prebuf = Bass.BASS_ChannelSeconds2Bytes(output, info.minbuf / 1000.0);
                 Bass.BASS_ChannelSetDevice(input, comboBoxAudioInput.SelectedIndex);
-                input = Bass.BASS_RecordStart(44100, 1, BASSFlag.BASS_STREAM_DECODE, RECORDPROC, IntPtr.Zero);
+                input = Bass.BASS_RecordStart(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, RECORDPROC, IntPtr.Zero);
                 
                 MicTestBtn.Text = "Stop";
             }
@@ -473,7 +473,10 @@ namespace RSI_X_Desktop.forms
             if (prebuf > 0)
             { // still prebuffering
                 prebuf -= length;
-                if (prebuf <= 0) Bass.BASS_ChannelPlay(output, false); // got enough, start the output
+            }
+            else
+            {
+                Bass.BASS_ChannelPlay(output, false);
             }
             return true;
         }
@@ -481,6 +484,7 @@ namespace RSI_X_Desktop.forms
         private void SpeakerTestBtn_Click(object sender, EventArgs e)
         {
             ReleaseBass();
+            IsAudioTest = false;
             var devices = Bass.BASS_GetDeviceInfos();
             Bass.BASS_Init(comboBoxAudioOutput.SelectedIndex + 2, 44100, BASSInit.BASS_DEVICE_SPEAKERS, IntPtr.Zero);
             Bass.BASS_SetDevice(comboBoxAudioOutput.SelectedIndex + 2);
@@ -496,7 +500,6 @@ namespace RSI_X_Desktop.forms
             Bass.BASS_ChannelStop(output);
             Bass.BASS_RecordFree();
             Bass.BASS_Free();
-            IsAudioTest = false;
             MicTestBtn.Text = "Test";
         }
     }
