@@ -23,6 +23,7 @@ namespace RSI_X_Desktop
         public const string AppID = "31f0e571a89542b09049087e3283417f";
         public static bool IsLocalAudioMute { get; private set; }
         public static bool IsLocalVideoMute { get; private set; }
+        public static bool IsScreenCapture { get; private set; } = false;
         public static bool IsAllRemoteAudioMute { get; private set; }
         public static bool IsAllRemoteVideoMute { get; private set; }
 
@@ -172,18 +173,24 @@ namespace RSI_X_Desktop
         }
 
         #region Screen/Window capture
-        public static bool EnableScreenCapture()
+        public static bool EnableScreenCapture(ScreenCaptureParameters capParam = new())
         {
-            int wdth = Screen.PrimaryScreen.Bounds.Width;
-            int hgt = Screen.PrimaryScreen.Bounds.Height;
-            ScreenCaptureParameters capParam = new ScreenCaptureParameters(wdth, hgt);
+            StopScreenCaption();
+            if (capParam.bitrate == 0)
+                capParam = forms.Devices.resolutionsSize[
+                    forms.Devices.oldResolution];
             Rectangle region = new Rectangle();
-            region.width = wdth;
-            region.height = hgt;
+
+            region.width = Screen.PrimaryScreen.Bounds.Width;
+            region.height = Screen.PrimaryScreen.Bounds.Height;
             capParam.bitrate = 1200;
             capParam.frameRate = 15;
-            Rtc.StartScreenCaptureByScreenRect(region, region, capParam);
-            return true;
+
+            IsScreenCapture = 
+                ERROR_CODE.ERR_OK == Rtc.StartScreenCaptureByScreenRect(region, region, capParam);
+
+            System.Diagnostics.Debug.WriteLine($"screen sharing enable ({IsScreenCapture})");
+            return IsScreenCapture;
         }
         public static bool EnableWindowCapture(HWND index)
         {
@@ -201,6 +208,12 @@ namespace RSI_X_Desktop
             capParam.frameRate = 30;
             Rtc.StartScreenCaptureByWindowId((ulong)index, region, capParam);
             return true;
+        }
+
+        public static void StopScreenCaption() 
+        {
+            Rtc.StopScreenCapture();
+            IsScreenCapture = false;
         }
         #endregion
 

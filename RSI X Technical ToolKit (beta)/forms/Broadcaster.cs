@@ -219,9 +219,11 @@ namespace RSI_X_Desktop
             }
             else
             {
-                AgoraObject.Rtc.StopScreenCapture();
+                AgoraObject.StopScreenCaption();
                 labelScreenShare.ForeColor = Color.White;
                 pictureBoxLocalVideo.Refresh();
+
+                Devices.tryReAcceptVideoDevice();
             }
             IsSharingScreen = !IsSharingScreen;
         }
