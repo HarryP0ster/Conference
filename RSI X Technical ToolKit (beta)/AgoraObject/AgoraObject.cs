@@ -178,25 +178,7 @@ namespace RSI_X_Desktop
         }
 
         #region Screen/Window capture
-        public static bool EnableScreenCapture(ScreenCaptureParameters capParam = new())
-        {
-            StopScreenCaption();
-            if (capParam.bitrate == 0)
-                capParam = forms.Devices.resolutionsSize[
-                    forms.Devices.oldResolution];
-            Rectangle region = new Rectangle();
-
-            region.width = Screen.PrimaryScreen.Bounds.Width;
-            region.height = Screen.PrimaryScreen.Bounds.Height;
-            capParam.bitrate = 1200;
-            capParam.frameRate = 15;
-
-            IsScreenCapture = 
-                ERROR_CODE.ERR_OK == Rtc.StartScreenCaptureByScreenRect(region, region, capParam);
-
-            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: screen sharing enable ({IsScreenCapture})");
-            return IsScreenCapture;
-        }
+      
         public static bool EnableWindowCapture(HWND index)
         {
             Rectangle region = new Rectangle();
@@ -214,8 +196,26 @@ namespace RSI_X_Desktop
             Rtc.StartScreenCaptureByWindowId((ulong)index, region, capParam);
             return true;
         }
+        public static bool EnableScreenCapture(ScreenCaptureParameters capParam = new())
+        {
+            StopScreenCaption();
+            if (capParam.bitrate == 0)
+                capParam = forms.Devices.resolutionsSize[
+                    forms.Devices.oldResolution];
+            Rectangle region = new Rectangle();
 
-        public static void StopScreenCaption() 
+            region.width = Screen.PrimaryScreen.Bounds.Width;
+            region.height = Screen.PrimaryScreen.Bounds.Height;
+            capParam.bitrate = 1200;
+            capParam.frameRate = 15;
+
+            IsScreenCapture =
+                ERROR_CODE.ERR_OK == Rtc.StartScreenCaptureByScreenRect(region, region, capParam);
+
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: screen sharing enable ({IsScreenCapture})");
+            return IsScreenCapture;
+        }
+        public static void StopScreenCaption()
         {
             Rtc.StopScreenCapture();
             IsScreenCapture = false;
