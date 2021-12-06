@@ -521,10 +521,10 @@ namespace RSI_X_Desktop.forms
                 output = Bass.BASS_StreamCreate(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, BASSStreamProc.STREAMPROC_PUSH);
                 Bass.BASS_ChannelSetDevice(output, comboBoxAudioOutput.SelectedIndex + 2);
                 BASS_INFO info = Bass.BASS_GetInfo();
-                prebuf = Bass.BASS_ChannelSeconds2Bytes(output, info.minbuf / 1000.0);
+                prebuf = Bass.BASS_ChannelSeconds2Bytes(output, (float)info.minbuf / 1000);
                 Bass.BASS_ChannelSetDevice(input, comboBoxAudioInput.SelectedIndex);
-                input = Bass.BASS_RecordStart(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, RECORDPROC, IntPtr.Zero);
-                
+                input = Bass.BASS_RecordStart(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, RECORDPROC, Handle);
+
                 MicTestBtn.Text = "Stop";
             }
             else
@@ -532,7 +532,7 @@ namespace RSI_X_Desktop.forms
                 ReleaseBass();
                 AgoraObject.Rtc.EnableAudio();
             }
-            
+
         }
 
 
@@ -545,7 +545,14 @@ namespace RSI_X_Desktop.forms
             }
             else
             {
-                Bass.BASS_ChannelPlay(output, false);
+                if (Bass.BASS_ChannelPlay(output, false) == false)
+                {
+                    ReleaseBass();
+                    IsAudioTest = false;
+                    return false;
+                }
+                BASS_INFO info = Bass.BASS_GetInfo();
+                prebuf = Bass.BASS_ChannelSeconds2Bytes(output, (float)info.minbuf / 1000);
             }
             return true;
         }
