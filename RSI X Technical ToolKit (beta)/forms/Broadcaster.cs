@@ -679,6 +679,7 @@ namespace RSI_X_Desktop
             string arguments = "";
             foreach (var a in args)
                 arguments += "\"" + a + "\" ";
+
             TargetPublisher = new Process();
             TargetPublisher.StartInfo.Arguments = arguments;
             TargetPublisher.StartInfo.CreateNoWindow = true;

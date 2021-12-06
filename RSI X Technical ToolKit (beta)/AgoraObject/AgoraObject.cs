@@ -93,11 +93,7 @@ namespace RSI_X_Desktop
 
         static public void UpdateNickName(string nick)
         { 
-            //NickName = nick;
-
-            Random rnd = new Random();
-            var str = string.Format("{0}_{1}", "HOST", nick);
-            NickName = str;
+            NickName = NickCenter.ToHostNick(nick);
         }
         static public void UpdateRoomName(string name)
         { RoomName = name; }

@@ -13,26 +13,7 @@ namespace RSI_X_Desktop
 
         public static string ToHostNick(string nick)
         {
-            return HostStartsWith + nick;
-        }
-        public static string ToAudienceNick()
-        {
-            return AudienceStartsWith;
-        }
-        public static string ToInterpreterNick(string nick, string langShort)
-        {
-            return $"({langShort}) {nick}";
-        }
-        public static CHANNEL_TYPE FromWhatChannel(string nick) 
-        {
-            if (IsHost(nick))
-                return CHANNEL_TYPE.HOST;
-            if (IsAudience(nick))
-                return CHANNEL_TYPE.SRC;
-            if (IsInterpreter(nick))
-                return CHANNEL_TYPE.TRANSL;
-
-            return CHANNEL_TYPE.UNKNOWN;
+            return $"{HostStartsWith}_{nick}";
         }
         public static bool IsHost(string nick) 
         {
