@@ -447,7 +447,7 @@ namespace RSI_X_Desktop
             if (!Owner.Visible) Application.Exit();
 
             Devices.ClearOldDevices();
-
+            Devices.Clear();
             GC.Collect();
         }
 

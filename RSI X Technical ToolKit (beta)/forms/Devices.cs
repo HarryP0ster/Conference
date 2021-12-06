@@ -87,7 +87,6 @@ namespace RSI_X_Desktop.forms
             VideoOut = getListVideoDevices();
 
             resComboBox.DataSource = new List<string>(resolutions.Keys);
-
             resComboBox.SelectedIndex = oldIndexResolution;
         }
         private void NewDevices_Load(object sender, EventArgs e)
@@ -500,5 +499,16 @@ namespace RSI_X_Desktop.forms
         {
             trackBarSoundOut.Value = oldVolumeOut;
         }
+
+        public static void Clear() 
+        {
+            oldVolumeIn = 100;
+            oldVolumeOut = 100;
+            oldSpeaker = null;
+            oldRecorder = null;
+            oldVideoOut = null;
+            oldResolution = null;
+            oldIndexResolution = 3; //360p        
+    }
     }
 }
