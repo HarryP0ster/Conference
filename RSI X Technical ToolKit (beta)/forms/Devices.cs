@@ -58,6 +58,7 @@ namespace RSI_X_Desktop.forms
         public static string oldVideoOut { get; private set; }
         public static string oldResolution { get; private set; }
         private static int oldIndexResolution = 3; //360p
+        int frames = 0;
 
         bool IsAudioTest = false;
         int output;
@@ -507,61 +508,78 @@ namespace RSI_X_Desktop.forms
             trackBarSoundOut.Value = oldVolumeOut;
         }
 
-        private void MicTestClicked(object sender, EventArgs e)
+
+        #region AudioTests snd BASS
+        private void MicTestClicked(object sender, EventArgs e) //Playback button click
         {
             IsAudioTest = !IsAudioTest;
             if (IsAudioTest)
             {
                 ReleaseBass();
-                var devices = Bass.BASS_RecordGetDeviceInfos();
-                AgoraObject.Rtc.DisableAudio();
-                Bass.BASS_RecordInit(comboBoxAudioInput.SelectedIndex);
-                Bass.BASS_Init(comboBoxAudioOutput.SelectedIndex + 2, 44100, BASSInit.BASS_DEVICE_SPEAKERS, IntPtr.Zero);
-                //STREAMPROC stream = new STREAMPROC(BASSStreamProc.STREAMPROC_PUSH, null);
-                output = Bass.BASS_StreamCreate(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, BASSStreamProc.STREAMPROC_PUSH);
-                Bass.BASS_ChannelSetDevice(output, comboBoxAudioOutput.SelectedIndex + 2);
-                BASS_INFO info = Bass.BASS_GetInfo();
-                prebuf = Bass.BASS_ChannelSeconds2Bytes(output, (float)info.minbuf / 1000);
-                Bass.BASS_ChannelSetDevice(input, comboBoxAudioInput.SelectedIndex);
-                input = Bass.BASS_RecordStart(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, RECORDPROC, Handle);
-
                 MicTestBtn.Text = "Stop";
+#if DEBUG
+                var devices = Bass.BASS_RecordGetDeviceInfos();
+#endif
+                AgoraObject.Rtc.DisableAudio();
+                Bass.LoadMe();
+                InitPlayback();
             }
             else
             {
+                MicTestBtn.Text = "Test";
                 ReleaseBass();
                 AgoraObject.Rtc.EnableAudio();
             }
 
         }
 
-
-        bool RECORDPROC(int handle, IntPtr buffer, int length, IntPtr user)
+        bool RECORDPROC(int handle, IntPtr buffer, int length, IntPtr user) //This functions is called every time recorder sends stream to the speaker
         {
+            
             Bass.BASS_StreamPutData(output, buffer, length);
-            if (prebuf > 0)
+            if (prebuf < 0)
             { // still prebuffering
-                prebuf -= length;
+                prebuf += length;
             }
             else
             {
-                if (Bass.BASS_ChannelPlay(output, false) == false)
-                {
-                    ReleaseBass();
-                    IsAudioTest = false;
-                    return false;
-                }
+                Bass.BASS_ChannelPlay(output, false);
                 BASS_INFO info = Bass.BASS_GetInfo();
                 prebuf = Bass.BASS_ChannelSeconds2Bytes(output, (float)info.minbuf / 1000);
+                /*
+                 Simply the most important part of the code is coming next, delete this and you will face 
+                your death from ManagedBass NullReference exception
+                 */
+                if (++frames > 750) //every 7.5 seconds
+                {
+                    frames = 0;
+                    InitPlayback();
+                    return false;
+                }
             }
             return true;
         }
 
-        private void SpeakerTestBtn_Click(object sender, EventArgs e)
+        private void InitPlayback() //Takes input from mic and pushes it to the speaker
         {
+            Bass.BASS_RecordInit(-1);
+            Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_SPEAKERS, IntPtr.Zero);
+            output = Bass.BASS_StreamCreate(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, BASSStreamProc.STREAMPROC_PUSH);
+            //Bass.BASS_ChannelSetDevice(output, comboBoxAudioOutput.SelectedIndex + 2);
+            //Bass.BASS_ChannelSetDevice(input, comboBoxAudioInput.SelectedIndex);
+
+            input = Bass.BASS_RecordStart(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, RECORDPROC, IntPtr.Zero);
+            GC.Collect();
+        }
+
+        private void SpeakerTestBtn_Click(object sender, EventArgs e) //Plays a simple beep sound to indicate selected speaker
+        {
+            MicTestBtn.Text = "Test";
             ReleaseBass();
             IsAudioTest = false;
+#if DEBUG
             var devices = Bass.BASS_GetDeviceInfos();
+#endif
             Bass.BASS_Init(comboBoxAudioOutput.SelectedIndex + 2, 44100, BASSInit.BASS_DEVICE_SPEAKERS, IntPtr.Zero);
             Bass.BASS_SetDevice(comboBoxAudioOutput.SelectedIndex + 2);
             string File = "OutputBeep.wav";
@@ -571,13 +589,17 @@ namespace RSI_X_Desktop.forms
                 Bass.BASS_ChannelPlay(stream, true);
         }
 
-        private void ReleaseBass()
+        private void ReleaseBass() //Completely releases ManagedBass streams and channels
         {
-            Bass.BASS_ChannelStop(output);
+            Bass.BASS_StreamFree(output);
+            Bass.BASS_ChannelStop(input);
             Bass.BASS_RecordFree();
             Bass.BASS_Free();
-            MicTestBtn.Text = "Test";
+            Bass.BASS_Stop();
+            Bass.FreeMe();
+            GC.Collect();
         }
+        #endregion
         public static void Clear() 
         {
             oldVolumeIn = 100;
