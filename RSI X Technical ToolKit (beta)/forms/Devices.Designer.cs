@@ -60,6 +60,7 @@ namespace RSI_X_Desktop.forms
             this.BAcceptVideo = new ReaLTaiizor.Controls.Button();
             this.pictureBoxLocalVideoTest = new ReaLTaiizor.Controls.HopePictureBox();
             this.comboBoxVideo = new ReaLTaiizor.Controls.AloneComboBox();
+            this.resComboBox = new ReaLTaiizor.Controls.AloneComboBox();
             this.button6 = new ReaLTaiizor.Controls.Button();
             this.button7 = new ReaLTaiizor.Controls.Button();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -524,18 +525,22 @@ namespace RSI_X_Desktop.forms
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 3);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 5);
             this.tableLayoutPanel3.Controls.Add(this.pictureBoxLocalVideoTest, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.comboBoxVideo, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.resComboBox, 0, 3);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(2, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 4;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.RowCount = 6;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(348, 498);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(348, 492);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
             // tableLayoutPanel4
@@ -622,6 +627,22 @@ namespace RSI_X_Desktop.forms
             this.comboBoxVideo.Size = new System.Drawing.Size(344, 26);
             this.comboBoxVideo.TabIndex = 0;
             this.comboBoxVideo.SelectedIndexChanged += new System.EventHandler(this.comboBoxVideo_SelectedIndexChanged);
+            // 
+            // resComboBox
+            // 
+            this.resComboBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.resComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.resComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.resComboBox.EnabledCalc = true;
+            this.resComboBox.FormattingEnabled = true;
+            this.resComboBox.ItemHeight = 20;
+            this.resComboBox.Location = new System.Drawing.Point(2, 254);
+            this.resComboBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.resComboBox.Name = "resComboBox";
+            this.resComboBox.Size = new System.Drawing.Size(344, 26);
+            this.resComboBox.TabIndex = 9;
+            this.resComboBox.SelectedIndexChanged += new System.EventHandler(this.resComboBox_SelectedIndexChanged);
             // 
             // button6
             // 
@@ -783,5 +804,6 @@ namespace RSI_X_Desktop.forms
         private ReaLTaiizor.Controls.HopeButton MicTestBtn;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         private ReaLTaiizor.Controls.HopeButton SpeakerTestBtn;
+        private ReaLTaiizor.Controls.AloneComboBox resComboBox;
     }
 }

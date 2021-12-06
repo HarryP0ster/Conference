@@ -8,6 +8,14 @@ using HWND = System.IntPtr;
 
 namespace RSI_X_Desktop
 {
+    public enum CHANNEL_TYPE
+    {
+        SRC,
+        TRANSL,
+        DEST,
+        HOST,
+        UNKNOWN
+    };
     enum CurForm
     {
         workFormater,
@@ -17,12 +25,14 @@ namespace RSI_X_Desktop
         FormEngineer2,
         None
     }
+
     static class AgoraObject
     {
 
         public const string AppID = "31f0e571a89542b09049087e3283417f";
         public static bool IsLocalAudioMute { get; private set; }
         public static bool IsLocalVideoMute { get; private set; }
+        public static bool IsScreenCapture { get; private set; } = false;
         public static bool IsAllRemoteAudioMute { get; private set; }
         public static bool IsAllRemoteVideoMute { get; private set; }
 
@@ -79,16 +89,11 @@ namespace RSI_X_Desktop
         private static void SetPublishProfile()
         {
             Rtc.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY, AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_CHATROOM_GAMING);
-            Rtc.SetVideoProfile(VIDEO_PROFILE_TYPE.VIDEO_PROFILE_LANDSCAPE_180P_4, false);
         }
 
         static public void UpdateNickName(string nick)
         { 
-            //NickName = nick;
-
-            Random rnd = new Random();
-            var str = string.Format("{0}_{1}", "HOST", nick);
-            NickName = str;
+            NickName = NickCenter.ToHostNick(nick);
         }
         static public void UpdateRoomName(string name)
         { RoomName = name; }
@@ -173,19 +178,7 @@ namespace RSI_X_Desktop
         }
 
         #region Screen/Window capture
-        public static bool EnableScreenCapture()
-        {
-            int wdth = Screen.PrimaryScreen.Bounds.Width;
-            int hgt = Screen.PrimaryScreen.Bounds.Height;
-            ScreenCaptureParameters capParam = new ScreenCaptureParameters(wdth, hgt);
-            Rectangle region = new Rectangle();
-            region.width = wdth;
-            region.height = hgt;
-            capParam.bitrate = 1200;
-            capParam.frameRate = 15;
-            Rtc.StartScreenCaptureByScreenRect(region, region, capParam);
-            return true;
-        }
+      
         public static bool EnableWindowCapture(HWND index)
         {
             Rectangle region = new Rectangle();
@@ -202,6 +195,30 @@ namespace RSI_X_Desktop
             capParam.frameRate = 30;
             Rtc.StartScreenCaptureByWindowId((ulong)index, region, capParam);
             return true;
+        }
+        public static bool EnableScreenCapture(ScreenCaptureParameters capParam = new())
+        {
+            StopScreenCaption();
+            if (capParam.bitrate == 0)
+                capParam = forms.Devices.resolutionsSize[
+                    forms.Devices.oldResolution];
+            Rectangle region = new Rectangle();
+
+            region.width = Screen.PrimaryScreen.Bounds.Width;
+            region.height = Screen.PrimaryScreen.Bounds.Height;
+            capParam.bitrate = 1200;
+            capParam.frameRate = 15;
+
+            IsScreenCapture =
+                ERROR_CODE.ERR_OK == Rtc.StartScreenCaptureByScreenRect(region, region, capParam);
+
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: screen sharing enable ({IsScreenCapture})");
+            return IsScreenCapture;
+        }
+        public static void StopScreenCaption()
+        {
+            Rtc.StopScreenCapture();
+            IsScreenCapture = false;
         }
         #endregion
 
@@ -281,6 +298,8 @@ namespace RSI_X_Desktop
             else
                 hostBroacsters.Add(uid, user);
             workForm.NewBroadcaster(uid, user);
+            
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: New user {user.userAccount} {uid}");
         }
         internal static void UpdateHostUserInfo(uint uid, UserInfo user)
         {
@@ -288,6 +307,7 @@ namespace RSI_X_Desktop
             {
                 hostBroacsters[uid] = user;
                 workForm.BroadcasterUpdateInfo(uid, user);
+                System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: update user {user.userAccount} {uid}");
             }
         }
         internal static void RemoveHostUserInfo(uint uid)
@@ -296,6 +316,8 @@ namespace RSI_X_Desktop
             {
                 hostBroacsters.Remove(uid);
                 workForm.BroadcasterLeave(uid);
+
+                System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: remove conf {uid}");
             }
         }
         internal static void UpdateTargRoom(string langFull)
