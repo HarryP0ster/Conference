@@ -171,6 +171,12 @@
     <ProjectReference Include="..\agorartc\agorartc\agorartc\agorartc.csproj" />
     <ProjectReference Include="..\AppIn\appIn.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Bass.Net">
+      <HintPath>..\Bass.Net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   
     <ItemGroup>
       <Compile Update="Program.cs">

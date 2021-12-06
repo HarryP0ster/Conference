@@ -292,9 +292,11 @@ namespace RSI_X_Desktop
         }
         private void ChatClosed(Form Wnd) 
         {
-            Wnd.Hide();
+            Wnd.SuspendLayout();
             Animator(panel1, 9, 0, 50, 1);
             panel1.Hide();
+            Wnd.Hide();
+            labelChat.ForeColor = Color.White;
             GC.Collect();
         }
         public void RebuildChatPanel(Control panel)
@@ -381,6 +383,7 @@ namespace RSI_X_Desktop
                 DevicesClosed(devices);
             if (chat.Visible == false)
             {
+                chat.ResumeLayout();
                 chat.ButtonsVisibility(true);
                 CallSidePanel(chat);
                 labelChat.ForeColor = Color.Red;
