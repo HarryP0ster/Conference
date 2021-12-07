@@ -140,6 +140,15 @@ namespace RSI_X_Desktop
                 Color.Red;
 
             CamMute(AgoraObject.IsLocalVideoMute);
+            /*
+            * Chat initial loading, this way it'd load messages
+            * in the background from the very moment you enter a channel
+            */
+            chat.TopLevel = false;
+            chat.Dock = DockStyle.Fill;
+            panel1.Controls.Add(chat);
+            chat.Show();
+            chat.Hide(); //You need to hide it, otherwise Animator'd get confused
         }
 
         public void SetLocalVideoPreview()
@@ -278,14 +287,11 @@ namespace RSI_X_Desktop
 
         public void Animator(System.Windows.Forms.Panel panel, int offset_x, int offset_y, int itterations, int delay)
         {
-            //pictureBoxRemoteVideo.Refresh();
             Thread.Sleep(delay);
             streamsTable.SuspendLayout();
             for (int ind = 0; ind < itterations; ind++)
             {
                 StreamLayout.ColumnStyles[1].Width = StreamLayout.ColumnStyles[1].Width - offset_x;
-                //streamsTable.Size = new Size(streamsTable.Size.Width - offset_x, streamsTable.Size.Height);
-                //Thread.Sleep(1);
             }
             streamsTable.ResumeLayout();
         }

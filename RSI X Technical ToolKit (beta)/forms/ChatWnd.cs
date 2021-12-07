@@ -289,8 +289,10 @@ namespace RSI_X_Desktop.forms
         }
         private void materialShowTabControl1_VisibleChanged(object sender, EventArgs e)
         {
-            PGeneral.Refresh();
-            PSupport.Refresh();
+            if (!Visible)
+                SuspendLayout();
+            else
+                ResumeLayout();
         }
     }
 }
