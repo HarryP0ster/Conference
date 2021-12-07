@@ -97,6 +97,7 @@ namespace RSI_X_Desktop.forms
             this.materialShowTabControl1.SelectedIndex = 0;
             this.materialShowTabControl1.Size = new System.Drawing.Size(360, 541);
             this.materialShowTabControl1.TabIndex = 2;
+            this.materialShowTabControl1.SelectedIndexChanged += new System.EventHandler(this.materialShowTabControl1_SelectedIndexChanged);
             this.materialShowTabControl1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.materialShowTabControl1_Selecting);
             this.materialShowTabControl1.Deselecting += new System.Windows.Forms.TabControlCancelEventHandler(this.materialShowTabControl1_Deselecting);
             // 
@@ -540,7 +541,7 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(348, 492);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(348, 498);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
             // tableLayoutPanel4
@@ -637,7 +638,7 @@ namespace RSI_X_Desktop.forms
             this.resComboBox.EnabledCalc = true;
             this.resComboBox.FormattingEnabled = true;
             this.resComboBox.ItemHeight = 20;
-            this.resComboBox.Location = new System.Drawing.Point(2, 254);
+            this.resComboBox.Location = new System.Drawing.Point(2, 257);
             this.resComboBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.resComboBox.Name = "resComboBox";
             this.resComboBox.Size = new System.Drawing.Size(344, 26);

@@ -4,8 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using ReaLTaiizor;
@@ -59,6 +58,8 @@ namespace RSI_X_Desktop.forms
         public static string oldResolution { get; private set; }
         private static int oldIndexResolution = 3; //360p
         int frames = 0;
+        string playback_device = "";
+        string recording_device = "";
 
         bool IsAudioTest = false;
         int output;
@@ -308,6 +309,9 @@ namespace RSI_X_Desktop.forms
         #region ComboBoxEventHandlers
         private void comboBoxAudioInput_SelectedIndexChanged(object sender, EventArgs e)
         {
+            recording_device = comboBoxAudioInput.Text;
+            if (IsAudioTest) frames = 1000; //Force restart of the recording process
+
             int ind = ((ComboBox)sender).SelectedIndex;
             string name, id;
 
@@ -317,6 +321,9 @@ namespace RSI_X_Desktop.forms
 
         private void comboBoxAudioOutput_SelectedIndexChanged(object sender, EventArgs e)
         {
+            playback_device = comboBoxAudioOutput.Text;
+            if (IsAudioTest) frames = 1000; //Force restart of the recording process
+
             int ind = ((ComboBox)sender).SelectedIndex;
             string name, id;
 
@@ -517,9 +524,6 @@ namespace RSI_X_Desktop.forms
             {
                 ReleaseBass();
                 MicTestBtn.Text = "Stop";
-#if DEBUG
-                var devices = Bass.BASS_RecordGetDeviceInfos();
-#endif
                 AgoraObject.Rtc.DisableAudio();
                 Bass.LoadMe();
                 InitPlayback();
@@ -562,11 +566,14 @@ namespace RSI_X_Desktop.forms
 
         private void InitPlayback() //Takes input from mic and pushes it to the speaker
         {
+            int speaker_index = GetDeviceIndex(playback_device);
+            int microphone_index = GetRecordIndex(recording_device);
+
             Bass.BASS_RecordInit(-1);
-            Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_SPEAKERS, IntPtr.Zero);
+            Bass.BASS_Init(speaker_index, 44100, BASSInit.BASS_DEVICE_SPEAKERS, IntPtr.Zero);
             output = Bass.BASS_StreamCreate(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, BASSStreamProc.STREAMPROC_PUSH);
-            //Bass.BASS_ChannelSetDevice(output, comboBoxAudioOutput.SelectedIndex + 2);
-            //Bass.BASS_ChannelSetDevice(input, comboBoxAudioInput.SelectedIndex);
+            Bass.BASS_ChannelSetDevice(output, speaker_index);
+            Bass.BASS_ChannelSetDevice(input, -1);
 
             input = Bass.BASS_RecordStart(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, RECORDPROC, IntPtr.Zero);
             GC.Collect();
@@ -577,16 +584,45 @@ namespace RSI_X_Desktop.forms
             MicTestBtn.Text = "Test";
             ReleaseBass();
             IsAudioTest = false;
-#if DEBUG
-            var devices = Bass.BASS_GetDeviceInfos();
-#endif
-            Bass.BASS_Init(comboBoxAudioOutput.SelectedIndex + 2, 44100, BASSInit.BASS_DEVICE_SPEAKERS, IntPtr.Zero);
-            Bass.BASS_SetDevice(comboBoxAudioOutput.SelectedIndex + 2);
-            string File = "OutputBeep.wav";
+            int device_index = GetDeviceIndex(comboBoxAudioOutput.Text);
+
+            Bass.BASS_Init(device_index, 44100, BASSInit.BASS_DEVICE_SPEAKERS, IntPtr.Zero);
+            Bass.BASS_SetDevice(device_index);
+            string workingDirectory = Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+            string File = projectDirectory + "\\Resources\\OutputBeep.wav";
             int stream = Bass.BASS_StreamCreateFile(File, 0, Properties.Resources.OutputBeep.Length, BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_PRESCAN);
             Bass.BASS_ChannelSetDevice(stream, comboBoxAudioOutput.SelectedIndex + 2);
             if (stream != 0)
                 Bass.BASS_ChannelPlay(stream, true);
+        }
+
+        private int GetDeviceIndex(string devicename)
+        {
+            var devices = Bass.BASS_GetDeviceInfos();
+            int device_index = 0;
+            foreach (BASS_DEVICEINFO device in devices)
+            {
+                if (device.name == devicename)
+                    return device_index;
+                else
+                    device_index++;
+            }
+            return -1;
+        }
+
+        private int GetRecordIndex(string devicename)
+        {
+            var devices = Bass.BASS_RecordGetDeviceInfos();
+            int device_index = 0;
+            foreach (BASS_DEVICEINFO device in devices)
+            {
+                if (device.name == devicename)
+                    return device_index;
+                else
+                    device_index++;
+            }
+            return -1;
         }
 
         private void ReleaseBass() //Completely releases ManagedBass streams and channels
@@ -610,5 +646,12 @@ namespace RSI_X_Desktop.forms
             oldResolution = null;
             oldIndexResolution = 3; //360p        
     }
+
+        private void materialShowTabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MicTestBtn.Text = "Test";
+            ReleaseBass();
+            IsAudioTest = false;
+        }
     }
 }
