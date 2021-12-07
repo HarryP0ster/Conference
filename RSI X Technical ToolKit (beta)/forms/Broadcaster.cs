@@ -284,7 +284,7 @@ namespace RSI_X_Desktop
             for (int ind = 0; ind < itterations; ind++)
             {
                 StreamLayout.ColumnStyles[1].Width = StreamLayout.ColumnStyles[1].Width - offset_x;
-                streamsTable.Size = new Size(streamsTable.Size.Width - offset_x, streamsTable.Size.Height);
+                //streamsTable.Size = new Size(streamsTable.Size.Width - offset_x, streamsTable.Size.Height);
                 //Thread.Sleep(1);
             }
             streamsTable.ResumeLayout();

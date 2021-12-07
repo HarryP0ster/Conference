@@ -212,32 +212,35 @@ namespace RSI_X_Desktop.forms
 
         internal void Chat_SizeChanged(object sender, EventArgs e) //Actually Updates chat wnd
         {
-            Control prev_ctr = null;
-            ((Control)sender).Controls.Clear();
-            int ind;
-
-            if (((Control)sender) == PGeneral)
-                ind = (int)PANEL.GENERAL;
-            else if (((Control)sender) == PSupport)
-                ind = (int)PANEL.SUPPORT;
-            else
-                return;
-
-            var controls = messages_list[ind].ToArray();
-
-
-            for (int i = messages_list[ind].Count - 1 - scroll_offset[ind]; i >= 0; i--)
+            if (Visible)
             {
-                if (prev_ctr != null)
-                    controls[i].Location = new Point(controls[i].Location.X, prev_ctr.Location.Y - controls[i].Height);
-                else
-                    controls[i].Location = new Point(controls[i].Location.X, ((Control)sender).Height - controls[i].Height - 5);
+                Control prev_ctr = null;
+                ((Control)sender).Controls.Clear();
+                int ind;
 
-                prev_ctr = controls[i];
-                
-                ((Control)sender).Controls.Add(controls[i]);
-                ((Control)sender).Controls[((Control)sender).Controls.Count - 1].Update();
-                if (controls[i].Location.Y > ((Control)sender).Height || controls[i].Location.Y < 0) return;
+                if (((Control)sender) == PGeneral)
+                    ind = (int)PANEL.GENERAL;
+                else if (((Control)sender) == PSupport)
+                    ind = (int)PANEL.SUPPORT;
+                else
+                    return;
+
+                var controls = messages_list[ind].ToArray();
+
+
+                for (int i = messages_list[ind].Count - 1 - scroll_offset[ind]; i >= 0; i--)
+                {
+                    if (prev_ctr != null)
+                        controls[i].Location = new Point(controls[i].Location.X, prev_ctr.Location.Y - controls[i].Height);
+                    else
+                        controls[i].Location = new Point(controls[i].Location.X, ((Control)sender).Height - controls[i].Height - 5);
+
+                    prev_ctr = controls[i];
+
+                    ((Control)sender).Controls.Add(controls[i]);
+                    ((Control)sender).Controls[((Control)sender).Controls.Count - 1].Update();
+                    if (controls[i].Location.Y > ((Control)sender).Height || controls[i].Location.Y < 0) return;
+                }
             }
         }
 
@@ -283,6 +286,11 @@ namespace RSI_X_Desktop.forms
                 scroll_offset[0] = 0;
                 Chat_SizeChanged(PGeneral, new EventArgs());
             }
+        }
+        private void materialShowTabControl1_VisibleChanged(object sender, EventArgs e)
+        {
+            PGeneral.Refresh();
+            PSupport.Refresh();
         }
     }
 }

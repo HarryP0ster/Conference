@@ -482,6 +482,7 @@ namespace RSI_X_Desktop.forms
             this.materialShowTabControl1.SelectedIndex = 0;
             this.materialShowTabControl1.Size = new System.Drawing.Size(620, 864);
             this.materialShowTabControl1.TabIndex = 5;
+            this.materialShowTabControl1.VisibleChanged += new System.EventHandler(this.materialShowTabControl1_VisibleChanged);
             // 
             // ChatWnd
             // 
