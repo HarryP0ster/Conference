@@ -569,11 +569,11 @@ namespace RSI_X_Desktop.forms
             int speaker_index = GetDeviceIndex(playback_device);
             int microphone_index = GetRecordIndex(recording_device);
 
-            Bass.BASS_RecordInit(-1);
+            Bass.BASS_RecordInit(microphone_index);
             Bass.BASS_Init(speaker_index, 44100, BASSInit.BASS_DEVICE_SPEAKERS, IntPtr.Zero);
             output = Bass.BASS_StreamCreate(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, BASSStreamProc.STREAMPROC_PUSH);
             Bass.BASS_ChannelSetDevice(output, speaker_index);
-            Bass.BASS_ChannelSetDevice(input, -1);
+            Bass.BASS_ChannelSetDevice(input, microphone_index);
 
             input = Bass.BASS_RecordStart(44100, 1, BASSFlag.BASS_STREAM_AUTOFREE, RECORDPROC, IntPtr.Zero);
             GC.Collect();
