@@ -112,6 +112,8 @@ namespace RSI_X_Desktop
 
         private void Init()
         {
+            Un4seen.Bass.BassNet.Registration("rhenrhee@gmail.com", "2X37312318152222");
+
             AgoraObject.Rtc.EnableVideo();
             AgoraObject.Rtc.EnableAudio();
             AgoraObject.Rtc.EnableLocalVideo(true);
