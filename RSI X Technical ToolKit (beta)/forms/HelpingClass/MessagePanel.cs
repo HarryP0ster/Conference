@@ -41,7 +41,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             RowStyles.Add(new RowStyle(SizeType.Absolute, 25));
             RowStyles.Add(new RowStyle(SizeType.AutoSize, 100));
 
-            Date = new Label();
+            //Date = new Label();
 
             if (sender == MyOwn)
             {
@@ -68,6 +68,9 @@ namespace RSI_X_Desktop.forms.HelpingClass
                 Name = "Right";
                 Controls.Add(labelR, 1, 1);
                 Controls.Add(Sender, 1, 0);
+                labelR.SuspendLayout();
+                labelR.Enabled = false;
+                Sender.SuspendLayout();
             }
             else
             {
@@ -89,6 +92,9 @@ namespace RSI_X_Desktop.forms.HelpingClass
                 Name = "Left";
                 Controls.Add(labelL, 0, 1);
                 Controls.Add(Sender, 0, 0);
+                labelL.SuspendLayout();
+                labelL.Enabled = false;
+                Sender.SuspendLayout();
             }
         }
 
