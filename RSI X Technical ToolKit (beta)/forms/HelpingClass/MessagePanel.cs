@@ -53,6 +53,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
                 labelR.SizeAutoW = true;
                 labelR.SizeAutoH = true;
                 labelR.SizeChanged += Bubble_SizeChanged;
+                labelR.Margin = new Padding(0, 0, 13, 0);
                 Sender.TextAlign = ContentAlignment.BottomRight;
 
                 if (text.Length > 0) labelR.Text += text[0];

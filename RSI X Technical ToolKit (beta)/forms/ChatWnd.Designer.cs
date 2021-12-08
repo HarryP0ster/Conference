@@ -37,6 +37,9 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.toTheESP = new ReaLTaiizor.Controls.SkyButton();
             this.toTheBSP = new ReaLTaiizor.Controls.SkyButton();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.ScrollPanel = new System.Windows.Forms.Panel();
+            this.SupportScroll = new ReaLTaiizor.Controls.PoisonScrollBar();
             this.PSupport = new ReaLTaiizor.Controls.Panel();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -46,16 +49,23 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.toTheEG = new ReaLTaiizor.Controls.SkyButton();
             this.toTheBG = new ReaLTaiizor.Controls.SkyButton();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.PGeneral = new ReaLTaiizor.Controls.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.GeneralScroll = new ReaLTaiizor.Controls.PoisonScrollBar();
             this.materialShowTabControl1 = new ReaLTaiizor.Controls.MaterialShowTabControl();
             this.tabPageSupport.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
+            this.ScrollPanel.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel8.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.materialShowTabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -156,7 +166,7 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.toTheESP, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.toTheBSP, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.PSupport, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel7, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -249,17 +259,62 @@ namespace RSI_X_Desktop.forms
             this.toTheBSP.Visible = false;
             this.toTheBSP.Click += new System.EventHandler(this.toTheBSP_Click);
             // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 2;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 95F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            this.tableLayoutPanel7.Controls.Add(this.ScrollPanel, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.PSupport, 0, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 40);
+            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 1;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(377, 384);
+            this.tableLayoutPanel7.TabIndex = 2;
+            // 
+            // ScrollPanel
+            // 
+            this.ScrollPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            this.ScrollPanel.Controls.Add(this.SupportScroll);
+            this.ScrollPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ScrollPanel.Location = new System.Drawing.Point(358, 0);
+            this.ScrollPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.ScrollPanel.Name = "ScrollPanel";
+            this.ScrollPanel.Size = new System.Drawing.Size(19, 384);
+            this.ScrollPanel.TabIndex = 0;
+            // 
+            // SupportScroll
+            // 
+            this.SupportScroll.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SupportScroll.LargeChange = 1;
+            this.SupportScroll.Location = new System.Drawing.Point(0, 0);
+            this.SupportScroll.Maximum = 1;
+            this.SupportScroll.Minimum = 0;
+            this.SupportScroll.MouseWheelBarPartitions = 1;
+            this.SupportScroll.Name = "SupportScroll";
+            this.SupportScroll.Orientation = ReaLTaiizor.Enum.Poison.ScrollOrientationType.Vertical;
+            this.SupportScroll.ScrollbarSize = 19;
+            this.SupportScroll.Size = new System.Drawing.Size(19, 384);
+            this.SupportScroll.TabIndex = 0;
+            this.SupportScroll.Text = "poisonScrollBar1";
+            this.SupportScroll.UseSelectable = true;
+            this.SupportScroll.ValueChanged += new ReaLTaiizor.Controls.PoisonScrollBar.ScrollValueChangedDelegate(this.SupportScroll_ValueChanged);
+            // 
             // PSupport
             // 
             this.PSupport.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.PSupport.Cursor = System.Windows.Forms.Cursors.Default;
             this.PSupport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PSupport.EdgeColor = System.Drawing.SystemColors.Control;
-            this.PSupport.Location = new System.Drawing.Point(0, 40);
+            this.PSupport.Location = new System.Drawing.Point(0, 0);
             this.PSupport.Margin = new System.Windows.Forms.Padding(0);
             this.PSupport.Name = "PSupport";
             this.PSupport.Padding = new System.Windows.Forms.Padding(5);
-            this.PSupport.Size = new System.Drawing.Size(377, 384);
+            this.PSupport.Size = new System.Drawing.Size(358, 384);
             this.PSupport.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.PSupport.TabIndex = 3;
             this.PSupport.Text = "panel3";
@@ -359,7 +414,7 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.toTheEG, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.toTheBG, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.PGeneral, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel8, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -452,20 +507,63 @@ namespace RSI_X_Desktop.forms
             this.toTheBG.Visible = false;
             this.toTheBG.Click += new System.EventHandler(this.skyButton1_Click);
             // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.ColumnCount = 2;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 95F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            this.tableLayoutPanel8.Controls.Add(this.PGeneral, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.panel1, 1, 0);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 43);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 1;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(371, 378);
+            this.tableLayoutPanel8.TabIndex = 6;
+            // 
             // PGeneral
             // 
             this.PGeneral.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.PGeneral.Cursor = System.Windows.Forms.Cursors.Default;
             this.PGeneral.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PGeneral.EdgeColor = System.Drawing.SystemColors.Control;
-            this.PGeneral.Location = new System.Drawing.Point(0, 40);
+            this.PGeneral.Location = new System.Drawing.Point(0, 0);
             this.PGeneral.Margin = new System.Windows.Forms.Padding(0);
             this.PGeneral.Name = "PGeneral";
             this.PGeneral.Padding = new System.Windows.Forms.Padding(8, 9, 8, 9);
-            this.PGeneral.Size = new System.Drawing.Size(377, 384);
+            this.PGeneral.Size = new System.Drawing.Size(352, 378);
             this.PGeneral.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.PGeneral.TabIndex = 3;
             this.PGeneral.Text = "panel2";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            this.panel1.Controls.Add(this.GeneralScroll);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(352, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(19, 378);
+            this.panel1.TabIndex = 4;
+            // 
+            // GeneralScroll
+            // 
+            this.GeneralScroll.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GeneralScroll.LargeChange = 1;
+            this.GeneralScroll.Location = new System.Drawing.Point(0, 0);
+            this.GeneralScroll.Maximum = 1;
+            this.GeneralScroll.Minimum = 0;
+            this.GeneralScroll.MouseWheelBarPartitions = 1;
+            this.GeneralScroll.Name = "GeneralScroll";
+            this.GeneralScroll.Orientation = ReaLTaiizor.Enum.Poison.ScrollOrientationType.Vertical;
+            this.GeneralScroll.ScrollbarSize = 19;
+            this.GeneralScroll.Size = new System.Drawing.Size(19, 378);
+            this.GeneralScroll.TabIndex = 0;
+            this.GeneralScroll.Text = "poisonScrollBar1";
+            this.GeneralScroll.UseSelectable = true;
+            this.GeneralScroll.ValueChanged += new ReaLTaiizor.Controls.PoisonScrollBar.ScrollValueChangedDelegate(this.GeneralScroll_ValueChanged);
             // 
             // materialShowTabControl1
             // 
@@ -505,10 +603,14 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel7.ResumeLayout(false);
+            this.ScrollPanel.ResumeLayout(false);
             this.tabPageGeneral.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel8.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.materialShowTabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -518,7 +620,6 @@ namespace RSI_X_Desktop.forms
 
         private System.Windows.Forms.TabPage tabPageSupport;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private ReaLTaiizor.Controls.Panel PSupport;
         private System.Windows.Forms.TabPage tabPageGeneral;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private ReaLTaiizor.Controls.Panel PGeneral;
@@ -537,5 +638,12 @@ namespace RSI_X_Desktop.forms
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private ReaLTaiizor.Controls.ChatButtonRight chatButtonRight2;
         private ReaLTaiizor.Controls.BigTextBox bigTextBox2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.Panel ScrollPanel;
+        private ReaLTaiizor.Controls.PoisonScrollBar SupportScroll;
+        private ReaLTaiizor.Controls.Panel PSupport;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
+        private System.Windows.Forms.Panel panel1;
+        private ReaLTaiizor.Controls.PoisonScrollBar GeneralScroll;
     }
 }
