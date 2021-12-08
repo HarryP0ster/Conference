@@ -70,14 +70,14 @@ namespace RSI_X_Desktop.forms
         {
             if (e.Delta > 0)
             {
-                if (scroll_offset[materialShowTabControl1.SelectedIndex] + 1 <= chat_scrolls[materialShowTabControl1.SelectedIndex].Maximum)
+                if (scroll_offset[materialShowTabControl1.SelectedIndex] + 1 <= chat_scrolls[materialShowTabControl1.SelectedIndex].Maximum && ScrollEnabled[materialShowTabControl1.SelectedIndex])
                     scroll_offset[materialShowTabControl1.SelectedIndex]++;
                 else
                     return;
             }
             else
             {
-                if (scroll_offset[materialShowTabControl1.SelectedIndex] - 1 >= 0)
+                if (scroll_offset[materialShowTabControl1.SelectedIndex] - 1 >= 0 && ScrollEnabled[materialShowTabControl1.SelectedIndex])
                     scroll_offset[materialShowTabControl1.SelectedIndex]--;
                 else
                     return;
