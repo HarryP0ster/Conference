@@ -281,11 +281,7 @@ namespace RSI_X_Desktop.forms
 
         private void skyButton2_Click(object sender, EventArgs e)
         {
-            if (scroll_offset[0] != 0)
-            {
-                scroll_offset[0] = 0;
-                Chat_SizeChanged(PGeneral, new EventArgs());
-            }
+
         }
         private void materialShowTabControl1_VisibleChanged(object sender, EventArgs e)
         {
