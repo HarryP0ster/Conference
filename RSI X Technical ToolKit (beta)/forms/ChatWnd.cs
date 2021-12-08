@@ -307,9 +307,9 @@ namespace RSI_X_Desktop.forms
         private void materialShowTabControl1_VisibleChanged(object sender, EventArgs e)
         {
             if (!Visible)
-                SuspendLayout();
+                (sender as Control).SuspendLayout();
             else
-                ResumeLayout();
+                (sender as Control).ResumeLayout();
         }
 
         private void SupportScroll_ValueChanged(object sender, int newValue)
@@ -322,6 +322,21 @@ namespace RSI_X_Desktop.forms
         {
             scroll_offset[0] = GeneralScroll.Maximum - newValue;
             Chat_SizeChanged(PGeneral, new EventArgs());
+        }
+
+        private void materialShowTabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (materialShowTabControl1.SelectedIndex)
+            {
+                case (int)PANEL.GENERAL:
+                    Chat_SizeChanged(PGeneral, new EventArgs());
+                    GC.Collect();
+                    break;
+                case (int)PANEL.SUPPORT:
+                    Chat_SizeChanged(PSupport, new EventArgs());
+                    GC.Collect();
+                    break;
+            }
         }
     }
 }
