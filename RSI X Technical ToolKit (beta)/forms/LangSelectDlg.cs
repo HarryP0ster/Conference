@@ -121,5 +121,10 @@ namespace RSI_X_Desktop.forms
             AgoraObject.MuteLocalVideoStream(!CheckBoxCam.Checked);
             Dispose();
         }
+
+        private void BClose_MouseMove(object sender, MouseEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }

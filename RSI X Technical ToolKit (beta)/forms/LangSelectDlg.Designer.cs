@@ -80,6 +80,7 @@
             this.BClose.Size = new System.Drawing.Size(23, 22);
             this.BClose.TabIndex = 101;
             this.BClose.Text = "dungeonControlBox1";
+            this.BClose.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BClose_MouseMove);
             // 
             // tableLayoutPanel1
             // 

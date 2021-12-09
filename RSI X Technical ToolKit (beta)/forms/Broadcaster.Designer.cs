@@ -40,9 +40,9 @@ namespace RSI_X_Desktop
             this.labelMicrophone = new System.Windows.Forms.Label();
             this.labelVideo = new System.Windows.Forms.Label();
             this.labelVolume = new System.Windows.Forms.Label();
-            this.labelScreenShare = new System.Windows.Forms.Label();
             this.labelFloor = new System.Windows.Forms.Label();
             this.cmblang = new ReaLTaiizor.Controls.MaterialComboBox();
+            this.labelScreenShare = new System.Windows.Forms.Label();
             this.PanelTop = new ReaLTaiizor.Controls.LostPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.CloseButton = new ReaLTaiizor.Controls.Button();
@@ -163,7 +163,7 @@ namespace RSI_X_Desktop
             this.trackBar1.EmptyBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.trackBar1.FillBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(104)))));
             this.trackBar1.JumpToMouse = true;
-            this.trackBar1.Location = new System.Drawing.Point(482, 24);
+            this.trackBar1.Location = new System.Drawing.Point(397, 24);
             this.trackBar1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.trackBar1.Maximum = 100;
             this.trackBar1.Minimum = 0;
@@ -185,10 +185,10 @@ namespace RSI_X_Desktop
             this.labelChat.AutoSize = true;
             this.labelChat.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelChat.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelChat.Location = new System.Drawing.Point(1205, 17);
+            this.labelChat.Location = new System.Drawing.Point(1216, 21);
             this.labelChat.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelChat.Name = "labelChat";
-            this.labelChat.Size = new System.Drawing.Size(63, 36);
+            this.labelChat.Size = new System.Drawing.Size(52, 29);
             this.labelChat.TabIndex = 15;
             this.labelChat.Text = "CHAT";
             this.labelChat.Click += new System.EventHandler(this.labelChat_Click);
@@ -199,10 +199,10 @@ namespace RSI_X_Desktop
             this.labelSettings.AutoSize = true;
             this.labelSettings.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelSettings.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelSettings.Location = new System.Drawing.Point(4, 17);
+            this.labelSettings.Location = new System.Drawing.Point(4, 21);
             this.labelSettings.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSettings.Name = "labelSettings";
-            this.labelSettings.Size = new System.Drawing.Size(107, 36);
+            this.labelSettings.Size = new System.Drawing.Size(87, 29);
             this.labelSettings.TabIndex = 16;
             this.labelSettings.Text = "SETTINGS";
             this.labelSettings.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -214,10 +214,10 @@ namespace RSI_X_Desktop
             this.labelMicrophone.AutoSize = true;
             this.labelMicrophone.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelMicrophone.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelMicrophone.Location = new System.Drawing.Point(119, 17);
+            this.labelMicrophone.Location = new System.Drawing.Point(99, 21);
             this.labelMicrophone.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelMicrophone.Name = "labelMicrophone";
-            this.labelMicrophone.Size = new System.Drawing.Size(142, 36);
+            this.labelMicrophone.Size = new System.Drawing.Size(114, 29);
             this.labelMicrophone.TabIndex = 17;
             this.labelMicrophone.Text = "MICROPHONE";
             this.labelMicrophone.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -229,10 +229,10 @@ namespace RSI_X_Desktop
             this.labelVideo.AutoSize = true;
             this.labelVideo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelVideo.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelVideo.Location = new System.Drawing.Point(269, 17);
+            this.labelVideo.Location = new System.Drawing.Point(221, 21);
             this.labelVideo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelVideo.Name = "labelVideo";
-            this.labelVideo.Size = new System.Drawing.Size(106, 36);
+            this.labelVideo.Size = new System.Drawing.Size(86, 29);
             this.labelVideo.TabIndex = 18;
             this.labelVideo.Text = "  CAMERA";
             this.labelVideo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -244,29 +244,15 @@ namespace RSI_X_Desktop
             this.labelVolume.AutoSize = true;
             this.labelVolume.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelVolume.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelVolume.Location = new System.Drawing.Point(383, 17);
+            this.labelVolume.Location = new System.Drawing.Point(315, 21);
             this.labelVolume.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelVolume.Name = "labelVolume";
-            this.labelVolume.Size = new System.Drawing.Size(91, 36);
+            this.labelVolume.Size = new System.Drawing.Size(74, 29);
             this.labelVolume.TabIndex = 19;
             this.labelVolume.Text = "VOLUME";
             this.labelVolume.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.labelVolume.Visible = false;
             this.labelVolume.Click += new System.EventHandler(this.labelVolume_Click);
-            // 
-            // labelScreenShare
-            // 
-            this.labelScreenShare.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.labelScreenShare.AutoSize = true;
-            this.labelScreenShare.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelScreenShare.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelScreenShare.Location = new System.Drawing.Point(1038, 17);
-            this.labelScreenShare.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelScreenShare.Name = "labelScreenShare";
-            this.labelScreenShare.Size = new System.Drawing.Size(159, 36);
-            this.labelScreenShare.TabIndex = 20;
-            this.labelScreenShare.Text = "SCREEN SHARE";
-            this.labelScreenShare.Click += new System.EventHandler(this.btnScreenShare_Click);
             // 
             // labelFloor
             // 
@@ -274,9 +260,9 @@ namespace RSI_X_Desktop
             this.labelFloor.AutoSize = true;
             this.labelFloor.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelFloor.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFloor.Location = new System.Drawing.Point(855, 17);
+            this.labelFloor.Location = new System.Drawing.Point(909, 21);
             this.labelFloor.Name = "labelFloor";
-            this.labelFloor.Size = new System.Drawing.Size(77, 36);
+            this.labelFloor.Size = new System.Drawing.Size(64, 29);
             this.labelFloor.TabIndex = 12;
             this.labelFloor.Text = "FLOOR";
             this.labelFloor.Click += new System.EventHandler(this.label1_Click);
@@ -297,7 +283,7 @@ namespace RSI_X_Desktop
             this.cmblang.FormattingEnabled = true;
             this.cmblang.IntegralHeight = false;
             this.cmblang.ItemHeight = 43;
-            this.cmblang.Location = new System.Drawing.Point(938, 10);
+            this.cmblang.Location = new System.Drawing.Point(979, 11);
             this.cmblang.MaxDropDownItems = 4;
             this.cmblang.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
             this.cmblang.Name = "cmblang";
@@ -305,6 +291,20 @@ namespace RSI_X_Desktop
             this.cmblang.StartIndex = 0;
             this.cmblang.TabIndex = 11;
             this.cmblang.SelectedIndexChanged += new System.EventHandler(this.cmblang_SelectedIndexChanged);
+            // 
+            // labelScreenShare
+            // 
+            this.labelScreenShare.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.labelScreenShare.AutoSize = true;
+            this.labelScreenShare.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelScreenShare.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelScreenShare.Location = new System.Drawing.Point(1079, 21);
+            this.labelScreenShare.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelScreenShare.Name = "labelScreenShare";
+            this.labelScreenShare.Size = new System.Drawing.Size(129, 29);
+            this.labelScreenShare.TabIndex = 20;
+            this.labelScreenShare.Text = "SCREEN SHARE";
+            this.labelScreenShare.Click += new System.EventHandler(this.btnScreenShare_Click);
             // 
             // PanelTop
             // 
@@ -429,7 +429,7 @@ namespace RSI_X_Desktop
             this.RoomNameLabel.Location = new System.Drawing.Point(140, 0);
             this.RoomNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.RoomNameLabel.Name = "RoomNameLabel";
-            this.RoomNameLabel.Size = new System.Drawing.Size(167, 69);
+            this.RoomNameLabel.Size = new System.Drawing.Size(134, 69);
             this.RoomNameLabel.TabIndex = 3;
             this.RoomNameLabel.Text = "RoomName";
             this.RoomNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -515,6 +515,7 @@ namespace RSI_X_Desktop
             this.nightControlBox1.Size = new System.Drawing.Size(139, 31);
             this.nightControlBox1.TabIndex = 94;
             this.nightControlBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.nightControlBox1_MouseClick);
+            this.nightControlBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.nightControlBox1_MouseMove);
             // 
             // Broadcaster
             // 

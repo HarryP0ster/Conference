@@ -113,5 +113,10 @@ namespace RSI_X_Desktop.forms
             if (e.KeyCode == Keys.Enter)
                 JoinButton_Click(JoinButton, new());
         }
+
+        private void controlBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }

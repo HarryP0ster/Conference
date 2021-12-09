@@ -721,5 +721,10 @@ namespace RSI_X_Desktop
             TargetPublisher?.Kill();
             TargetPublisher = null;
         }
+
+        private void nightControlBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }
