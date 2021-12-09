@@ -23,7 +23,7 @@ namespace RSI_X_Desktop.forms
         const int leters_limit = 35;
         int DefPanelWidth = 100;
         const int TAB_COUNT = 2;
-        int[] scroll_offset = new int[TAB_COUNT + 2];
+        int[] scroll_offset = new int[TAB_COUNT * 2];
         List<Control>[] messages_list = new List<Control>[TAB_COUNT];
         bool[] ScrollEnabled = new bool[2];
         ReaLTaiizor.Controls.PoisonScrollBar[] chat_scrolls = new ReaLTaiizor.Controls.PoisonScrollBar[2];
@@ -273,37 +273,6 @@ namespace RSI_X_Desktop.forms
             chatButtonRight3.Visible = state;
         }
 
-        private void toTheESP_Click(object sender, EventArgs e)
-        {
-            if (scroll_offset[1] != 0)
-            {
-                scroll_offset[1] = 0;
-                Chat_SizeChanged(PSupport, new EventArgs());
-            }
-        }
-
-        private void toTheBSP_Click(object sender, EventArgs e)
-        {
-            if (scroll_offset[1] != messages_list[1].Count - 1)
-            {
-                scroll_offset[1] = messages_list[1].Count - 1;
-                Chat_SizeChanged(PSupport, new EventArgs());
-            }
-        }
-
-        private void skyButton1_Click(object sender, EventArgs e)
-        {
-            if (scroll_offset[0] != messages_list[0].Count - 1)
-            {
-                scroll_offset[0] = messages_list[0].Count - 1;
-                Chat_SizeChanged(PGeneral, new EventArgs());
-            }
-        }
-
-        private void skyButton2_Click(object sender, EventArgs e)
-        {
-
-        }
         private void materialShowTabControl1_VisibleChanged(object sender, EventArgs e)
         {
             if (!Visible)
