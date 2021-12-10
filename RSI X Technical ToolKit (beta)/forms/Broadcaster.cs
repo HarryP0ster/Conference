@@ -153,11 +153,10 @@ namespace RSI_X_Desktop
             chat.Hide(); //You need to hide it, otherwise Animator'd get confused
         }
 
-
         public void SetLocalVideoPreview()
         {
             AgoraObject.Rtc.EnableLocalVideo(true);
-            pictureBoxLocalVideo.Refresh();
+            pictureBoxLocalVideo.Update();
 
             var canv = new VideoCanvas((ulong)LocalWinId, 0);
             canv.renderMode = ((int)RENDER_MODE_TYPE.RENDER_MODE_FIT);
@@ -255,7 +254,7 @@ namespace RSI_X_Desktop
             {
                 AgoraObject.StopScreenCapture();
                 labelScreenShare.ForeColor = Color.White;
-                pictureBoxLocalVideo.Refresh();
+                pictureBoxLocalVideo.Update();
 
                 Devices.tryReAcceptVideoDevice();
             }
@@ -463,15 +462,21 @@ namespace RSI_X_Desktop
 
             enableScreenShare(false);
             stopPublishToTarget();
+            
             AgoraObject.LeaveHostChannel();
             AgoraObject.Rtc.LeaveChannel();
             AgoraObject.Rtc.EnableLocalVideo(false);
             AgoraObject.Rtc.DisableVideo();
             AgoraObject.Rtc.DisableAudio();
-            if (!Owner.Visible) Application.Exit();
 
+            if (ImageSender.IsEnable)
+                ImageSender.EnableImageSender(false);
+            ImageSender.Dispose();
+            
             Devices.ClearOldDevices();
             Devices.Clear();
+            
+            if (!Owner.Visible) Application.Exit();
             GC.Collect();
         }
 
@@ -644,7 +649,7 @@ namespace RSI_X_Desktop
                 startPublishToTarget(l);
             }
         }
-        private void label1_Click(object sender, EventArgs e)
+        private void labelFloor_Click(object sender, EventArgs e)
         {
             getAudioFrom = getAudioFrom == STATE.FLOOR ?
                 STATE.TRANSl : STATE.FLOOR;

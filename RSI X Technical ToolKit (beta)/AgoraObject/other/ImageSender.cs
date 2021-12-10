@@ -11,11 +11,13 @@ namespace RSI_X_Desktop
     internal class ImageSender
     {
         private static Timer timer;
-        private static ExternalVideoFrame VideoFrame = new();
-        private static bool isEnable = false;
-        private static int fps = 15;
         private static Bitmap frame = null;
         private static Broadcaster WorkForm;
+
+        private static ExternalVideoFrame VideoFrame = new();
+        private static bool isEnable = false;
+        private static bool isJoin = false;
+        private static int fps = 15;
         public static bool IsEnable { get { return isEnable; } }
         public static Bitmap GetFrame { get { return frame; } }
         static ImageSender() 
@@ -87,12 +89,9 @@ namespace RSI_X_Desktop
             
             DebugWriter.WriteTime("load complete");
         }
-        private static bool isJoin = false;
-        private static bool Callback = false;
         public static void EnableImageSender(bool enable) 
         {
-            Callback = true;
-            isJoin = AgoraObject.IsJoin;
+            isJoin = AgoraObject.ChannelHostJoin;
 
             AgoraObject.LeaveHostChannel();
             isEnable = enable;
@@ -110,15 +109,9 @@ namespace RSI_X_Desktop
                 timer.Dispose();
                 GC.Collect();
             }
-        }
-        public static void Rejoin() 
-        {
-            if (!Callback) return;
 
             AgoraObject.Rtc.SetExternalVideoSource(isEnable, true);
             if (isJoin) AgoraObject.JoinChannelHost();
-
-            Callback = true;
         }
         public static void SendOneFrame()
         {
@@ -131,7 +124,15 @@ namespace RSI_X_Desktop
                 SendOneFrame();
             //DebugLogger.Write(e.SignalTime.ToString("ss:ff"));
         }
+        public static void Dispose()
+        {
+            timer?.Dispose();
+            frame?.Dispose();
 
+            WorkForm = null;
+            timer = null;
+            frame = null;
+        }
         internal static void SetLocalFrame(bool clear=false)
         {
             if (false == clear)

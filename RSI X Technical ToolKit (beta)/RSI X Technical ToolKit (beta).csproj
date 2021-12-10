@@ -41,6 +41,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="forms\Новая папка\**" />
+    <EmbeddedResource Remove="forms\Новая папка\**" />
+    <None Remove="forms\Новая папка\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="X-tractor.cs" />
     <Compile Remove="X-tractor.Designer.cs" />
   </ItemGroup>
@@ -290,10 +296,6 @@
     <None Update="Resources\OutputBeep.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="forms\Новая папка\" />
   </ItemGroup>
 
 </Project>

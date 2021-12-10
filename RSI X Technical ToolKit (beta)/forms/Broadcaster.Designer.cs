@@ -265,7 +265,7 @@ namespace RSI_X_Desktop
             this.labelFloor.Size = new System.Drawing.Size(64, 29);
             this.labelFloor.TabIndex = 12;
             this.labelFloor.Text = "FLOOR";
-            this.labelFloor.Click += new System.EventHandler(this.label1_Click);
+            this.labelFloor.Click += new System.EventHandler(this.labelFloor_Click);
             // 
             // cmblang
             // 

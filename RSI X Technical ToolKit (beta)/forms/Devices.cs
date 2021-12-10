@@ -18,10 +18,13 @@ namespace RSI_X_Desktop.forms
 {
     public partial class Devices : Form
     {
-        private static Devices _instance;
+        [DllImport("winmm.dll")]
+        public static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume); //Контроль громкости
+
         private static readonly Color InactiveColor = Color.White;
         private static readonly Color PushColor = Color.BurlyWood;
 
+        #region Resolutions
         public static readonly Dictionary<string, VIDEO_PROFILE_TYPE> resolutions = new()
         {
             [" 120 * 120 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_120P_3,
@@ -42,11 +45,11 @@ namespace RSI_X_Desktop.forms
             [" 960 * 720 "] = new(960, 720) { bitrate = 910, frameRate = 15 },
             ["1920 * 1080"] = new(1920, 1080) { bitrate = 2080, frameRate = 15 },
         };
-    
-    [DllImport("winmm.dll")]
-        public static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume); //Контроль громкости
+        #endregion
 
         private IFormHostHolder workForm = AgoraObject.GetWorkForm;
+        private static Devices _instance;
+
         private static AgoraAudioRecordingDeviceManager RecordersManager;
         private static AgoraAudioPlaybackDeviceManager SpeakersManager;
         private static AgoraVideoDeviceManager videoDeviceManager;
@@ -54,6 +57,7 @@ namespace RSI_X_Desktop.forms
         private static List<string> VideoOut;
         private static List<string> Speakers;
 
+        #region oldDevices
         public static int oldVolumeIn {get; private set;}
         public static int oldVolumeOut { get; private set; } = 100;
         public static string oldSpeaker { get; private set; }
@@ -61,6 +65,7 @@ namespace RSI_X_Desktop.forms
         public static string oldVideoOut { get; private set; }
         public static string oldResolution { get; private set; }
         private static int oldIndexResolution = 3; //360p
+        #endregion
 
         private int frames = 0;
         private string playback_device = "";
@@ -70,27 +75,7 @@ namespace RSI_X_Desktop.forms
         private int output;
         private int input;
         private long prebuf;
-        public static void InitManager()
-        {
-            RecordersManager = AgoraObject.Rtc.CreateAudioRecordingDeviceManager();
-            SpeakersManager = AgoraObject.Rtc.CreateAudioPlaybackDeviceManager();
-            videoDeviceManager = AgoraObject.Rtc.CreateVideoDeviceManager();
 
-            Recorders = getListAudioInputDevices();
-            Speakers = getListAudioOutDevices();
-            VideoOut = getListVideoDevices();
-
-            bool hasOldRecorder = Recorders.Any((s) => s == oldRecorder);
-
-            int index = (oldRecorder != null) ?
-                Recorders.FindLastIndex((s) => s == oldRecorder) :
-                index = getActiveAudioInputDevice();
-
-            oldRecorder = Recorders[index];
-
-            oldResolution = resolutions.Keys.ToArray()[oldIndexResolution];
-            UpdateResolution(oldResolution);
-        }
         public Devices()
         {
             InitializeComponent();
@@ -114,74 +99,27 @@ namespace RSI_X_Desktop.forms
 
             getComputerDescription();
         }
-        private void UpdateComboBoxRecorder()
+
+        public static void InitManager()
         {
+            RecordersManager = AgoraObject.Rtc.CreateAudioRecordingDeviceManager();
+            SpeakersManager = AgoraObject.Rtc.CreateAudioPlaybackDeviceManager();
+            videoDeviceManager = AgoraObject.Rtc.CreateVideoDeviceManager();
+
             Recorders = getListAudioInputDevices();
+            Speakers = getListAudioOutDevices();
+            VideoOut = getListVideoDevices();
+
             bool hasOldRecorder = Recorders.Any((s) => s == oldRecorder);
 
-            int index = (oldRecorder != null && hasOldRecorder) ?
+            int index = (oldRecorder != null) ?
                 Recorders.FindLastIndex((s) => s == oldRecorder) :
-                getActiveAudioInputDevice();
-
-            if (index == -1) 
-                index = Recorders.Count > 0 ? 0 : - 1;
-
-            if (index == -1 || Recorders.Count == 0) 
-            {
-                comboBoxAudioInput.DataSource = new List<string> { "Record Devices Error" };
-                return;
-            }
+                index = getActiveAudioInputDevice();
 
             oldRecorder = Recorders[index];
 
-            comboBoxAudioInput.DataSource = Recorders;
-            comboBoxAudioInput.SelectedIndex = index;
-        }
-        private void UpdateComboBoxVideoOut()
-        {
-            VideoOut = getListVideoDevices();
-            bool hasoldVideoOut = VideoOut.Any((s) => s == oldVideoOut);
-
-            int index = (oldVideoOut != null) ?
-                VideoOut.FindLastIndex((s) => s == oldVideoOut) :
-                getActiveVideoDevice();
-
-            if (index == -1)
-                index = VideoOut.Count > 0 ? 0 : -1;
-
-            if (index == -1 || VideoOut.Count == 0)
-            {
-                comboBoxVideo.DataSource = new List<string> { "Video Devices Error" };
-                return;
-            }
-
-
-            oldVideoOut = VideoOut[index];
-            comboBoxVideo.DataSource = VideoOut;
-            comboBoxVideo.SelectedIndex = index;
-        }
-        private void UpdateComboBoxSpeakers()
-        {
-            Speakers = getListAudioOutDevices();
-            bool hasoldSpeaker = Speakers.Any((s) => s == oldSpeaker);
-
-            int index = (oldSpeaker != null) ?
-                Speakers.FindLastIndex((s) => s == oldSpeaker) :
-                getActiveAudioOutputDevice();
-
-            if (index == -1)
-                index = Speakers.Count > 0 ? 0 : -1;
-
-            if (index == -1 || Speakers.Count == 0)
-            {
-                comboBoxAudioOutput.DataSource = new List<string> { "Playback Devices Error" };
-                return;
-            }
-
-
-            oldSpeaker = Speakers[index];
-            comboBoxAudioOutput.DataSource = Speakers;
-            comboBoxAudioOutput.SelectedIndex = index;
+            oldResolution = resolutions.Keys.ToArray()[oldIndexResolution];
+            UpdateResolution(oldResolution);
         }
 
         private void getComputerDescription()
@@ -191,25 +129,6 @@ namespace RSI_X_Desktop.forms
                 "64 Bit операционная система" :
                 "32 Bit операционная система";
             dungeonLabel3.Text = "Пользователь - " + UserName;
-        }
-        public static void ResetVideoDevice()
-        {
-            try
-            {
-                VideoOut = getListVideoDevices();
-                int index = VideoOut.FindLastIndex((s) => s == oldVideoOut);
-                index = index == -1 ? 0 : index;
-
-                videoDeviceManager.GetDeviceInfoByIndex(
-                    index,
-                    out string devName, out string videoID);
-                DebugWriter.WriteTime("update video device");
-                videoDeviceManager.SetCurrentDevice(videoID);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
         private static int getActiveAudioInputDevice()
         {
@@ -314,6 +233,78 @@ namespace RSI_X_Desktop.forms
             }
 
             return devicesOut;
+        }
+        #endregion
+
+        #region UpdateComboBox
+        private void UpdateComboBoxRecorder()
+        {
+            Recorders = getListAudioInputDevices();
+            bool hasOldRecorder = Recorders.Any((s) => s == oldRecorder);
+
+            int index = (oldRecorder != null && hasOldRecorder) ?
+                Recorders.FindLastIndex((s) => s == oldRecorder) :
+                getActiveAudioInputDevice();
+
+            if (index == -1) 
+                index = Recorders.Count > 0 ? 0 : - 1;
+
+            if (index == -1 || Recorders.Count == 0) 
+            {
+                comboBoxAudioInput.DataSource = new List<string> { "Record Devices Error" };
+                return;
+            }
+
+            oldRecorder = Recorders[index];
+
+            comboBoxAudioInput.DataSource = Recorders;
+            comboBoxAudioInput.SelectedIndex = index;
+        }
+        private void UpdateComboBoxVideoOut()
+        {
+            VideoOut = getListVideoDevices();
+            bool hasoldVideoOut = VideoOut.Any((s) => s == oldVideoOut);
+
+            int index = (oldVideoOut != null) ?
+                VideoOut.FindLastIndex((s) => s == oldVideoOut) :
+                getActiveVideoDevice();
+
+            if (index == -1)
+                index = VideoOut.Count > 0 ? 0 : -1;
+
+            if (index == -1 || VideoOut.Count == 0)
+            {
+                comboBoxVideo.DataSource = new List<string> { "Video Devices Error" };
+                return;
+            }
+
+
+            oldVideoOut = VideoOut[index];
+            comboBoxVideo.DataSource = VideoOut;
+            comboBoxVideo.SelectedIndex = index;
+        }
+        private void UpdateComboBoxSpeakers()
+        {
+            Speakers = getListAudioOutDevices();
+            bool hasoldSpeaker = Speakers.Any((s) => s == oldSpeaker);
+
+            int index = (oldSpeaker != null) ?
+                Speakers.FindLastIndex((s) => s == oldSpeaker) :
+                getActiveAudioOutputDevice();
+
+            if (index == -1)
+                index = Speakers.Count > 0 ? 0 : -1;
+
+            if (index == -1 || Speakers.Count == 0)
+            {
+                comboBoxAudioOutput.DataSource = new List<string> { "Playback Devices Error" };
+                return;
+            }
+
+
+            oldSpeaker = Speakers[index];
+            comboBoxAudioOutput.DataSource = Speakers;
+            comboBoxAudioOutput.SelectedIndex = index;
         }
         #endregion
 
@@ -588,6 +579,46 @@ namespace RSI_X_Desktop.forms
         {
             materialShowTabControl1.SelectTab(1);
         }
+        public static void ResetVideoDevice()
+        {
+            try
+            {
+                VideoOut = getListVideoDevices();
+                int index = VideoOut.FindLastIndex((s) => s == oldVideoOut);
+                index = index == -1 ? 0 : index;
+
+                videoDeviceManager.GetDeviceInfoByIndex(
+                    index,
+                    out string devName, out string videoID);
+                DebugWriter.WriteTime("update video device");
+                videoDeviceManager.SetCurrentDevice(videoID);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public static void tryReAcceptVideoDevice() 
+        {
+            try
+            {
+                AcceptNewVideoRecDevice();
+            }
+            catch (Exception e)
+            { 
+                MessageBox.Show(e.Message);
+            }
+        }
+        private static void UpdateResolution(string res)
+        {
+            AgoraObject.Rtc.SetVideoProfile(resolutions[res], false);
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select resolution: {res}");
+
+            if (AgoraObject.IsScreenCapture)
+                AgoraObject.EnableScreenCapture(resolutionsSize[res]);
+
+        }
+
         public static void AcceptAllOldDevices() 
         {
             try
@@ -600,21 +631,6 @@ namespace RSI_X_Desktop.forms
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-        }
-        private static void AcceptNewResolution()
-        {
-            UpdateResolution(oldResolution);
-        }
-        public static void tryReAcceptVideoDevice() 
-        {
-            try
-            {
-                AcceptNewVideoRecDevice();
-            }
-            catch (Exception e)
-            { 
-                MessageBox.Show(e.Message);
             }
         }
         private static void AcceptNewVideoRecDevice()
@@ -644,15 +660,11 @@ namespace RSI_X_Desktop.forms
 
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select recorder: {devName}");
         }
-        private static void UpdateResolution(string res)
+        private static void AcceptNewResolution()
         {
-            AgoraObject.Rtc.SetVideoProfile(resolutions[res], false);
-            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select resolution: {res}");
-
-            if (AgoraObject.IsScreenCapture)
-                AgoraObject.EnableScreenCapture(resolutionsSize[res]);
-
+            UpdateResolution(oldResolution);
         }
+
         public void typeOfAlligment(bool sign)
         {
             if (sign == true)
@@ -682,9 +694,7 @@ namespace RSI_X_Desktop.forms
             oldRecorder = null;
             oldVideoOut = null;
             oldResolution = null;
-            oldIndexResolution = 3; //360p        
-    }
-
-
+            oldIndexResolution = 3; //360p
+        }
     }
 }

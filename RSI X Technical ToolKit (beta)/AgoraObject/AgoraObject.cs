@@ -70,8 +70,8 @@ namespace RSI_X_Desktop
             }
         }
 
-        public static bool m_channelSrcJoin { get; private set; } = false;
-        public static bool m_channelHostJoin { get; private set; } = false;
+        public static bool ChannelSrcJoin { get; private set; } = false;
+        public static bool ChannelHostJoin { get; private set; } = false;
         public static bool IsJoin { get; private set; }
 
         public readonly static System.Text.UTF8Encoding utf8enc = new();
@@ -244,15 +244,15 @@ namespace RSI_X_Desktop
 
             ERROR_CODE ret = m_channelSrc.JoinChannel(token, info, nUID, options);
 
-            m_channelSrcJoin = (0 == ret);
+            ChannelSrcJoin = (0 == ret);
 
             return 0 == ret;
         }
         public static void LeaveSrcChannel()
         {
-            if (m_channelSrcJoin)
+            if (ChannelSrcJoin)
                 m_channelSrc?.LeaveChannel();
-            m_channelSrcJoin = false;
+            ChannelSrcJoin = false;
 
         }
         #endregion
@@ -286,15 +286,15 @@ namespace RSI_X_Desktop
             m_channelHost.Publish();
             m_channelHost.CreateDataStream(out _hostStreamID, true, true);
 
-            m_channelHostJoin = (0 == ret);
+            ChannelHostJoin = (0 == ret);
             return 0 == ret;
         }
         public static void LeaveHostChannel()
         {
-            if (m_channelHostJoin)
+            if (ChannelHostJoin)
                 m_channelHost?.Unpublish();
                 m_channelHost?.LeaveChannel();
-            m_channelHostJoin = false;
+            ChannelHostJoin = false;
         }
         #endregion
 
