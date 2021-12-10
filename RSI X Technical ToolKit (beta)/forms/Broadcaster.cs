@@ -128,7 +128,7 @@ namespace RSI_X_Desktop
             this.DoubleBuffered = true;
             AgoraObject.JoinChannelHost(
                 AgoraObject.GetComplexToken().GetHostName,
-                AgoraObject.GetComplexToken().GetToken, 0, "");
+                AgoraObject.GetComplexToken().GetHostToken, 0, "");
 
             AgoraObject.MuteLocalAudioStream(AgoraObject.IsLocalAudioMute);
             AgoraObject.MuteLocalVideoStream(AgoraObject.IsLocalVideoMute);
@@ -153,6 +153,7 @@ namespace RSI_X_Desktop
             chat.Hide(); //You need to hide it, otherwise Animator'd get confused
         }
 
+
         public void SetLocalVideoPreview()
         {
             AgoraObject.Rtc.EnableLocalVideo(true);
@@ -161,8 +162,28 @@ namespace RSI_X_Desktop
             var canv = new VideoCanvas((ulong)LocalWinId, 0);
             canv.renderMode = ((int)RENDER_MODE_TYPE.RENDER_MODE_FIT);
 
+            ImageSender.SetLocalCanvas(this);
+
             AgoraObject.Rtc.SetupLocalVideo(canv);
             AgoraObject.Rtc.StartPreview();
+        }
+        public void InvokeSetLocalFrame(Bitmap bmp)
+        {
+            if (InvokeRequired)
+                Invoke((MethodInvoker)delegate
+                {
+                    SetLocalFrame(bmp);
+                });
+            else { SetLocalFrame(bmp); }
+
+        }
+        private void SetLocalFrame(Bitmap bmp)
+        {
+            pictureBoxLocalVideo.BackColor = bmp != null ?
+                Color.Black : Color.Silver;
+
+            //pictureBoxRemoteVideo.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBoxLocalVideo.Image = bmp;
         }
         public void RefreshLocalWnd() => pictureBoxLocalVideo.Refresh();
         public void NewBroadcaster(uint uid, UserInfo info) 
@@ -232,7 +253,7 @@ namespace RSI_X_Desktop
             }
             else
             {
-                AgoraObject.StopScreenCaption();
+                AgoraObject.StopScreenCapture();
                 labelScreenShare.ForeColor = Color.White;
                 pictureBoxLocalVideo.Refresh();
 
@@ -324,8 +345,6 @@ namespace RSI_X_Desktop
             GC.Collect();
         }
         public void SetTrackBarVolume(int volume) => trackBar1.Value = volume;
-        
-
         private void labelVolume_Click(object sender, EventArgs e)
         {
             trackBar1.Visible = !trackBar1.Visible;
@@ -333,12 +352,10 @@ namespace RSI_X_Desktop
                 Color.White :
                 Color.Red;
         }
-
         private void labelMicrophone_Click(object sender, EventArgs e)
         {
             MuteMic(!AgoraObject.IsLocalAudioMute);
         }
-
         private void MuteMic(bool mute)
         {
             MuteTargetPublisher(mute);
@@ -348,21 +365,6 @@ namespace RSI_X_Desktop
                 Color.White :
                 Color.Red;
         }
-
-        private void MuteTargetPublisher(bool mute)
-        {
-            var state = mute ?
-                TARGET_MESSAGES.MUTE :
-                TARGET_MESSAGES.UNMUTE;
-            TargetPublisher?.StandardInput
-                .WriteLine(String.Format("msg:{0}", (int)state));
-        }
-
-        private void labelVideo_Click(object sender, EventArgs e)
-        {
-            CamMute(!AgoraObject.IsLocalVideoMute);
-        }
-
         private void CamMute(bool mute)
         {
             AgoraObject.MuteLocalVideoStream(mute);
@@ -387,7 +389,18 @@ namespace RSI_X_Desktop
                 SetLocalVideoPreview();
             }
         }
-
+        private void MuteTargetPublisher(bool mute)
+        {
+            var state = mute ?
+                TARGET_MESSAGES.MUTE :
+                TARGET_MESSAGES.UNMUTE;
+            TargetPublisher?.StandardInput
+                .WriteLine(String.Format("msg:{0}", (int)state));
+        }
+        private void labelVideo_Click(object sender, EventArgs e)
+        {
+            CamMute(!AgoraObject.IsLocalVideoMute);
+        }
         private void labelChat_Click(object sender, EventArgs e)
         {
             labelSettings.ForeColor = Color.White;
@@ -528,7 +541,6 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.SetupRemoteVideo(ret);
             streamsTable.Refresh();
         }
-
         private void RemoveMember(uint uid)
         {
             int index = streamsTable.ColumnCount * streamsTable.RowCount;
@@ -577,7 +589,6 @@ namespace RSI_X_Desktop
             }
             streamsTable.Refresh();
         }
-
         internal void UpdateMember(uint uid)
         {
             if (hostBroadcasters.ContainsKey(uid))
@@ -593,7 +604,6 @@ namespace RSI_X_Desktop
                     hostBroadcasters[uid].Invalidate();
             }
         }
-
         internal void UpdateMember(uint uid, string channelId)
         {
             if (hostBroadcasters.ContainsKey(uid))
@@ -622,6 +632,7 @@ namespace RSI_X_Desktop
             }
         }
         #endregion
+
         private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
         {
             srcLangIndex = cmblang.SelectedIndex;
@@ -633,7 +644,6 @@ namespace RSI_X_Desktop
                 startPublishToTarget(l);
             }
         }
-
         private void label1_Click(object sender, EventArgs e)
         {
             getAudioFrom = getAudioFrom == STATE.FLOOR ?
@@ -702,7 +712,6 @@ namespace RSI_X_Desktop
             TargetPublisher.Start();
             TargetPublisher.BeginOutputReadLine();
         }
-
         private void TargetPublisher_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (e.Data == null ||
@@ -715,13 +724,11 @@ namespace RSI_X_Desktop
             if (selfSpeakerUid != 0)
                 AgoraObject.UpdateUserVolume(selfSpeakerUid, 0, CHANNEL_TYPE.SRC);
         }
-
         private void stopPublishToTarget() 
         {
             TargetPublisher?.Kill();
             TargetPublisher = null;
         }
-
         private void nightControlBox1_MouseMove(object sender, MouseEventArgs e)
         {
             GC.Collect();

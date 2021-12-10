@@ -72,6 +72,8 @@ namespace RSI_X_Desktop
 
         public static bool m_channelSrcJoin { get; private set; } = false;
         public static bool m_channelHostJoin { get; private set; } = false;
+        public static bool IsJoin { get; private set; }
+
         public readonly static System.Text.UTF8Encoding utf8enc = new();
 
         [DllImport("USER32.DLL")]
@@ -99,6 +101,13 @@ namespace RSI_X_Desktop
         { RoomName = name; }
         static public void UpdateClientID(string uid)
         { ClientID = uid; }
+        static public void SetWndEventHandler(IFormHostHolder form)
+        {
+            Rtc.InitEventHandler(new AGEngineEventHandler(form));
+            srcHandler = new AGChannelEventHandler(form, CHANNEL_TYPE.SRC);
+            hostHandler = new AGChannelEventHandler(form, CHANNEL_TYPE.HOST);
+            workForm = form;
+        }
 
         #region token logic
         static public bool JoinRoom(string code)
@@ -108,9 +117,11 @@ namespace RSI_X_Desktop
         }
 
         public static Tokens GetComplexToken() => room;
-        public static string GetHostToken() => room.GetToken;
+
+        public static string GetHostToken() => room.GetHostToken;
         public static string GetHostName() => room.GetHostName;
         #endregion
+
 
         #region Mute local audio/video
         static public ERROR_CODE MuteLocalAudioStream(bool mute)
@@ -169,14 +180,6 @@ namespace RSI_X_Desktop
         }
         #endregion
 
-        static public void SetWndEventHandler(IFormHostHolder form)
-        {
-            Rtc.InitEventHandler(new AGEngineEventHandler(form));
-            srcHandler = new AGChannelEventHandler(form, CHANNEL_TYPE.SRC);
-            hostHandler = new AGChannelEventHandler(form, CHANNEL_TYPE.HOST);
-            workForm = form;
-        }
-
         #region Screen/Window capture
       
         public static bool EnableWindowCapture(HWND index)
@@ -198,7 +201,7 @@ namespace RSI_X_Desktop
         }
         public static bool EnableScreenCapture(ScreenCaptureParameters capParam = new())
         {
-            StopScreenCaption();
+            StopScreenCapture();
             if (capParam.bitrate == 0)
                 capParam = forms.Devices.resolutionsSize[
                     forms.Devices.oldResolution];
@@ -215,7 +218,7 @@ namespace RSI_X_Desktop
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: screen sharing enable ({IsScreenCapture})");
             return IsScreenCapture;
         }
-        public static void StopScreenCaption()
+        public static void StopScreenCapture()
         {
             Rtc.StopScreenCapture();
             IsScreenCapture = false;
@@ -255,6 +258,10 @@ namespace RSI_X_Desktop
         #endregion
 
         #region Channel host
+        internal static void JoinChannelHost()
+        {
+            JoinChannelHost(room.GetHostName, room.GetHostToken, 0, "");
+        }
         public static bool JoinChannelHost(langHolder lh_holder)
         {
             return JoinChannelHost(lh_holder.langFull, lh_holder.token, 0, "");
