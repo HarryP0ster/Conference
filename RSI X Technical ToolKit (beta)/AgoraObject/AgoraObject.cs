@@ -262,9 +262,9 @@ namespace RSI_X_Desktop
         {
             JoinChannelHost(room.GetHostName, room.GetHostToken, 0, "");
         }
-        public static bool JoinChannelHost(langHolder lh_holder)
+        public static bool JoinChannelHost(langHolder lh)
         {
-            return JoinChannelHost(lh_holder.langFull, lh_holder.token, 0, "");
+            return JoinChannelHost(lh.langFull, lh.token, 0, "");
         }
         public static bool JoinChannelHost(string lpChannelName, string token, uint nUID, string info)
         {
@@ -282,6 +282,9 @@ namespace RSI_X_Desktop
             ret = m_channelHost.JoinChannelWithUserAccount(token,
                 NickName,
                 options);
+
+            Rtc.MuteLocalAudioStream(IsLocalAudioMute);
+            Rtc.MuteLocalVideoStream(IsLocalVideoMute);
 
             m_channelHost.Publish();
             m_channelHost.CreateDataStream(out _hostStreamID, true, true);
