@@ -41,6 +41,7 @@ namespace RSI_X_Desktop
 
         private int srcLangIndex = -2;
         private STATE getAudioFrom = STATE.UNDEFINED;
+
         public Broadcaster()
         {
             InitializeComponent();
@@ -237,7 +238,6 @@ namespace RSI_X_Desktop
                     RemoveMember(uid);
             }
         }
-
         private void btnScreenShare_Click(object sender, EventArgs e)
         {
             if (AgoraObject.IsLocalVideoMute) return;
@@ -254,13 +254,12 @@ namespace RSI_X_Desktop
             {
                 AgoraObject.StopScreenCapture();
                 labelScreenShare.ForeColor = Color.White;
-                pictureBoxLocalVideo.Update();
+                pictureBoxLocalVideo.Update ();
 
                 Devices.tryReAcceptVideoDevice();
             }
             IsSharingScreen = !IsSharingScreen;
         }
-
         private void labelSettings_Click(object sender, EventArgs e)
         {
             if (chat.Visible == true)
