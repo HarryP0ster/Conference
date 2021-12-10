@@ -37,12 +37,11 @@ namespace RSI_X_Desktop
         public static bool IsAllRemoteVideoMute { get; private set; }
 
 
-        public static string CodeRoom { get; private set; } = "";
-        public static string NickName { get; private set; } = "";
-        public static string ClientID { get; private set; } = "";
+        public static string CodeRoom { get; private set; } = String.Empty;
+        public static string NickName { get; private set; } = String.Empty;
+        public static string ClientID { get; private set; } = String.Empty;
         public static string RoomLang { get => RoomName.Split('_')[0]; }
-        public static string RoomName { get; private set; } = ""; //Full name of the interpreters room without 8 digits
-        public static string RoomTarg { get; private set; } = ""; //Full name of the target room without 8 digits
+        public static string RoomName { get; private set; } = String.Empty; //Full name of the interpreters room without 8 digits
         public static CurForm CurrentForm = CurForm.None;
 
         internal static AgoraRtcEngine Rtc;
@@ -57,9 +56,6 @@ namespace RSI_X_Desktop
         internal static AGChannelEventHandler srcHandler;
         internal static AGChannelEventHandler hostHandler;
         private static IFormHostHolder workForm;
-
-        internal static Dictionary<uint, UserInfo> hostBroacsters = new();
-
         public static IFormHostHolder GetWorkForm
         {
             get
@@ -70,11 +66,13 @@ namespace RSI_X_Desktop
             }
         }
 
+        internal static Dictionary<uint, UserInfo> hostBroacsters = new();
+
+
         public static bool ChannelSrcJoin { get; private set; } = false;
         public static bool ChannelHostJoin { get; private set; } = false;
-        public static bool IsJoin { get; private set; }
 
-        public readonly static System.Text.UTF8Encoding utf8enc = new();
+        public static readonly System.Text.UTF8Encoding utf8enc = new();
 
         [DllImport("USER32.DLL")]
         static extern bool GetWindowRect(IntPtr hWnd, out System.Drawing.Rectangle lpRect);
@@ -92,7 +90,6 @@ namespace RSI_X_Desktop
         {
             Rtc.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY, AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_CHATROOM_GAMING);
         }
-
         static public void UpdateNickName(string nick)
         { 
             NickName = NickCenter.ToHostNick(nick);
@@ -115,13 +112,10 @@ namespace RSI_X_Desktop
             CodeRoom = code;
             return room.TakeToken(code);
         }
-
         public static Tokens GetComplexToken() => room;
-
         public static string GetHostToken() => room.GetHostToken;
         public static string GetHostName() => room.GetHostName;
         #endregion
-
 
         #region Mute local audio/video
         static public ERROR_CODE MuteLocalAudioStream(bool mute)
@@ -133,7 +127,6 @@ namespace RSI_X_Desktop
 
             return res;
         }
-
         static public ERROR_CODE MuteLocalVideoStream(bool mute)
         {
             ERROR_CODE res = Rtc.MuteLocalVideoStream(mute);
@@ -154,7 +147,6 @@ namespace RSI_X_Desktop
 
             IsAllRemoteAudioMute = mute;
         }
-
         static public void MuteAllRemoteVideoStream(bool mute)
         {
             Rtc.MuteAllRemoteVideoStreams(mute);
@@ -181,7 +173,6 @@ namespace RSI_X_Desktop
         #endregion
 
         #region Screen/Window capture
-      
         public static bool EnableWindowCapture(HWND index)
         {
             Rectangle region = new Rectangle();
@@ -329,13 +320,6 @@ namespace RSI_X_Desktop
 
                 System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: remove conf {uid}");
             }
-        }
-        internal static void UpdateTargRoom(string langFull)
-        {
-            if (langFull != string.Empty)
-                langFull = langFull.Remove(3, 2);
-
-            RoomTarg = langFull;
         }
         public static void SendMessageToHost(string msg)
         {
