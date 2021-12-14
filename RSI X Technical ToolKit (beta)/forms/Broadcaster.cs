@@ -706,7 +706,7 @@ namespace RSI_X_Desktop
             }
             streamsTable.Refresh();
         }
-        private void UpdateMember(uint uid)
+        public void UpdateMember(uint uid)
         {
             if (hostBroadcasters.ContainsKey(uid))
             {
@@ -721,7 +721,7 @@ namespace RSI_X_Desktop
                     hostBroadcasters[uid].Invalidate();
             }
         }
-        private void UpdateMember(uint uid, string channelId)
+        public void UpdateMember(uint uid, string channelId)
         {
             if (hostBroadcasters.ContainsKey(uid))
             {
