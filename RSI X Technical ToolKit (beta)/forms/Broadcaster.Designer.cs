@@ -265,7 +265,7 @@ namespace RSI_X_Desktop
             this.labelFloor.Size = new System.Drawing.Size(64, 29);
             this.labelFloor.TabIndex = 12;
             this.labelFloor.Text = "FLOOR";
-            this.labelFloor.Click += new System.EventHandler(this.label1_Click);
+            this.labelFloor.Click += new System.EventHandler(this.labelFloor_Click);
             // 
             // cmblang
             // 
@@ -488,6 +488,7 @@ namespace RSI_X_Desktop
             this.pictureBoxLocalVideo.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBoxLocalVideo.Name = "pictureBoxLocalVideo";
             this.pictureBoxLocalVideo.Size = new System.Drawing.Size(1054, 592);
+            this.pictureBoxLocalVideo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxLocalVideo.TabIndex = 0;
             this.pictureBoxLocalVideo.TabStop = false;
             // 

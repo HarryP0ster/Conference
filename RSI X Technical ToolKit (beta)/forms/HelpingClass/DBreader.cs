@@ -39,16 +39,6 @@ namespace RSI_X_Desktop
         public static bool IsConnected { get => client.Connected; }
         public static Dictionary<uint, string> GetAllNames { get => TranslNames; }
 
-#if DEBUG_DB_LOGGER
-        public static forms.HelpingClass.DBTest dBTest;
-#endif
-        private static void DebugLog(string msg, bool time, bool separate=true)
-        {
-#if DEBUG_DB_LOGGER
-            dBTest.AddLine(msg, time, separate);
-#endif
-        }
-
         static DBReader()
         {
             //client.JsonSerializer = new NewtonsoftJsonSerializer(client.Options.EIO);
@@ -87,16 +77,13 @@ namespace RSI_X_Desktop
         private static void UpdateUserInfo()
         {
             nickName = AgoraObject.NickName;
-            windowRoom = AgoraObject.RoomName;
             clientID = AgoraObject.ClientID;
-            targetRoom = AgoraObject.RoomTarg;
         }
 
         public static void JoinRoom()
         {
             UpdateUserInfo();
             client.EmitAsync("join", new { clientID, windowRoom, nickName });
-            DebugLog(nickName + " with " + clientID + " uid try join to " + windowRoom, true);
         }
 
         public static void LeaveRoom()
@@ -105,21 +92,18 @@ namespace RSI_X_Desktop
             client.EmitAsync("exit", new { });
             StoppedStreams.Clear();
             StartedStreams.Clear();
-            DebugLog("send exit", true);
         }
 
         public static void StartStreaming()
         {
             UpdateUserInfo();
             client.EmitAsync("streamingStart", new { clientID, windowRoom, nickName, targetRoom });
-            DebugLog(nickName + " with " + clientID + " from " + windowRoom + " try start stream to " + targetRoom, true);
         }
 
         public static void StopStreaming()
         {
             UpdateUserInfo();
             client.EmitAsync("streamingStop", new { nickName, windowRoom, clientID, targetRoom });
-            DebugLog(nickName + " with " + clientID + " from " + windowRoom + " try stop stream to " + targetRoom, true);
         }
 
         public static void ChangeStreaming()
@@ -133,13 +117,11 @@ namespace RSI_X_Desktop
         public static void Exit()
         {
             client.EmitAsync("exit", new { });
-            DebugLog("send exit", true);
         }
 
         public static void Diconnect()
         {
             client.DisconnectAsync();
-            DebugLog("Disconnect", true);
         }
 
         private static void newTargetRooms(SocketIO client, SocketIOResponse e)
@@ -152,13 +134,10 @@ namespace RSI_X_Desktop
             var targetRooms = e.GetValue(0).GetProperty("targetRooms").EnumerateArray();
             List<string> tarRooms = new();
 
-            DebugLog("new Target Rooms: ", true);
             foreach (var rm in targetRooms) 
             {
-                DebugLog(rm.ToString(), false, separate: false);
                 tarRooms.Add(GetRoomLang(rm.ToString()));
             }
-            DebugLog("|~~~~~~~~~~~~~~~~~~~~|", false);
 
             EventArgsNewTargetRooms args = new(tarRooms);
             OnNewTargetRooms?.Invoke(client, args);
@@ -167,14 +146,12 @@ namespace RSI_X_Desktop
         private static void OnDisconnected(object sender, string e)
        {
             EventArgs args = new();
-            DebugLog("Disconnect", true);
             OnDisconnect?.Invoke(client, args);
         }
 
         private static void OnConnected(object sender, EventArgs e)
         {
             EventArgs args = new();
-            DebugLog("Connect", true);
             OnConnect?.Invoke(client, args);
         }
 
@@ -190,8 +167,6 @@ namespace RSI_X_Desktop
             
             StoppedStreams.Add(name);
             UpdateSet();
-
-            DebugLog(name + "Has Stopped Stream", true);
 
             //if (str.ToString() != "" && !AgoraObject.IsPublish())
             //    AgoraObject.CallNameUpdate(new(StartedStreams));
@@ -215,7 +190,6 @@ namespace RSI_X_Desktop
             if (StoppedStreams.Contains(name))
                 StoppedStreams.Remove(name);
 
-            DebugLog(name + " Has Started Stream", true);
             StartedStreams.Add(name);
 
             //AgoraObject.CallNameUpdate(new(StartedStreams));
@@ -237,7 +211,6 @@ namespace RSI_X_Desktop
                 GetRoomLang(str.ToString()) != AgoraObject.RoomLang)
                 return;
 
-            DebugLog("StreamHasChanged ", true);
             EventArgs args = new();
             OnStreamHasChanged?.Invoke(client, args);
 
@@ -253,17 +226,11 @@ namespace RSI_X_Desktop
             List<object> tmp = GetClientProperties(e);
             List<string> tarRooms = UpdatePublish(e, tmp);
 
-            DebugLog("Update:", true);
-            foreach (var rm in tarRooms) DebugLog("stream in: " + rm, true, separate:false);
-            DebugLog("|~~~~~~~~~~~~~~~~~~~~|", false, separate: false);
-            DebugLog("Users in session:", false, separate: false);
             foreach (var prop in e.GetValue(0).GetProperty("clients").EnumerateArray()) 
             {
                 var uid = prop.GetProperty("user_id").ToString();
                 var unm = prop.GetProperty("user_name").ToString();
-                DebugLog(" > " + unm + " | uid:" + uid, false, separate: false);
             }
-            DebugLog("|~~~~~~~~~~~~~~~~~~~~|", false);
 
             EventArgsNewTargetRooms args = new(tarRooms);
             OnNewTargetRooms?.Invoke(client, args);
