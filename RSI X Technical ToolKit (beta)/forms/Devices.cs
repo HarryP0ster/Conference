@@ -18,15 +18,15 @@ namespace RSI_X_Desktop.forms
 {
     public partial class Devices : Form
     {
-        public static readonly Dictionary<string, VIDEO_PROFILE_TYPE> resolutions = new()
+        public static readonly Dictionary<string, VideoEncoderConfiguration> resolutions = new()
         {
-            [" 120 * 120 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_120P_3,
-            [" 180 * 180 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_180P_3,
-            [" 240 * 240 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_240P_3, 
-            [" 360 * 360 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_360P_3,
-            [" 480 * 480 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_480P_3,
-            [" 960 * 720 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_LANDSCAPE_720P_5,
-            ["1920 * 1080"] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_LANDSCAPE_1080P,
+            [" 120 * 120 "] = new VideoEncoderConfiguration(new VideoDimensions(120, 120), FRAME_RATE.FRAME_RATE_FPS_15, 50, ORIENTATION_MODE.ORIENTATION_MODE_FIXED_LANDSCAPE),
+            [" 180 * 180 "] = new VideoEncoderConfiguration(new VideoDimensions(180, 180), FRAME_RATE.FRAME_RATE_FPS_15, 100, ORIENTATION_MODE.ORIENTATION_MODE_FIXED_LANDSCAPE),
+            [" 240 * 240 "] = new VideoEncoderConfiguration(new VideoDimensions(240, 240), FRAME_RATE.FRAME_RATE_FPS_15, 140, ORIENTATION_MODE.ORIENTATION_MODE_FIXED_LANDSCAPE), 
+            [" 360 * 360 "] = new VideoEncoderConfiguration(new VideoDimensions(360, 360), FRAME_RATE.FRAME_RATE_FPS_15, 260, ORIENTATION_MODE.ORIENTATION_MODE_FIXED_LANDSCAPE),
+            [" 480 * 480 "] = new VideoEncoderConfiguration(new VideoDimensions(480, 480), FRAME_RATE.FRAME_RATE_FPS_15, 400, ORIENTATION_MODE.ORIENTATION_MODE_FIXED_LANDSCAPE),
+            [" 960 * 720 "] = new VideoEncoderConfiguration(new VideoDimensions(960, 720), FRAME_RATE.FRAME_RATE_FPS_15, 910, ORIENTATION_MODE.ORIENTATION_MODE_FIXED_LANDSCAPE),
+            ["1920 * 1080"] = new VideoEncoderConfiguration(new VideoDimensions(1920, 1080), FRAME_RATE.FRAME_RATE_FPS_15, 2080, ORIENTATION_MODE.ORIENTATION_MODE_FIXED_LANDSCAPE),
         };
         public static readonly Dictionary<string, ScreenCaptureParameters> resolutionsSize = new()
         {
@@ -354,7 +354,7 @@ namespace RSI_X_Desktop.forms
         #endregion
         private static void UpdateResolution(string res)
         {
-            AgoraObject.Rtc.SetVideoProfile(resolutions[res], false);
+            AgoraObject.Rtc.SetVideoEncoderConfiguration(resolutions[res]);
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select resolution: {res}");
 
             if (AgoraObject.IsScreenCapture)
