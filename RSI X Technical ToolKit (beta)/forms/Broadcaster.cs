@@ -158,7 +158,9 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.EnableLocalVideo(true);
             pictureBoxLocalVideo.Update();
 
-            var canv = new VideoCanvas((ulong)LocalWinId, 0);
+            var canv = AgoraObject.IsLocalVideoMute ? 
+                new VideoCanvas(0, 0):
+                new VideoCanvas((ulong)LocalWinId, 0);
             canv.renderMode = ((int)RENDER_MODE_TYPE.RENDER_MODE_FIT);
 
             ImageSender.SetLocalCanvas(this);
