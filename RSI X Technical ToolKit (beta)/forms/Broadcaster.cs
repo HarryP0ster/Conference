@@ -217,13 +217,7 @@ namespace RSI_X_Desktop
                 labelSettings.ForeColor = Color.White;
             }
         }
-        private void labelVolume_Click(object sender, EventArgs e)
-        {
-            trackBar1.Visible = !trackBar1.Visible;
-            labelVolume.ForeColor = !trackBar1.Visible ?
-                Color.White :
-                Color.Red;
-        }
+
         private void labelMicrophone_Click(object sender, EventArgs e)
         {
             MuteMic(!AgoraObject.IsLocalAudioMute);
@@ -250,6 +244,15 @@ namespace RSI_X_Desktop
                 ChatClosed(chat);
                 labelChat.ForeColor = Color.White;
             }
+        }
+        private void ResetButton_Click(object sender, EventArgs e)
+        {
+            Owner.Show();
+            Close();
+        }
+        private void CloseButton_Click(object sender, EventArgs e)
+        {
+            Owner.Close();
         }
         private void nightControlBox1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -289,10 +292,6 @@ namespace RSI_X_Desktop
         //        Color.Red;
         //}
 
-        private void labelMicrophone_Click(object sender, EventArgs e)
-        {
-            Owner.Close();
-        }
         #endregion
 
         #region otherEvents
@@ -321,17 +320,7 @@ namespace RSI_X_Desktop
             TargetPublisher?.StandardInput
                 .WriteLine(String.Format("msg:{0}", (int)state));
         }
-        private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            srcLangIndex = cmblang.SelectedIndex;
-            var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
 
-            if (getAudioFrom == STATE.TRANSl) 
-            {
-                AgoraObject.JoinChannelSrc(l);
-                startPublishToTarget(l);
-            }
-        }
         private void nightControlBox1_MouseMove(object sender, MouseEventArgs e)
         {
             GC.Collect();
@@ -406,42 +395,6 @@ namespace RSI_X_Desktop
             target.MinimumSize = size;
             target.Size = size;
         }
-        
-        private void floor_CheckedChanged(STATE state)
-        {
-            switch (state)
-            {
-                case STATE.TRANSl:
-                    foreach (var br in hostBroadcasters.Keys) 
-                    {
-                        if (br == 0) continue;
-                        AgoraObject.UpdateUserVolume(br, MIN_VOLUME, CHANNEL_TYPE.HOST);
-                    }
-
-                    var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
-                    AgoraObject.JoinChannelSrc(l);
-                    startPublishToTarget(l);
-
-                    cmblang.Enabled = true;
-                    labelFloor.ForeColor = Color.White;
-                    break;
-                case STATE.FLOOR:
-                    foreach (var br in hostBroadcasters.Keys) 
-                    {
-                        if (br == 0) continue;
-                        AgoraObject.UpdateUserVolume(br, MAX_VOLUME, CHANNEL_TYPE.HOST);
-                    }
-                    AgoraObject.LeaveSrcChannel();
-                    stopPublishToTarget();
-
-                    cmblang.Enabled = false;
-                    labelFloor.ForeColor = Color.Red;
-                    break;
-                case STATE.UNDEFINED:
-                default: 
-                    break;
-            }
-        }
 
         private void startPublishToTarget(langHolder lh) 
         {
@@ -488,7 +441,6 @@ namespace RSI_X_Desktop
         }
         #endregion
         
-        public void SetTrackBarVolume(int volume) => trackBar1.Value = volume;
         public void GetMessage(string message, string nickname, CHANNEL_TYPE channel)
         {
             if (chat != null && chat.IsHandleCreated)
@@ -803,55 +755,7 @@ namespace RSI_X_Desktop
                     break;
             }
         }
-        private void startPublishToTarget(langHolder lh) 
-        {
-            if (TargetPublisher != null)
-                stopPublishToTarget();
 
-            List<string> args = new() { 
-                lh.token, lh.langFull, 
-                Devices.oldRecorder,
-                Process.GetCurrentProcess().Id.ToString(),
-                AgoraObject.NickName};
 
-            string arguments = "";
-            foreach (var a in args)
-                arguments += "\"" + a + "\" ";
-
-            TargetPublisher = new Process();
-            TargetPublisher.StartInfo.Arguments = arguments;
-            TargetPublisher.StartInfo.CreateNoWindow = true;
-            TargetPublisher.StartInfo.RedirectStandardOutput = true;
-            TargetPublisher.StartInfo.RedirectStandardInput = true;
-            TargetPublisher.StartInfo.FileName = "appIn.exe";
-            TargetPublisher.OutputDataReceived += TargetPublisher_OutputDataReceived;
-
-            TargetPublisher.Start();
-            TargetPublisher.BeginOutputReadLine();
-        }
-
-        private void TargetPublisher_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            if (e.Data == null ||
-                e.Data.StartsWith("uid:") == false) return;
-
-            uint selfSpeakerUid = Convert.ToUInt32(
-                e.Data.Split(':')[1]);
-            MuteTargetPublisher(AgoraObject.IsLocalAudioMute);
-
-            if (selfSpeakerUid != 0)
-                AgoraObject.UpdateUserVolume(selfSpeakerUid, 0, CHANNEL_TYPE.SRC);
-        }
-
-        private void stopPublishToTarget() 
-        {
-            TargetPublisher?.Kill();
-            TargetPublisher = null;
-        }
-
-        private void nightControlBox1_MouseMove(object sender, MouseEventArgs e)
-        {
-            GC.Collect();
-        }
     }
 }
