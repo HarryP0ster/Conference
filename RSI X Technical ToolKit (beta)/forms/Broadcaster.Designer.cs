@@ -34,15 +34,13 @@ namespace RSI_X_Desktop
             this.MainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.PanelBot = new ReaLTaiizor.Controls.LostPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.trackBar1 = new ReaLTaiizor.Controls.DungeonTrackBar();
             this.labelChat = new System.Windows.Forms.Label();
             this.labelSettings = new System.Windows.Forms.Label();
             this.labelMicrophone = new System.Windows.Forms.Label();
             this.labelVideo = new System.Windows.Forms.Label();
-            this.labelVolume = new System.Windows.Forms.Label();
-            this.labelFloor = new System.Windows.Forms.Label();
-            this.cmblang = new ReaLTaiizor.Controls.MaterialComboBox();
             this.labelScreenShare = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.button3 = new ReaLTaiizor.Controls.Button();
             this.PanelTop = new ReaLTaiizor.Controls.LostPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.CloseButton = new ReaLTaiizor.Controls.Button();
@@ -50,6 +48,7 @@ namespace RSI_X_Desktop
             this.ResetButton = new ReaLTaiizor.Controls.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.RoomNameLabel = new ReaLTaiizor.Controls.SkyLabel();
+            this.cmblang = new ReaLTaiizor.Controls.SkyComboBox();
             this.StreamLayout = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.streamsTable = new System.Windows.Forms.TableLayoutPanel();
@@ -59,6 +58,7 @@ namespace RSI_X_Desktop
             this.MainLayout.SuspendLayout();
             this.PanelBot.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.PanelTop.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -122,27 +122,21 @@ namespace RSI_X_Desktop
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.ColumnCount = 10;
+            this.tableLayoutPanel2.ColumnCount = 6;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Controls.Add(this.trackBar1, 4, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelChat, 9, 0);
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Controls.Add(this.labelChat, 5, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelSettings, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelMicrophone, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.labelVideo, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelVolume, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelFloor, 6, 0);
-            this.tableLayoutPanel2.Controls.Add(this.cmblang, 7, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelScreenShare, 8, 0);
+            this.tableLayoutPanel2.Controls.Add(this.labelScreenShare, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -152,32 +146,6 @@ namespace RSI_X_Desktop
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1272, 71);
             this.tableLayoutPanel2.TabIndex = 10;
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(104)))));
-            this.trackBar1.BorderColor = System.Drawing.Color.White;
-            this.trackBar1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.trackBar1.DrawValueString = false;
-            this.trackBar1.EmptyBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
-            this.trackBar1.FillBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(85)))), ((int)(((byte)(104)))));
-            this.trackBar1.JumpToMouse = true;
-            this.trackBar1.Location = new System.Drawing.Point(397, 24);
-            this.trackBar1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.trackBar1.Maximum = 100;
-            this.trackBar1.Minimum = 0;
-            this.trackBar1.MinimumSize = new System.Drawing.Size(47, 22);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(109, 22);
-            this.trackBar1.TabIndex = 0;
-            this.trackBar1.Text = "dungeonTrackBar1";
-            this.trackBar1.ThumbBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
-            this.trackBar1.ThumbBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.trackBar1.Value = 100;
-            this.trackBar1.ValueDivison = ReaLTaiizor.Controls.DungeonTrackBar.ValueDivisor.By1;
-            this.trackBar1.ValueToSet = 100F;
-            this.trackBar1.Visible = false;
             // 
             // labelChat
             // 
@@ -238,60 +206,6 @@ namespace RSI_X_Desktop
             this.labelVideo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelVideo.Click += new System.EventHandler(this.labelVideo_Click);
             // 
-            // labelVolume
-            // 
-            this.labelVolume.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelVolume.AutoSize = true;
-            this.labelVolume.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelVolume.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelVolume.Location = new System.Drawing.Point(315, 21);
-            this.labelVolume.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelVolume.Name = "labelVolume";
-            this.labelVolume.Size = new System.Drawing.Size(74, 29);
-            this.labelVolume.TabIndex = 19;
-            this.labelVolume.Text = "VOLUME";
-            this.labelVolume.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelVolume.Visible = false;
-            this.labelVolume.Click += new System.EventHandler(this.labelVolume_Click);
-            // 
-            // labelFloor
-            // 
-            this.labelFloor.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.labelFloor.AutoSize = true;
-            this.labelFloor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelFloor.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFloor.Location = new System.Drawing.Point(909, 21);
-            this.labelFloor.Name = "labelFloor";
-            this.labelFloor.Size = new System.Drawing.Size(64, 29);
-            this.labelFloor.TabIndex = 12;
-            this.labelFloor.Text = "FLOOR";
-            this.labelFloor.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // cmblang
-            // 
-            this.cmblang.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmblang.AutoResize = false;
-            this.cmblang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cmblang.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmblang.Depth = 0;
-            this.cmblang.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cmblang.DropDownHeight = 174;
-            this.cmblang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmblang.DropDownWidth = 121;
-            this.cmblang.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.cmblang.ForeColor = System.Drawing.Color.White;
-            this.cmblang.FormattingEnabled = true;
-            this.cmblang.IntegralHeight = false;
-            this.cmblang.ItemHeight = 43;
-            this.cmblang.Location = new System.Drawing.Point(979, 11);
-            this.cmblang.MaxDropDownItems = 4;
-            this.cmblang.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.OUT;
-            this.cmblang.Name = "cmblang";
-            this.cmblang.Size = new System.Drawing.Size(93, 49);
-            this.cmblang.StartIndex = 0;
-            this.cmblang.TabIndex = 11;
-            this.cmblang.SelectedIndexChanged += new System.EventHandler(this.cmblang_SelectedIndexChanged);
-            // 
             // labelScreenShare
             // 
             this.labelScreenShare.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -305,6 +219,42 @@ namespace RSI_X_Desktop
             this.labelScreenShare.TabIndex = 20;
             this.labelScreenShare.Text = "SCREEN SHARE";
             this.labelScreenShare.Click += new System.EventHandler(this.btnScreenShare_Click);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 36F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.button3, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(314, 3);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(758, 65);
+            this.tableLayoutPanel1.TabIndex = 21;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.Transparent;
+            this.button3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button3.EnteredColor = System.Drawing.Color.DarkRed;
+            this.button3.Font = new System.Drawing.Font("Bahnschrift Condensed", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button3.Image = null;
+            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button3.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.button3.Location = new System.Drawing.Point(275, 3);
+            this.button3.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.button3.Name = "button3";
+            this.button3.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(165)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.button3.Size = new System.Drawing.Size(100, 52);
+            this.button3.TabIndex = 24;
+            this.button3.Text = "SIGN OFF";
+            this.button3.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.button3.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // PanelTop
             // 
@@ -336,6 +286,7 @@ namespace RSI_X_Desktop
             this.tableLayoutPanel3.Controls.Add(this.ResetButton, 3, 0);
             this.tableLayoutPanel3.Controls.Add(this.pictureBox1, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.RoomNameLabel, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.cmblang, 2, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
@@ -433,6 +384,43 @@ namespace RSI_X_Desktop
             this.RoomNameLabel.TabIndex = 3;
             this.RoomNameLabel.Text = "RoomName";
             this.RoomNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cmblang
+            // 
+            this.cmblang.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cmblang.BackColor = System.Drawing.Color.Transparent;
+            this.cmblang.BGColorA = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmblang.BGColorB = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmblang.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmblang.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmblang.BorderColorC = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmblang.BorderColorD = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmblang.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmblang.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmblang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmblang.Font = new System.Drawing.Font("Bahnschrift SemiCondensed", 16.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.cmblang.ForeColor = System.Drawing.Color.White;
+            this.cmblang.ItemHeight = 20;
+            this.cmblang.ItemHighlightColor = System.Drawing.Color.Transparent;
+            this.cmblang.LineColorA = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmblang.LineColorB = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmblang.LineColorC = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmblang.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmblang.ListBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cmblang.ListDashType = System.Drawing.Drawing2D.DashStyle.Dot;
+            this.cmblang.ListForeColor = System.Drawing.Color.Black;
+            this.cmblang.ListSelectedBackColorA = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmblang.ListSelectedBackColorB = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmblang.Location = new System.Drawing.Point(281, 30);
+            this.cmblang.Margin = new System.Windows.Forms.Padding(3, 20, 3, 3);
+            this.cmblang.Name = "cmblang";
+            this.cmblang.Size = new System.Drawing.Size(82, 26);
+            this.cmblang.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            this.cmblang.StartIndex = 0;
+            this.cmblang.TabIndex = 11;
+            this.cmblang.TriangleColorA = System.Drawing.Color.Silver;
+            this.cmblang.TriangleColorB = System.Drawing.Color.White;
+            this.cmblang.SelectedIndexChanged += new System.EventHandler(this.cmblang_SelectedIndexChanged);
             // 
             // StreamLayout
             // 
@@ -537,6 +525,7 @@ namespace RSI_X_Desktop
             this.PanelBot.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.PanelTop.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
@@ -562,18 +551,17 @@ namespace RSI_X_Desktop
         private System.Windows.Forms.TableLayoutPanel StreamLayout;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private ReaLTaiizor.Controls.DungeonTrackBar trackBar1;
         private System.Windows.Forms.Label labelChat;
         private System.Windows.Forms.Label labelSettings;
         private System.Windows.Forms.Label labelMicrophone;
         private System.Windows.Forms.Label labelVideo;
-        private System.Windows.Forms.Label labelVolume;
         private System.Windows.Forms.PictureBox pictureBox1;
         private ReaLTaiizor.Controls.NightControlBox nightControlBox1;
         private System.Windows.Forms.Label labelScreenShare;
         private System.Windows.Forms.TableLayoutPanel streamsTable;
         private System.Windows.Forms.PictureBox pictureBoxLocalVideo;
-        private ReaLTaiizor.Controls.MaterialComboBox cmblang;
-        private System.Windows.Forms.Label labelFloor;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private ReaLTaiizor.Controls.Button button3;
+        private ReaLTaiizor.Controls.SkyComboBox cmblang;
     }
 }

@@ -74,11 +74,12 @@ namespace RSI_X_Desktop
                 };
 
                 List<string> langsShort = new();
+                langsShort.Add("HOST");
                 foreach (var lang in AgoraObject.GetComplexToken().GetTranslLangs)
                 { langsShort.Add(lang.langShort); }
                 cmblang.DataSource = langsShort;
 
-                srcLangIndex = dlg.PrimaryLang - 1;
+                srcLangIndex = dlg.PrimaryLang;
                 if (langsShort.Count < 0)
                 {
                     cmblang.Enabled = false;
@@ -87,8 +88,8 @@ namespace RSI_X_Desktop
                 }
                 else
                 {
-                    getAudioFrom = srcLangIndex < 0 ? 
-                        STATE.FLOOR:
+                    getAudioFrom = srcLangIndex == 0 ?
+                        STATE.FLOOR :
                         STATE.TRANSl;
 
                     cmblang.SelectedIndex = Math.Max(0, srcLangIndex);
@@ -323,16 +324,16 @@ namespace RSI_X_Desktop
             labelSettings.ForeColor = Color.White;
             GC.Collect();
         }
-        public void SetTrackBarVolume(int volume) => trackBar1.Value = volume;
+        //public void SetTrackBarVolume(int volume) => trackBar1.Value = volume;
         
 
-        private void labelVolume_Click(object sender, EventArgs e)
-        {
-            trackBar1.Visible = !trackBar1.Visible;
-            labelVolume.ForeColor = !trackBar1.Visible ?
-                Color.White :
-                Color.Red;
-        }
+        //private void labelVolume_Click(object sender, EventArgs e)
+        //{
+        //    trackBar1.Visible = !trackBar1.Visible;
+        //    labelVolume.ForeColor = !trackBar1.Visible ?
+        //        Color.White :
+        //        Color.Red;
+        //}
 
         private void labelMicrophone_Click(object sender, EventArgs e)
         {
@@ -625,22 +626,13 @@ namespace RSI_X_Desktop
         private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
         {
             srcLangIndex = cmblang.SelectedIndex;
-            var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
+            var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex);
 
-            if (getAudioFrom == STATE.TRANSl) 
-            {
-                AgoraObject.JoinChannelSrc(l);
-                startPublishToTarget(l);
-            }
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            getAudioFrom = getAudioFrom == STATE.FLOOR ?
+            getAudioFrom = l.langShort != "HOST" ?
                 STATE.TRANSl : STATE.FLOOR;
-
             floor_CheckedChanged(getAudioFrom);
         }
+
         private void floor_CheckedChanged(STATE state)
         {
             switch (state)
@@ -652,12 +644,12 @@ namespace RSI_X_Desktop
                         AgoraObject.UpdateUserVolume(br, MIN_VOLUME, CHANNEL_TYPE.HOST);
                     }
 
-                    var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
+                    var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex);
                     AgoraObject.JoinChannelSrc(l);
                     startPublishToTarget(l);
 
-                    cmblang.Enabled = true;
-                    labelFloor.ForeColor = Color.White;
+                    //cmblang.Enabled = true;
+                    //labelFloor.ForeColor = Color.White;
                     break;
                 case STATE.FLOOR:
                     foreach (var br in hostBroadcasters.Keys) 
@@ -668,8 +660,8 @@ namespace RSI_X_Desktop
                     AgoraObject.LeaveSrcChannel();
                     stopPublishToTarget();
 
-                    cmblang.Enabled = false;
-                    labelFloor.ForeColor = Color.Red;
+                    //cmblang.Enabled = false;
+                    //labelFloor.ForeColor = Color.Red;
                     break;
                 case STATE.UNDEFINED:
                 default: 
