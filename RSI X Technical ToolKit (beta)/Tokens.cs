@@ -38,7 +38,7 @@ namespace RSI_X_Desktop
         List<langHolder> langCollectionTarget = new();
         List<langHolder> langCollectionTransl = new();
 
-        public string GetToken
+        public string GetHostToken
         { get => Token; }
         public string GetHostName
         { get => HostName; }

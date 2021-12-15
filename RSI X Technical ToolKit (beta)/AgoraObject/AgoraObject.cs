@@ -37,12 +37,11 @@ namespace RSI_X_Desktop
         public static bool IsAllRemoteVideoMute { get; private set; }
 
 
-        public static string CodeRoom { get; private set; } = "";
-        public static string NickName { get; private set; } = "";
-        public static string ClientID { get; private set; } = "";
+        public static string CodeRoom { get; private set; } = String.Empty;
+        public static string NickName { get; private set; } = String.Empty;
+        public static string ClientID { get; private set; } = String.Empty;
         public static string RoomLang { get => RoomName.Split('_')[0]; }
-        public static string RoomName { get; private set; } = ""; //Full name of the interpreters room without 8 digits
-        public static string RoomTarg { get; private set; } = ""; //Full name of the target room without 8 digits
+        public static string RoomName { get; private set; } = String.Empty; //Full name of the interpreters room without 8 digits
         public static CurForm CurrentForm = CurForm.None;
 
         internal static AgoraRtcEngine Rtc;
@@ -57,9 +56,6 @@ namespace RSI_X_Desktop
         internal static AGChannelEventHandler srcHandler;
         internal static AGChannelEventHandler hostHandler;
         private static IFormHostHolder workForm;
-
-        internal static Dictionary<uint, UserInfo> hostBroacsters = new();
-
         public static IFormHostHolder GetWorkForm
         {
             get
@@ -70,9 +66,13 @@ namespace RSI_X_Desktop
             }
         }
 
-        public static bool m_channelSrcJoin { get; private set; } = false;
-        public static bool m_channelHostJoin { get; private set; } = false;
-        public readonly static System.Text.UTF8Encoding utf8enc = new();
+        internal static Dictionary<uint, UserInfo> hostBroacsters = new();
+
+
+        public static bool ChannelSrcJoin { get; private set; } = false;
+        public static bool ChannelHostJoin { get; private set; } = false;
+
+        public static readonly System.Text.UTF8Encoding utf8enc = new();
 
         [DllImport("USER32.DLL")]
         static extern bool GetWindowRect(IntPtr hWnd, out System.Drawing.Rectangle lpRect);
@@ -91,7 +91,6 @@ namespace RSI_X_Desktop
         {
             Rtc.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY, AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_CHATROOM_GAMING);
         }
-
         static public void UpdateNickName(string nick)
         { 
             NickName = NickCenter.ToHostNick(nick);
@@ -100,6 +99,13 @@ namespace RSI_X_Desktop
         { RoomName = name; }
         static public void UpdateClientID(string uid)
         { ClientID = uid; }
+        static public void SetWndEventHandler(IFormHostHolder form)
+        {
+            Rtc.InitEventHandler(new AGEngineEventHandler(form));
+            srcHandler = new AGChannelEventHandler(form, CHANNEL_TYPE.SRC);
+            hostHandler = new AGChannelEventHandler(form, CHANNEL_TYPE.HOST);
+            workForm = form;
+        }
 
         #region token logic
         static public bool JoinRoom(string code)
@@ -107,9 +113,8 @@ namespace RSI_X_Desktop
             CodeRoom = code;
             return room.TakeToken(code);
         }
-
         public static Tokens GetComplexToken() => room;
-        public static string GetHostToken() => room.GetToken;
+        public static string GetHostToken() => room.GetHostToken;
         public static string GetHostName() => room.GetHostName;
         #endregion
 
@@ -123,7 +128,6 @@ namespace RSI_X_Desktop
 
             return res;
         }
-
         static public ERROR_CODE MuteLocalVideoStream(bool mute)
         {
             ERROR_CODE res = Rtc.MuteLocalVideoStream(mute);
@@ -144,7 +148,6 @@ namespace RSI_X_Desktop
 
             IsAllRemoteAudioMute = mute;
         }
-
         static public void MuteAllRemoteVideoStream(bool mute)
         {
             Rtc.MuteAllRemoteVideoStreams(mute);
@@ -170,16 +173,7 @@ namespace RSI_X_Desktop
         }
         #endregion
 
-        static public void SetWndEventHandler(IFormHostHolder form)
-        {
-            Rtc.InitEventHandler(new AGEngineEventHandler(form));
-            srcHandler = new AGChannelEventHandler(form, CHANNEL_TYPE.SRC);
-            hostHandler = new AGChannelEventHandler(form, CHANNEL_TYPE.HOST);
-            workForm = form;
-        }
-
         #region Screen/Window capture
-      
         public static bool EnableWindowCapture(HWND index)
         {
             Rectangle region = new Rectangle();
@@ -199,7 +193,7 @@ namespace RSI_X_Desktop
         }
         public static bool EnableScreenCapture(ScreenCaptureParameters capParam = new())
         {
-            StopScreenCaption();
+            StopScreenCapture();
             if (capParam.bitrate == 0)
                 capParam = forms.Devices.resolutionsSize[
                     forms.Devices.oldResolution];
@@ -216,7 +210,7 @@ namespace RSI_X_Desktop
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: screen sharing enable ({IsScreenCapture})");
             return IsScreenCapture;
         }
-        public static void StopScreenCaption()
+        public static void StopScreenCapture()
         {
             Rtc.StopScreenCapture();
             IsScreenCapture = false;
@@ -242,23 +236,27 @@ namespace RSI_X_Desktop
 
             ERROR_CODE ret = m_channelSrc.JoinChannel(token, info, nUID, options);
 
-            m_channelSrcJoin = (0 == ret);
+            ChannelSrcJoin = (0 == ret);
 
             return 0 == ret;
         }
         public static void LeaveSrcChannel()
         {
-            if (m_channelSrcJoin)
+            if (ChannelSrcJoin)
                 m_channelSrc?.LeaveChannel();
-            m_channelSrcJoin = false;
+            ChannelSrcJoin = false;
 
         }
         #endregion
 
         #region Channel host
-        public static bool JoinChannelHost(langHolder lh_holder)
+        internal static void JoinChannelHost()
         {
-            return JoinChannelHost(lh_holder.langFull, lh_holder.token, 0, "");
+            JoinChannelHost(room.GetHostName, room.GetHostToken, 0, "");
+        }
+        public static bool JoinChannelHost(langHolder lh)
+        {
+            return JoinChannelHost(lh.langFull, lh.token, 0, "");
         }
         public static bool JoinChannelHost(string lpChannelName, string token, uint nUID, string info)
         {
@@ -277,18 +275,21 @@ namespace RSI_X_Desktop
                 NickName,
                 options);
 
+            Rtc.MuteLocalAudioStream(IsLocalAudioMute);
+            Rtc.MuteLocalVideoStream(IsLocalVideoMute);
+
             m_channelHost.Publish();
             m_channelHost.CreateDataStream(out _hostStreamID, true, true);
 
-            m_channelHostJoin = (0 == ret);
+            ChannelHostJoin = (0 == ret);
             return 0 == ret;
         }
         public static void LeaveHostChannel()
         {
-            if (m_channelHostJoin)
+            if (ChannelHostJoin)
                 m_channelHost?.Unpublish();
                 m_channelHost?.LeaveChannel();
-            m_channelHostJoin = false;
+            ChannelHostJoin = false;
         }
         #endregion
 
@@ -320,13 +321,6 @@ namespace RSI_X_Desktop
 
                 System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: remove conf {uid}");
             }
-        }
-        internal static void UpdateTargRoom(string langFull)
-        {
-            if (langFull != string.Empty)
-                langFull = langFull.Remove(3, 2);
-
-            RoomTarg = langFull;
         }
         public static void SendMessageToHost(string msg)
         {

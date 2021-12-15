@@ -24,7 +24,6 @@ namespace RSI_X_Desktop
     }
     public partial class Broadcaster : Form, IFormHostHolder
     {
-        Process TargetPublisher = null;
 
         private const int MIN_VOLUME = 3;
         private const int MAX_VOLUME = 100;
@@ -32,21 +31,23 @@ namespace RSI_X_Desktop
         private Devices devices;
         private ChatWnd chat = new ChatWnd();
         private FireBaseReader GetFireBase = new();
-        internal static IntPtr LocalWinId;
+        private Process TargetPublisher = null;
 
+        private static IntPtr LocalWinId;
         private bool IsSharingScreen = false;
+
         private bool AddOrder = false;
         private bool[] TakenPages = new bool[1];
         private Dictionary<uint, PictureBox> hostBroadcasters = new();
 
         private int srcLangIndex = -2;
         private STATE getAudioFrom = STATE.UNDEFINED;
+
         public Broadcaster()
         {
             InitializeComponent();
             AgoraObject.SetWndEventHandler(this);
         }
-
         private void Conference_Load(object sender, EventArgs e)
         {
             StreamLayout.ColumnStyles[1].SizeType = SizeType.Absolute;
@@ -99,7 +100,7 @@ namespace RSI_X_Desktop
                 Init();
 
                 MuteMic(dlg.MicMute);
-                CamMute(dlg.CamMute);
+                MuteCam(dlg.CamMute);
             }
             else
             {
@@ -110,7 +111,6 @@ namespace RSI_X_Desktop
                 
                 //ResetButton_Click(this, new EventArgs());
         }
-
         private void Init()
         {
             Un4seen.Bass.BassNet.Registration("rhenrhee@gmail.com", "2X37312318152222");
@@ -129,7 +129,7 @@ namespace RSI_X_Desktop
             this.DoubleBuffered = true;
             AgoraObject.JoinChannelHost(
                 AgoraObject.GetComplexToken().GetHostName,
-                AgoraObject.GetComplexToken().GetToken, 0, "");
+                AgoraObject.GetComplexToken().GetHostToken, 0, "");
 
             AgoraObject.MuteLocalAudioStream(AgoraObject.IsLocalAudioMute);
             AgoraObject.MuteLocalVideoStream(AgoraObject.IsLocalVideoMute);
@@ -142,7 +142,7 @@ namespace RSI_X_Desktop
                 Color.White :
                 Color.Red;
 
-            CamMute(AgoraObject.IsLocalVideoMute);
+            MuteCam(AgoraObject.IsLocalVideoMute);
             /*
             * Chat initial loading, this way it'd load messages
             * in the background from the very moment you enter a channel
@@ -157,15 +157,397 @@ namespace RSI_X_Desktop
         public void SetLocalVideoPreview()
         {
             AgoraObject.Rtc.EnableLocalVideo(true);
-            pictureBoxLocalVideo.Refresh();
+            pictureBoxLocalVideo.Update();
 
-            var canv = new VideoCanvas((ulong)LocalWinId, 0);
+            var canv = AgoraObject.IsLocalVideoMute ? 
+                new VideoCanvas(0, 0):
+                new VideoCanvas((ulong)LocalWinId, 0);
             canv.renderMode = ((int)RENDER_MODE_TYPE.RENDER_MODE_FIT);
+
+            ImageSender.SetLocalCanvas(this);
 
             AgoraObject.Rtc.SetupLocalVideo(canv);
             AgoraObject.Rtc.StartPreview();
         }
+        public void InvokeSetLocalFrame(Bitmap bmp)
+        {
+            if (InvokeRequired)
+                Invoke((MethodInvoker)delegate
+                {
+                    SetLocalFrame(bmp);
+                });
+            else { SetLocalFrame(bmp); }
+
+        }
+        private void SetLocalFrame(Bitmap bmp)
+        {
+            pictureBoxLocalVideo.BackColor = bmp != null ?
+                Color.Black : Color.Silver;
+
+            //pictureBoxRemoteVideo.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBoxLocalVideo.Image = bmp;
+        }
         public void RefreshLocalWnd() => pictureBoxLocalVideo.Refresh();
+        
+        #region Press Events
+        private void btnScreenShare_Click(object sender, EventArgs e)
+        {
+            if (AgoraObject.IsLocalVideoMute) return;
+            enableScreenShare(IsSharingScreen);
+        }
+        private void labelSettings_Click(object sender, EventArgs e)
+        {
+            if (chat.Visible == true)
+            {
+                ChatClosed(chat);
+            }
+
+            if (devices == null || devices.IsDisposed)
+            {
+                devices = new Devices();
+                devices.Location = new Point(150, 0);
+                CallSidePanel(devices);
+                devices.typeOfAlligment(true);
+                //devices.SetAudienceSettings();
+                labelSettings.ForeColor = Color.Red;
+            }
+            else
+            {
+                DevicesClosed(devices);
+                labelSettings.ForeColor = Color.White;
+            }
+        }
+        private void labelVolume_Click(object sender, EventArgs e)
+        {
+            trackBar1.Visible = !trackBar1.Visible;
+            labelVolume.ForeColor = !trackBar1.Visible ?
+                Color.White :
+                Color.Red;
+        }
+        private void labelMicrophone_Click(object sender, EventArgs e)
+        {
+            MuteMic(!AgoraObject.IsLocalAudioMute);
+        }
+        private void labelVideo_Click(object sender, EventArgs e)
+        {
+            MuteCam(!AgoraObject.IsLocalVideoMute);
+        }
+        private void labelChat_Click(object sender, EventArgs e)
+        {
+            labelSettings.ForeColor = Color.White;
+            if (devices != null && !(devices.IsDisposed))
+                DevicesClosed(devices);
+            if (chat.Visible == false)
+            {
+                chat.ResumeLayout();
+                chat.ButtonsVisibility(true);
+                CallSidePanel(chat);
+                labelChat.ForeColor = Color.Red;
+            }
+            else
+            {
+                chat.ButtonsVisibility(false);
+                ChatClosed(chat);
+                labelChat.ForeColor = Color.White;
+            }
+        }
+        private void nightControlBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            Point ptn = e.Location;
+            if (!(ptn.X > 46 && ptn.X < 94)) return;
+            this.BringToFront();
+            if (this.Size.Width == 1280)
+            {
+                ResizeForm(Screen.PrimaryScreen.WorkingArea.Size, this);
+                ResizeForm(Screen.PrimaryScreen.WorkingArea.Size, formTheme1);
+            }
+            else
+            {
+                ResizeForm(new Size(1280, 800), this);
+                ResizeForm(new Size(1280, 800), formTheme1);
+            }
+        }
+        private void labelFloor_Click(object sender, EventArgs e)
+        {
+            getAudioFrom = getAudioFrom == STATE.FLOOR ?
+                STATE.TRANSl : STATE.FLOOR;
+
+            floor_CheckedChanged(getAudioFrom);
+        }
+        private void SettingButton_Click(object sender, EventArgs e)
+        {
+            labelSettings_Click(SettingButton, e);
+        }
+        //public void SetTrackBarVolume(int volume) => trackBar1.Value = volume;
+        
+
+        //private void labelVolume_Click(object sender, EventArgs e)
+        //{
+        //    trackBar1.Visible = !trackBar1.Visible;
+        //    labelVolume.ForeColor = !trackBar1.Visible ?
+        //        Color.White :
+        //        Color.Red;
+        //}
+
+        private void labelMicrophone_Click(object sender, EventArgs e)
+        {
+            Owner.Close();
+        }
+        #endregion
+
+        #region otherEvents
+        public void enableScreenShare(bool enable)
+        {
+            if (enable)
+            {
+                AgoraObject.EnableScreenCapture();
+                labelScreenShare.ForeColor = Color.Red;
+            }
+            else
+            {
+                AgoraObject.StopScreenCapture();
+                labelScreenShare.ForeColor = Color.White;
+                pictureBoxLocalVideo.Update ();
+
+                Devices.tryReAcceptVideoDevice();
+            }
+            IsSharingScreen = !IsSharingScreen;
+        }
+        private void MuteTargetPublisher(bool mute)
+        {
+            var state = mute ?
+                TARGET_MESSAGES.MUTE :
+                TARGET_MESSAGES.UNMUTE;
+            TargetPublisher?.StandardInput
+                .WriteLine(String.Format("msg:{0}", (int)state));
+        }
+        private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            srcLangIndex = cmblang.SelectedIndex;
+            var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
+
+            if (getAudioFrom == STATE.TRANSl) 
+            {
+                AgoraObject.JoinChannelSrc(l);
+                startPublishToTarget(l);
+            }
+        }
+        private void nightControlBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            GC.Collect();
+        }
+        private void Broadcaster_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Owner.Show();
+
+            enableScreenShare(false);
+            stopPublishToTarget();
+            
+            AgoraObject.LeaveHostChannel();
+            AgoraObject.Rtc.LeaveChannel();
+            AgoraObject.Rtc.EnableLocalVideo(false);
+            AgoraObject.Rtc.DisableVideo();
+            AgoraObject.Rtc.DisableAudio();
+
+            if (ImageSender.IsEnable)
+                ImageSender.EnableImageSender(false);
+            ImageSender.Dispose();
+            
+            Devices.ClearOldDevices();
+            Devices.Clear();
+            
+            if (!Owner.Visible) Application.Exit();
+            GC.Collect();
+        }
+        #endregion
+
+        #region Events Action
+        private void MuteMic(bool mute)
+        {
+            MuteTargetPublisher(mute);
+            AgoraObject.MuteLocalAudioStream(mute);
+
+            labelMicrophone.ForeColor = AgoraObject.IsLocalAudioMute ?
+                Color.White :
+                Color.Red;
+        }
+        private void MuteCam(bool mute)
+        {
+            AgoraObject.MuteLocalVideoStream(mute);
+
+            labelVideo.ForeColor = AgoraObject.IsLocalVideoMute ?
+                Color.White :
+                Color.Red;
+
+            if (AgoraObject.IsLocalVideoMute) 
+            {
+                pictureBoxLocalVideo.Refresh();
+                enableScreenShare(false);
+                AgoraObject.Rtc.SetupLocalVideo(new VideoCanvas(0, 0));
+                pictureBoxLocalVideo.BackgroundImage = Properties.Resources.video_call_empty;
+                pictureBoxLocalVideo.BackgroundImageLayout = ImageLayout.Center;
+                pictureBoxLocalVideo.BackColor = Color.FromArgb(85, 85, 85);
+            }
+            else
+            {
+                SetLocalVideoPreview();
+            }
+        }
+        
+        private void ResizeForm(Size size, Form target)
+        {
+            target.MaximumSize = size;
+            target.MinimumSize = size;
+            target.Size = size;
+        }
+        private void ResizeForm(Size size, ReaLTaiizor.Forms.FormTheme target)
+        {
+            target.MaximumSize = size;
+            target.MinimumSize = size;
+            target.Size = size;
+        }
+        
+        private void floor_CheckedChanged(STATE state)
+        {
+            switch (state)
+            {
+                case STATE.TRANSl:
+                    foreach (var br in hostBroadcasters.Keys) 
+                    {
+                        if (br == 0) continue;
+                        AgoraObject.UpdateUserVolume(br, MIN_VOLUME, CHANNEL_TYPE.HOST);
+                    }
+
+                    var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex + 1);
+                    AgoraObject.JoinChannelSrc(l);
+                    startPublishToTarget(l);
+
+                    cmblang.Enabled = true;
+                    labelFloor.ForeColor = Color.White;
+                    break;
+                case STATE.FLOOR:
+                    foreach (var br in hostBroadcasters.Keys) 
+                    {
+                        if (br == 0) continue;
+                        AgoraObject.UpdateUserVolume(br, MAX_VOLUME, CHANNEL_TYPE.HOST);
+                    }
+                    AgoraObject.LeaveSrcChannel();
+                    stopPublishToTarget();
+
+                    cmblang.Enabled = false;
+                    labelFloor.ForeColor = Color.Red;
+                    break;
+                case STATE.UNDEFINED:
+                default: 
+                    break;
+            }
+        }
+
+        private void startPublishToTarget(langHolder lh) 
+        {
+            if (TargetPublisher != null)
+                stopPublishToTarget();
+
+            List<string> args = new() { 
+                lh.token, lh.langFull, 
+                Devices.oldRecorder,
+                Process.GetCurrentProcess().Id.ToString(),
+                AgoraObject.NickName};
+
+            string arguments = "";
+            foreach (var a in args)
+                arguments += "\"" + a + "\" ";
+
+            TargetPublisher = new Process();
+            TargetPublisher.StartInfo.Arguments = arguments;
+            TargetPublisher.StartInfo.CreateNoWindow = true;
+            TargetPublisher.StartInfo.RedirectStandardOutput = true;
+            TargetPublisher.StartInfo.RedirectStandardInput = true;
+            TargetPublisher.StartInfo.FileName = "appIn.exe";
+            TargetPublisher.OutputDataReceived += TargetPublisher_OutputDataReceived;
+
+            TargetPublisher.Start();
+            TargetPublisher.BeginOutputReadLine();
+        }
+        private void stopPublishToTarget() 
+        {
+            TargetPublisher?.Kill();
+            TargetPublisher = null;
+        }
+        private void TargetPublisher_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (e.Data == null ||
+                e.Data.StartsWith("uid:") == false) return;
+
+            uint selfSpeakerUid = Convert.ToUInt32(
+                e.Data.Split(':')[1]);
+            MuteTargetPublisher(AgoraObject.IsLocalAudioMute);
+
+            if (selfSpeakerUid != 0)
+                AgoraObject.UpdateUserVolume(selfSpeakerUid, 0, CHANNEL_TYPE.SRC);
+        }
+        #endregion
+        
+        public void SetTrackBarVolume(int volume) => trackBar1.Value = volume;
+        public void GetMessage(string message, string nickname, CHANNEL_TYPE channel)
+        {
+            if (chat != null && chat.IsHandleCreated)
+                chat.chat_NewMessageInvoke(message, nickname, channel);
+        }
+
+        #region SidePanel
+        public void Animator(System.Windows.Forms.Panel panel, int offset_x, int offset_y, int itterations, int delay)
+        {
+            Thread.Sleep(delay);
+            streamsTable.SuspendLayout();
+            for (int ind = 0; ind < itterations; ind++)
+            {
+                StreamLayout.ColumnStyles[1].Width = StreamLayout.ColumnStyles[1].Width - offset_x;
+            }
+            streamsTable.ResumeLayout();
+        }
+        public void RebuildChatPanel(Control panel)
+        {
+            chat.Chat_SizeChanged(panel, new EventArgs());
+        }
+
+        private void CallSidePanel(Form Wnd) 
+        {
+            panel1.SuspendLayout();
+            Wnd.Size = panel1.Size;
+            Wnd.Location = panel1.Location;
+            Wnd.TopLevel = false;
+            Wnd.Dock = DockStyle.Fill;
+            panel1.Controls.Add(Wnd);
+            panel1.BringToFront();
+            if (panel1.Visible == false || Wnd.Visible == false)
+            {
+                panel1.ResumeLayout();
+                panel1.Location = new Point(Size.Width, panel1.Location.Y);
+                panel1.Show();
+                Animator(panel1, -9, 0, 50, 1);
+                Wnd.Show();
+            }
+        }
+        private void ChatClosed(Form Wnd) 
+        {
+            Wnd.SuspendLayout();
+            Animator(panel1, 9, 0, 50, 1);
+            panel1.Hide();
+            Wnd.Hide();
+            labelChat.ForeColor = Color.White;
+            GC.Collect();
+        }
+        public void DevicesClosed(Form Wnd) 
+        {
+            Wnd.Close();
+            Animator(panel1, 9, 0, 50, 1);
+            panel1.Hide();
+            labelSettings.ForeColor = Color.White;
+            GC.Collect();
+        }
+        #endregion
+
         public void NewBroadcaster(uint uid, UserInfo info) 
         {
             if (NickCenter.IsHost(info.userAccount) &&
@@ -217,250 +599,6 @@ namespace RSI_X_Desktop
                 else
                     RemoveMember(uid);
             }
-        }
-
-        private void btnScreenShare_Click(object sender, EventArgs e)
-        {
-            if (AgoraObject.IsLocalVideoMute) return;
-            enableScreenShare(IsSharingScreen);
-        }
-        public void enableScreenShare(bool enable)
-        {
-            if (enable)
-            {
-                AgoraObject.EnableScreenCapture();
-                labelScreenShare.ForeColor = Color.Red;
-            }
-            else
-            {
-                AgoraObject.StopScreenCaption();
-                labelScreenShare.ForeColor = Color.White;
-                pictureBoxLocalVideo.Refresh();
-
-                Devices.tryReAcceptVideoDevice();
-            }
-            IsSharingScreen = !IsSharingScreen;
-        }
-
-        private void labelSettings_Click(object sender, EventArgs e)
-        {
-            if (chat.Visible == true)
-            {
-                ChatClosed(chat);
-            }
-
-            if (devices == null || devices.IsDisposed)
-            {
-                devices = new Devices();
-                devices.Location = new Point(150, 0);
-                CallSidePanel(devices);
-                devices.typeOfAlligment(true);
-                //devices.SetAudienceSettings();
-                labelSettings.ForeColor = Color.Red;
-            }
-            else
-            {
-                DevicesClosed(devices);
-                labelSettings.ForeColor = Color.White;
-            }
-        }
-
-        private void SettingButton_Click(object sender, EventArgs e)
-        {
-            labelSettings_Click(SettingButton, e);
-        }
-        private void CallSidePanel(Form Wnd) 
-        {
-            panel1.SuspendLayout();
-            Wnd.Size = panel1.Size;
-            Wnd.Location = panel1.Location;
-            Wnd.TopLevel = false;
-            Wnd.Dock = DockStyle.Fill;
-            panel1.Controls.Add(Wnd);
-            panel1.BringToFront();
-            if (panel1.Visible == false || Wnd.Visible == false)
-            {
-                panel1.ResumeLayout();
-                panel1.Location = new Point(Size.Width, panel1.Location.Y);
-                panel1.Show();
-                Animator(panel1, -9, 0, 50, 1);
-                Wnd.Show();
-            }
-        }
-
-        public void Animator(System.Windows.Forms.Panel panel, int offset_x, int offset_y, int itterations, int delay)
-        {
-            Thread.Sleep(delay);
-            streamsTable.SuspendLayout();
-            for (int ind = 0; ind < itterations; ind++)
-            {
-                StreamLayout.ColumnStyles[1].Width = StreamLayout.ColumnStyles[1].Width - offset_x;
-            }
-            streamsTable.ResumeLayout();
-        }
-        public void GetMessage(string message, string nickname, CHANNEL_TYPE channel)
-        {
-            if (chat != null && chat.IsHandleCreated)
-                chat.chat_NewMessageInvoke(message, nickname, channel);
-        }
-        private void ChatClosed(Form Wnd) 
-        {
-            Wnd.SuspendLayout();
-            Animator(panel1, 9, 0, 50, 1);
-            panel1.Hide();
-            Wnd.Hide();
-            labelChat.ForeColor = Color.White;
-            GC.Collect();
-        }
-        public void RebuildChatPanel(Control panel)
-        {
-            chat.Chat_SizeChanged(panel, new EventArgs());
-        }
-        public void DevicesClosed(Form Wnd) 
-        {
-            Wnd.Close();
-            Animator(panel1, 9, 0, 50, 1);
-            panel1.Hide();
-            labelSettings.ForeColor = Color.White;
-            GC.Collect();
-        }
-        //public void SetTrackBarVolume(int volume) => trackBar1.Value = volume;
-        
-
-        //private void labelVolume_Click(object sender, EventArgs e)
-        //{
-        //    trackBar1.Visible = !trackBar1.Visible;
-        //    labelVolume.ForeColor = !trackBar1.Visible ?
-        //        Color.White :
-        //        Color.Red;
-        //}
-
-        private void labelMicrophone_Click(object sender, EventArgs e)
-        {
-            MuteMic(!AgoraObject.IsLocalAudioMute);
-        }
-
-        private void MuteMic(bool mute)
-        {
-            MuteTargetPublisher(mute);
-            AgoraObject.MuteLocalAudioStream(mute);
-
-            labelMicrophone.ForeColor = AgoraObject.IsLocalAudioMute ?
-                Color.White :
-                Color.Red;
-        }
-
-        private void MuteTargetPublisher(bool mute)
-        {
-            var state = mute ?
-                TARGET_MESSAGES.MUTE :
-                TARGET_MESSAGES.UNMUTE;
-            TargetPublisher?.StandardInput
-                .WriteLine(String.Format("msg:{0}", (int)state));
-        }
-
-        private void labelVideo_Click(object sender, EventArgs e)
-        {
-            CamMute(!AgoraObject.IsLocalVideoMute);
-        }
-
-        private void CamMute(bool mute)
-        {
-            AgoraObject.MuteLocalVideoStream(mute);
-            //pictureBoxLocalVideo.Visible = !mute;
-            
-
-            labelVideo.ForeColor = AgoraObject.IsLocalVideoMute ?
-                Color.White :
-                Color.Red;
-
-            if (AgoraObject.IsLocalVideoMute) 
-            {
-                pictureBoxLocalVideo.Refresh();
-                enableScreenShare(false);
-                AgoraObject.Rtc.SetupLocalVideo(new VideoCanvas(0, 0));
-                pictureBoxLocalVideo.BackgroundImage = Properties.Resources.video_call_empty;
-                pictureBoxLocalVideo.BackgroundImageLayout = ImageLayout.Center;
-                pictureBoxLocalVideo.BackColor = Color.FromArgb(85, 85, 85);
-            }
-            else
-            {
-                SetLocalVideoPreview();
-            }
-        }
-
-        private void labelChat_Click(object sender, EventArgs e)
-        {
-            labelSettings.ForeColor = Color.White;
-            if (devices != null && !(devices.IsDisposed))
-                DevicesClosed(devices);
-            if (chat.Visible == false)
-            {
-                chat.ResumeLayout();
-                chat.ButtonsVisibility(true);
-                CallSidePanel(chat);
-                labelChat.ForeColor = Color.Red;
-            }
-            else
-            {
-                chat.ButtonsVisibility(false);
-                ChatClosed(chat);
-                labelChat.ForeColor = Color.White;
-            }
-        }
-        private void nightControlBox1_MouseClick(object sender, MouseEventArgs e)
-        {
-            Point ptn = e.Location;
-            if (!(ptn.X > 46 && ptn.X < 94)) return;
-            this.BringToFront();
-            if (this.Size.Width == 1280)
-            {
-                ResizeForm(Screen.PrimaryScreen.WorkingArea.Size, this);
-                ResizeForm(Screen.PrimaryScreen.WorkingArea.Size, formTheme1);
-            }
-            else
-            {
-                ResizeForm(new Size(1280, 800), this);
-                ResizeForm(new Size(1280, 800), formTheme1);
-            }
-        }
-        private void ResizeForm(Size size, Form target)
-        {
-            target.MaximumSize = size;
-            target.MinimumSize = size;
-            target.Size = size;
-        }
-        private void ResizeForm(Size size, ReaLTaiizor.Forms.FormTheme target)
-        {
-            target.MaximumSize = size;
-            target.MinimumSize = size;
-            target.Size = size;
-        }
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-            Owner.Close();
-        }
-        private void ResetButton_Click(object sender, EventArgs e)
-        {
-            Owner.Show();
-            Close();
-        }
-        private void Broadcaster_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Owner.Show();
-
-            enableScreenShare(false);
-            stopPublishToTarget();
-            AgoraObject.LeaveHostChannel();
-            AgoraObject.Rtc.LeaveChannel();
-            AgoraObject.Rtc.EnableLocalVideo(false);
-            AgoraObject.Rtc.DisableVideo();
-            AgoraObject.Rtc.DisableAudio();
-            if (!Owner.Visible) Application.Exit();
-
-            Devices.ClearOldDevices();
-            Devices.Clear();
-            GC.Collect();
         }
 
         #region MembersControl
@@ -529,7 +667,6 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.SetupRemoteVideo(ret);
             streamsTable.Refresh();
         }
-
         private void RemoveMember(uint uid)
         {
             int index = streamsTable.ColumnCount * streamsTable.RowCount;
@@ -578,8 +715,7 @@ namespace RSI_X_Desktop
             }
             streamsTable.Refresh();
         }
-
-        internal void UpdateMember(uint uid)
+        public void UpdateMember(uint uid)
         {
             if (hostBroadcasters.ContainsKey(uid))
             {
@@ -594,8 +730,7 @@ namespace RSI_X_Desktop
                     hostBroadcasters[uid].Invalidate();
             }
         }
-
-        internal void UpdateMember(uint uid, string channelId)
+        public void UpdateMember(uint uid, string channelId)
         {
             if (hostBroadcasters.ContainsKey(uid))
             {

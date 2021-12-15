@@ -476,6 +476,7 @@ namespace RSI_X_Desktop
             this.pictureBoxLocalVideo.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBoxLocalVideo.Name = "pictureBoxLocalVideo";
             this.pictureBoxLocalVideo.Size = new System.Drawing.Size(1054, 592);
+            this.pictureBoxLocalVideo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxLocalVideo.TabIndex = 0;
             this.pictureBoxLocalVideo.TabStop = false;
             // 
