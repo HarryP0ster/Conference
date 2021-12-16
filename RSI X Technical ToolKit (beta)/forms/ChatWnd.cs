@@ -20,6 +20,7 @@ namespace RSI_X_Desktop.forms
     }
     public partial class ChatWnd : Form
     {
+        private static ChatWnd instance_;
         const int leters_limit = 35;
         int DefPanelWidth = 100;
         const int TAB_COUNT = 2;
@@ -58,11 +59,13 @@ namespace RSI_X_Desktop.forms
             //{
             //    ctr.KeyDown += Enter_KeyDown_General;
             //}
+            instance_ = this;
             ButtonsVisibility(false);
         }
 
         private void ChatWnd_FormClosed(object sender, FormClosedEventArgs e)
         {
+            FireBase.OnNewMessage -= chat_NewMessageSupInvoke;
             Dispose();
         }
 
@@ -180,13 +183,15 @@ namespace RSI_X_Desktop.forms
             }
         }
 
-        public void chat_NewMessageSupInvoke(object sender, HelpingClass.FireBaseUpdateEventArgs arg) 
+        public static void chat_NewMessageSupInvoke(object sender, HelpingClass.FireBaseUpdateEventArgs arg) 
         {
-            if (InvokeRequired)
-                Invoke((MethodInvoker)delegate
-                { chat_NewMessageSup(sender, arg); });
+            if (instance_ == null || instance_.IsDisposed)
+                return;
+            if (instance_.InvokeRequired)
+                instance_.Invoke((MethodInvoker)delegate
+                { instance_.chat_NewMessageSup(sender, arg); });
             else
-                chat_NewMessageSup(sender, arg);
+                instance_.chat_NewMessageSup(sender, arg);
         }
         public void chat_NewMessageSup(object sender, HelpingClass.FireBaseUpdateEventArgs arg)
         {
