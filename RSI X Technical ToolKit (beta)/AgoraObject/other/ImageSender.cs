@@ -135,7 +135,7 @@ namespace RSI_X_Desktop
         }
         internal static void SetLocalFrame(bool clear=false)
         {
-            if (false == clear)
+            if (false == clear && false == AgoraObject.IsLocalVideoMute )
                 WorkForm?.InvokeSetLocalFrame(frame);
             else
                 WorkForm?.InvokeSetLocalFrame(null);

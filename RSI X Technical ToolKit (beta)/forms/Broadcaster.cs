@@ -27,6 +27,7 @@ namespace RSI_X_Desktop
 
         private const int MIN_VOLUME = 3;
         private const int MAX_VOLUME = 100;
+        private readonly Color InactiveColor = Color.FromArgb(85, 85, 85);
 
         private Devices devices;
         private ChatWnd chat = new ChatWnd();
@@ -182,7 +183,8 @@ namespace RSI_X_Desktop
         private void SetLocalFrame(Bitmap bmp)
         {
             pictureBoxLocalVideo.BackColor = bmp != null ?
-                Color.Black : Color.FromArgb(85,85,85);
+                Color.Black : 
+                InactiveColor;
 
             //pictureBoxRemoteVideo.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBoxLocalVideo.Image = bmp;
@@ -252,7 +254,9 @@ namespace RSI_X_Desktop
         }
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            Owner.Close();
+            //Owner.
+            Owner.Show();
+            Close();
         }
         private void nightControlBox1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -281,8 +285,18 @@ namespace RSI_X_Desktop
         {
             labelSettings_Click(SettingButton, e);
         }
+        private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            srcLangIndex = cmblang.SelectedIndex;
+            var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex);
+
+            getAudioFrom = l.langShort != "HOST" ?
+                STATE.TRANSl : STATE.FLOOR;
+            floor_CheckedChanged(getAudioFrom);
+        }
+
         //public void SetTrackBarVolume(int volume) => trackBar1.Value = volume;
-        
+
 
         //private void labelVolume_Click(object sender, EventArgs e)
         //{
@@ -291,7 +305,6 @@ namespace RSI_X_Desktop
         //        Color.White :
         //        Color.Red;
         //}
-
         #endregion
 
         #region otherEvents
@@ -368,6 +381,8 @@ namespace RSI_X_Desktop
                 Color.White :
                 Color.Red;
 
+
+
             if (AgoraObject.IsLocalVideoMute) 
             {
                 pictureBoxLocalVideo.Refresh();
@@ -375,7 +390,8 @@ namespace RSI_X_Desktop
                 AgoraObject.Rtc.SetupLocalVideo(new VideoCanvas(0, 0));
                 pictureBoxLocalVideo.BackgroundImage = Properties.Resources.video_call_empty;
                 pictureBoxLocalVideo.BackgroundImageLayout = ImageLayout.Center;
-                pictureBoxLocalVideo.BackColor = Color.FromArgb(85, 85, 85);
+                pictureBoxLocalVideo.BackColor = InactiveColor;
+
             }
             else
             {
@@ -394,6 +410,42 @@ namespace RSI_X_Desktop
             target.MaximumSize = size;
             target.MinimumSize = size;
             target.Size = size;
+        }
+
+        private void floor_CheckedChanged(STATE state)
+        {
+            switch (state)
+            {
+                case STATE.TRANSl:
+                    foreach (var br in hostBroadcasters.Keys)
+                    {
+                        if (br == 0) continue;
+                        AgoraObject.UpdateUserVolume(br, MIN_VOLUME, CHANNEL_TYPE.HOST);
+                    }
+
+                    var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex);
+                    AgoraObject.JoinChannelSrc(l);
+                    startPublishToTarget(l);
+
+                    //cmblang.Enabled = true;
+                    //labelFloor.ForeColor = Color.White;
+                    break;
+                case STATE.FLOOR:
+                    foreach (var br in hostBroadcasters.Keys)
+                    {
+                        if (br == 0) continue;
+                        AgoraObject.UpdateUserVolume(br, MAX_VOLUME, CHANNEL_TYPE.HOST);
+                    }
+                    AgoraObject.LeaveSrcChannel();
+                    stopPublishToTarget();
+
+                    //cmblang.Enabled = false;
+                    //labelFloor.ForeColor = Color.Red;
+                    break;
+                case STATE.UNDEFINED:
+                default:
+                    break;
+            }
         }
 
         private void startPublishToTarget(langHolder lh) 
@@ -708,51 +760,6 @@ namespace RSI_X_Desktop
             }
         }
         #endregion
-        private void cmblang_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            srcLangIndex = cmblang.SelectedIndex;
-            var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex);
-
-            getAudioFrom = l.langShort != "HOST" ?
-                STATE.TRANSl : STATE.FLOOR;
-            floor_CheckedChanged(getAudioFrom);
-        }
-
-        private void floor_CheckedChanged(STATE state)
-        {
-            switch (state)
-            {
-                case STATE.TRANSl:
-                    foreach (var br in hostBroadcasters.Keys) 
-                    {
-                        if (br == 0) continue;
-                        AgoraObject.UpdateUserVolume(br, MIN_VOLUME, CHANNEL_TYPE.HOST);
-                    }
-
-                    var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex);
-                    AgoraObject.JoinChannelSrc(l);
-                    startPublishToTarget(l);
-
-                    //cmblang.Enabled = true;
-                    //labelFloor.ForeColor = Color.White;
-                    break;
-                case STATE.FLOOR:
-                    foreach (var br in hostBroadcasters.Keys) 
-                    {
-                        if (br == 0) continue;
-                        AgoraObject.UpdateUserVolume(br, MAX_VOLUME, CHANNEL_TYPE.HOST);
-                    }
-                    AgoraObject.LeaveSrcChannel();
-                    stopPublishToTarget();
-
-                    //cmblang.Enabled = false;
-                    //labelFloor.ForeColor = Color.Red;
-                    break;
-                case STATE.UNDEFINED:
-                default: 
-                    break;
-            }
-        }
 
 
     }
