@@ -64,6 +64,7 @@ namespace RSI_X_Desktop.forms
         public static string oldRecorder {get; private set;}
         public static string oldVideoOut { get; private set; }
         public static string oldResolution { get; private set; }
+        private static string oldres = null;
         private static int oldIndexResolution = 3; //360p
         #endregion
 
@@ -367,9 +368,14 @@ namespace RSI_X_Desktop.forms
         #region ButtonEvents
         private void AcceptButton_Click(object sender, EventArgs e)
         {
-            oldRecorder = Recorders[comboBoxAudioInput.SelectedIndex];
-            oldSpeaker = Speakers[comboBoxAudioOutput.SelectedIndex];
-            oldVideoOut = VideoOut[comboBoxVideo.SelectedIndex];
+            var ain = comboBoxAudioInput.SelectedIndex;
+            var aout = comboBoxAudioOutput.SelectedIndex;
+            var video = comboBoxVideo.SelectedIndex;
+
+            if (Recorders.Count() < ain) oldRecorder = Recorders[ain];
+            if (Speakers.Count() < aout) oldSpeaker = Speakers[aout];
+            if (VideoOut.Count() < video) oldVideoOut = VideoOut[video];
+
             oldVolumeIn = trackBarSoundIn.Value;
             oldVolumeOut = trackBarSoundOut.Value;
             oldResolution = resComboBox.SelectedValue.ToString();
@@ -701,7 +707,6 @@ namespace RSI_X_Desktop.forms
             oldSpeaker = null;
             oldRecorder = null;
             oldVideoOut = null;
-            oldResolution = null;
             oldIndexResolution = 3; //360p
         }
     }

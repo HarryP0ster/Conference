@@ -327,11 +327,12 @@ namespace RSI_X_Desktop
             else
             {
                 AgoraObject.StopScreenCapture();
-                labelScreenShare.ForeColor = Color.White;
-                pictureBoxLocalVideo.Update ();
-
                 Devices.tryReAcceptVideoDevice();
+                
+                labelScreenShare.ForeColor = Color.White;
+                pictureBoxLocalVideo.Refresh ();
             }
+
             IsSharingScreen = !IsSharingScreen;
         }
         private void MuteTargetPublisher(bool mute)
