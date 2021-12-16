@@ -24,7 +24,7 @@ namespace ConsoleAppIn
             agoraObject = new XAgoraObject();
 
             var retInput = agoraObject.SetupInputDevices(args[2]);
-            var retPubl = agoraObject.Publish(args[0], args[1], "(S)" + args[4]);
+            var retPubl = agoraObject.Publish(args[0], args[1], args[4]);
 
             if (retInput != ERROR_CODE.ERR_OK ||
                 retPubl != ERROR_CODE.ERR_OK)

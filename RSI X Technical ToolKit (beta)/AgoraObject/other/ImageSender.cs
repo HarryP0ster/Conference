@@ -136,9 +136,9 @@ namespace RSI_X_Desktop
         internal static void SetLocalFrame(bool clear=false)
         {
             if (false == clear)
-                WorkForm.InvokeSetLocalFrame(frame);
+                WorkForm?.InvokeSetLocalFrame(frame);
             else
-                WorkForm.InvokeSetLocalFrame(null);
+                WorkForm?.InvokeSetLocalFrame(null);
         }
     }
 }
