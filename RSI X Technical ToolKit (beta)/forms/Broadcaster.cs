@@ -451,12 +451,12 @@ namespace RSI_X_Desktop
         public void Animator(System.Windows.Forms.Panel panel, int offset_x, int offset_y, int itterations, int delay)
         {
             Thread.Sleep(delay);
-            streamsTable.SuspendLayout();
+            //streamsTable.ResumeLayout();
             for (int ind = 0; ind < itterations; ind++)
             {
                 StreamLayout.ColumnStyles[1].Width = StreamLayout.ColumnStyles[1].Width - offset_x;
             }
-            streamsTable.ResumeLayout();
+            //streamsTable.SuspendLayout();
         }
         public void RebuildChatPanel(Control panel)
         {
@@ -466,34 +466,32 @@ namespace RSI_X_Desktop
         private void CallSidePanel(Form Wnd) 
         {
             panel1.SuspendLayout();
-            Wnd.Size = panel1.Size;
-            Wnd.Location = panel1.Location;
             Wnd.TopLevel = false;
             Wnd.Dock = DockStyle.Fill;
             panel1.Controls.Add(Wnd);
             panel1.BringToFront();
             if (panel1.Visible == false || Wnd.Visible == false)
             {
-                panel1.ResumeLayout();
                 panel1.Location = new Point(Size.Width, panel1.Location.Y);
                 panel1.Show();
-                Animator(panel1, -9, 0, 50, 1);
+                Animator(panel1, -18, 0, 25, 1);
                 Wnd.Show();
+                panel1.ResumeLayout();
             }
         }
         private void ChatClosed(Form Wnd) 
         {
-            Wnd.SuspendLayout();
-            Animator(panel1, 9, 0, 50, 1);
-            panel1.Hide();
             Wnd.Hide();
+            Wnd.SuspendLayout();
+            Animator(panel1, 18, 0, 25, 1);
+            panel1.Hide();
             labelChat.ForeColor = Color.White;
             GC.Collect();
         }
         public void DevicesClosed(Form Wnd) 
         {
             Wnd.Close();
-            Animator(panel1, 9, 0, 50, 1);
+            Animator(panel1, 18, 0, 25, 1);
             panel1.Hide();
             labelSettings.ForeColor = Color.White;
             GC.Collect();

@@ -303,8 +303,9 @@ namespace RSI_X_Desktop.forms
 
 
             oldSpeaker = Speakers[index];
-            comboBoxAudioOutput.DataSource = Speakers;
-            comboBoxAudioOutput.SelectedIndex = index;
+            //comboBoxAudioOutput.Items.AddRange(Speakers.ToArray());
+            //comboBoxAudioOutput.DataSource = Speakers;
+            //comboBoxAudioOutput.SelectedIndex = index;
         }
         #endregion
 
