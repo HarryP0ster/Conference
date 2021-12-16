@@ -182,7 +182,7 @@ namespace RSI_X_Desktop
         private void SetLocalFrame(Bitmap bmp)
         {
             pictureBoxLocalVideo.BackColor = bmp != null ?
-                Color.Black : Color.Silver;
+                Color.Black : Color.FromArgb(85,85,85);
 
             //pictureBoxRemoteVideo.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBoxLocalVideo.Image = bmp;
