@@ -175,7 +175,7 @@ namespace RSI_X_Desktop
             this.labelChat.Location = new System.Drawing.Point(1220, 21);
             this.labelChat.Margin = new System.Windows.Forms.Padding(0);
             this.labelChat.Name = "labelChat";
-            this.labelChat.Size = new System.Drawing.Size(52, 29);
+            this.labelChat.Size = new System.Drawing.Size(63, 36);
             this.labelChat.TabIndex = 15;
             this.labelChat.Text = "CHAT";
             this.labelChat.Click += new System.EventHandler(this.labelChat_Click);
@@ -189,7 +189,7 @@ namespace RSI_X_Desktop
             this.labelSettings.Location = new System.Drawing.Point(0, 21);
             this.labelSettings.Margin = new System.Windows.Forms.Padding(0);
             this.labelSettings.Name = "labelSettings";
-            this.labelSettings.Size = new System.Drawing.Size(87, 29);
+            this.labelSettings.Size = new System.Drawing.Size(107, 36);
             this.labelSettings.TabIndex = 16;
             this.labelSettings.Text = "SETTINGS";
             this.labelSettings.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -204,7 +204,7 @@ namespace RSI_X_Desktop
             this.labelMicrophone.Location = new System.Drawing.Point(87, 21);
             this.labelMicrophone.Margin = new System.Windows.Forms.Padding(0);
             this.labelMicrophone.Name = "labelMicrophone";
-            this.labelMicrophone.Size = new System.Drawing.Size(114, 29);
+            this.labelMicrophone.Size = new System.Drawing.Size(142, 36);
             this.labelMicrophone.TabIndex = 17;
             this.labelMicrophone.Text = "MICROPHONE";
             this.labelMicrophone.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -219,7 +219,7 @@ namespace RSI_X_Desktop
             this.labelVideo.Location = new System.Drawing.Point(201, 21);
             this.labelVideo.Margin = new System.Windows.Forms.Padding(0);
             this.labelVideo.Name = "labelVideo";
-            this.labelVideo.Size = new System.Drawing.Size(86, 29);
+            this.labelVideo.Size = new System.Drawing.Size(106, 36);
             this.labelVideo.TabIndex = 18;
             this.labelVideo.Text = "  CAMERA";
             this.labelVideo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -234,7 +234,7 @@ namespace RSI_X_Desktop
             this.labelScreenShare.Location = new System.Drawing.Point(1091, 21);
             this.labelScreenShare.Margin = new System.Windows.Forms.Padding(0);
             this.labelScreenShare.Name = "labelScreenShare";
-            this.labelScreenShare.Size = new System.Drawing.Size(129, 29);
+            this.labelScreenShare.Size = new System.Drawing.Size(159, 36);
             this.labelScreenShare.TabIndex = 20;
             this.labelScreenShare.Text = "SCREEN SHARE";
             this.labelScreenShare.Click += new System.EventHandler(this.btnScreenShare_Click);
@@ -363,7 +363,7 @@ namespace RSI_X_Desktop
             this.RoomNameLabel.Location = new System.Drawing.Point(140, 0);
             this.RoomNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.RoomNameLabel.Name = "RoomNameLabel";
-            this.RoomNameLabel.Size = new System.Drawing.Size(134, 69);
+            this.RoomNameLabel.Size = new System.Drawing.Size(167, 69);
             this.RoomNameLabel.TabIndex = 3;
             this.RoomNameLabel.Text = "RoomName";
             this.RoomNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -394,7 +394,7 @@ namespace RSI_X_Desktop
             this.cmblang.ListForeColor = System.Drawing.Color.Black;
             this.cmblang.ListSelectedBackColorA = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cmblang.ListSelectedBackColorB = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cmblang.Location = new System.Drawing.Point(281, 30);
+            this.cmblang.Location = new System.Drawing.Point(314, 30);
             this.cmblang.Margin = new System.Windows.Forms.Padding(3, 20, 3, 3);
             this.cmblang.Name = "cmblang";
             this.cmblang.Size = new System.Drawing.Size(82, 26);
