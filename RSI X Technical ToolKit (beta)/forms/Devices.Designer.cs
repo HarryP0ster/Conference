@@ -343,7 +343,6 @@ namespace RSI_X_Desktop.forms
             this.Dynamic.Size = new System.Drawing.Size(49, 18);
             this.Dynamic.TabIndex = 5;
             this.Dynamic.Text = "Speaker";
-            this.Dynamic.Visible = false;
             // 
             // tableLayoutPanel2
             // 

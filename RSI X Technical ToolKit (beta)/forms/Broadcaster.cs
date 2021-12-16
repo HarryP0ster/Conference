@@ -55,7 +55,8 @@ namespace RSI_X_Desktop
             StreamLayout.ColumnStyles[0].Width = 100;
             StreamLayout.ColumnStyles[1].Width = 0;
             RoomNameLabel.Text = AgoraObject.GetComplexToken().GetRoomName;
-            
+            SignOffToCenter();
+
             LangSelectDlg dlg = new();
             Show();
             CenterToScreen();
@@ -144,6 +145,7 @@ namespace RSI_X_Desktop
                 Color.Red;
 
             MuteCam(AgoraObject.IsLocalVideoMute);
+            
             /*
             * Chat initial loading, this way it'd load messages
             * in the background from the very moment you enter a channel
@@ -153,6 +155,13 @@ namespace RSI_X_Desktop
             panel1.Controls.Add(chat);
             chat.Show();
             chat.Hide(); //You need to hide it, otherwise Animator'd get confused
+        }
+
+        private void SignOffToCenter()
+        {
+            float width_left = labelSettings.Width + labelMicrophone.Width + labelVideo.Width;
+            float width_right = labelScreenShare.Width + labelChat.Width;
+            tableLayoutPanel2.ColumnStyles[6].Width = width_left - width_right;
         }
 
         public void SetLocalVideoPreview()

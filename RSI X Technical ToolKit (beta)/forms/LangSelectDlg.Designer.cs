@@ -275,6 +275,7 @@
             this.Text = "Conference settings";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LangSelectDlg_FormClosing);
+            this.Shown += new System.EventHandler(this.LangSelectDlg_Shown);
             this.formTheme1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);

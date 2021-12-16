@@ -126,5 +126,10 @@ namespace RSI_X_Desktop.forms
         {
             GC.Collect();
         }
+
+        private void LangSelectDlg_Shown(object sender, EventArgs e)
+        {
+            //textBoxNickName.Focus();
+        }
     }
 }
