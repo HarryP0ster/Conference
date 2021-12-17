@@ -513,13 +513,15 @@ namespace RSI_X_Desktop
         public void Animator(System.Windows.Forms.Panel panel, int offset_x, int offset_y, int itterations, int delay)
         {
             Thread.Sleep(delay);
-            //streamsTable.ResumeLayout();
             for (int ind = 0; ind < itterations; ind++)
             {
+                //StreamLayout.Invalidate(panel.Region, false); 
                 StreamLayout.ColumnStyles[1].Width = StreamLayout.ColumnStyles[1].Width - offset_x;
+                StreamLayout.Refresh();
             }
-            //streamsTable.SuspendLayout();
+            Thread.Sleep(100);
         }
+
         public void RebuildChatPanel(Control panel)
         {
             chat.Chat_SizeChanged(panel, new EventArgs());

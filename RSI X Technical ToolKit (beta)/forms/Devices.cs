@@ -16,6 +16,12 @@ using Un4seen.Bass;
 
 namespace RSI_X_Desktop.forms
 {
+    enum TabPages
+    {
+        GENERAL = 0,
+        AUDIO = 1,
+        VIDEO = 2
+    }
     public partial class Devices : Form
     {
         [DllImport("winmm.dll")]
@@ -56,6 +62,7 @@ namespace RSI_X_Desktop.forms
         private static List<string> Recorders;
         private static List<string> VideoOut;
         private static List<string> Speakers;
+        bool Init = false;
 
         #region oldDevices
         public static int oldVolumeIn {get; private set;}
@@ -306,43 +313,53 @@ namespace RSI_X_Desktop.forms
             oldSpeaker = Speakers[index];
             comboBoxAudioOutput.DataSource = Speakers;
             comboBoxAudioOutput.SelectedIndex = index;
+            Init = true;
         }
         #endregion
 
         #region ComboBoxEventHandlers
         private void comboBoxAudioInput_SelectedIndexChanged(object sender, EventArgs e)
         {
-            recording_device = comboBoxAudioInput.Text;
-            if (IsAudioTest) frames = 1000; //Force restart of the recording process
+            if (Init)
+            {
+                recording_device = comboBoxAudioInput.Text;
+                if (IsAudioTest) frames = 1000; //Force restart of the recording process
 
-            int ind = ((ComboBox)sender).SelectedIndex;
-            string name, id;
+                int ind = ((ComboBox)sender).SelectedIndex;
+                string name, id;
 
-            RecordersManager.GetDeviceInfoByIndex(ind, out name, out id);
-            RecordersManager.SetCurrentDevice(id);
+                RecordersManager.GetDeviceInfoByIndex(ind, out name, out id);
+                RecordersManager.SetCurrentDevice(id);
+            }
         }
         private void comboBoxAudioOutput_SelectedIndexChanged(object sender, EventArgs e)
         {
-            playback_device = comboBoxAudioOutput.Text;
-            if (IsAudioTest) frames = 1000; //Force restart of the recording process
+            if (Init)
+            {
+                playback_device = comboBoxAudioOutput.Text;
+                if (IsAudioTest) frames = 1000; //Force restart of the recording process
 
-            int ind = ((ComboBox)sender).SelectedIndex;
-            string name, id;
+                int ind = ((ComboBox)sender).SelectedIndex;
+                string name, id;
 
-            SpeakersManager.GetDeviceInfoByIndex(ind, out name, out id);
-            SpeakersManager.SetCurrentDevice(id);
+                SpeakersManager.GetDeviceInfoByIndex(ind, out name, out id);
+                SpeakersManager.SetCurrentDevice(id);
+            }
         }
         private void comboBoxVideo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int ind = ((ComboBox)sender).SelectedIndex;
-            string name, id;
-
-            if (false == AgoraObject.IsScreenCapture) 
+            if (Init)
             {
-                videoDeviceManager.GetDeviceInfoByIndex(ind, out name, out id);
-                videoDeviceManager.SetCurrentDevice(id);
+                int ind = ((ComboBox)sender).SelectedIndex;
+                string name, id;
+
+                if (false == AgoraObject.IsScreenCapture)
+                {
+                    videoDeviceManager.GetDeviceInfoByIndex(ind, out name, out id);
+                    videoDeviceManager.SetCurrentDevice(id);
+                }
+                workForm.RefreshLocalWnd();
             }
-            workForm.RefreshLocalWnd();
         }
         private void resComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -689,7 +706,8 @@ namespace RSI_X_Desktop.forms
         private void NewDevices_FormClosed(object sender, FormClosedEventArgs e)
         {
             //AgoraObject.Rtc.EnableLocalVideo(false);
-            workForm?.SetLocalVideoPreview();
+            if (materialShowTabControl1.SelectedIndex == (int)TabPages.VIDEO)
+                workForm?.SetLocalVideoPreview();
             ReleaseBass();
             Dispose();
         }
