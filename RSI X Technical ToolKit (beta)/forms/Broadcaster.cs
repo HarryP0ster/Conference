@@ -264,8 +264,7 @@ namespace RSI_X_Desktop
         private void CloseButton_Click(object sender, EventArgs e)
         {
             //Owner.
-            Owner.Show();
-            Close();
+            Owner.Close();
         }
         private void nightControlBox1_MouseClick(object sender, MouseEventArgs e)
         {
