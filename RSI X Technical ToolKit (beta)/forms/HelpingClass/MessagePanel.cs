@@ -16,28 +16,39 @@ namespace RSI_X_Desktop.forms.HelpingClass
         public const string MyOwn = "Me";
         const int maxSymbol = 25;
         ChatBubbleLeft labelL;
-        ChatBubbleRight labelR;
+        newRightBubble labelR;
+        Font font;
         Label Sender;
-        Label Date;
-        int actual_width = 20;
         Control Owner;
 
-        public int ActualWidth
-        {
-            get => actual_width;
-        }
         public MessagePanelL(string text, string sender, Control owner)
         {
+            int dpi = this.DeviceDpi;
+
+            if (dpi >= (int)Constants.DPI.P175)
+                font = Constants.Bahnschrift10;
+            else if (dpi >= (int)Constants.DPI.P150)
+                font = Constants.Bahnschrift12;
+            else if (dpi >= (int)Constants.DPI.P125)
+                font = Constants.Bahnschrift14;
+            else if (dpi >= (int)Constants.DPI.P100)
+                font = Constants.Bahnschrift14;
+
             Owner = owner;
+            Owner.SizeChanged += delegate
+            {
+                Width = Owner.Width;
+            };
             this.AutoSize = true;
-            Width = ((Control)owner).Width;
+            Width = Owner.Width;
             Height = 65;
             Sender = new Label();
 
             Sender.Text = sender;
             Sender.AutoSize = true;
             Sender.TextAlign = ContentAlignment.BottomLeft;
-            BackColor = Color.FromArgb(240, 240, 240);
+            Sender.Font = font;
+            BackColor = Color.White;
             RowStyles.Add(new RowStyle(SizeType.Absolute, 25));
             RowStyles.Add(new RowStyle(SizeType.AutoSize, 100));
 
@@ -48,11 +59,11 @@ namespace RSI_X_Desktop.forms.HelpingClass
                 ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                 ColumnStyles[0].SizeType = SizeType.Percent;
                 ColumnStyles[0].Width = 100;
-                labelR = new ChatBubbleRight();
+                labelR = new newRightBubble();
+                labelR.ForeColor = Color.White;
                 labelR.SizeAuto = true;
                 labelR.SizeAutoW = true;
                 labelR.SizeAutoH = true;
-                labelR.SizeChanged += Bubble_SizeChanged;
                 labelR.Margin = new Padding(0, 0, 13, 0);
                 Sender.TextAlign = ContentAlignment.BottomRight;
 
@@ -60,7 +71,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
 
                 labelR.Text = text;
 
-                for (int i = maxSymbol-1; i < text.Length; i += maxSymbol)
+                for (int i = maxSymbol - 1; i < text.Length; i += maxSymbol)
                 {
                     labelR.Text = labelR.Text.Insert(i, " \n");
                 }
@@ -79,13 +90,12 @@ namespace RSI_X_Desktop.forms.HelpingClass
                 labelL.SizeAuto = true;
                 labelL.SizeAutoW = true;
                 labelL.SizeAutoH = true;
-                labelL.SizeChanged += Bubble_SizeChanged;
 
                 if (text.Length > 0) labelL.Text += text[0];
 
                 labelL.Text = text + " ";
 
-                for (int i = maxSymbol-1; i < text.Length; i += maxSymbol)
+                for (int i = maxSymbol - 1; i < text.Length; i += maxSymbol)
                 {
                     labelL.Text = labelL.Text.Insert(i, " \n");
                 }
@@ -97,13 +107,6 @@ namespace RSI_X_Desktop.forms.HelpingClass
                 labelL.Enabled = false;
                 Sender.SuspendLayout();
             }
-        }
-
-        public void Bubble_SizeChanged(object sender, EventArgs e)
-        {
-            actual_width = ((Control)sender).Width + 25;
-            Location = new Point(5, Owner.Height - Height);
-            (AgoraObject.GetWorkForm as Broadcaster).RebuildChatPanel(Owner);
         }
     }
 }

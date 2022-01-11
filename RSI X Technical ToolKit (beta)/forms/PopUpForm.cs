@@ -13,29 +13,23 @@ using RSI_X_Desktop.forms;
 using static System.Environment;
 using Un4seen.Bass;
 
-
 namespace RSI_X_Desktop.forms
 {
-    enum TabPages
-    {
-        GENERAL = 0,
-        AUDIO = 1,
-        VIDEO = 2
-    }
-    public partial class Devices : Form
+    public partial class PopUpForm : DevExpress.XtraEditors.XtraForm
     {
         [DllImport("winmm.dll")]
         public static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume); //Контроль громкости
 
-        private static readonly Color InactiveColor = Color.White;
+        private static readonly Color InactiveColor = Color.FromArgb(254, 1, 243);
         private static readonly Color PushColor = Color.BurlyWood;
+        public static bool IsImageSend { get; private set; }
 
         #region Resolutions
         public static readonly Dictionary<string, VIDEO_PROFILE_TYPE> resolutions = new()
         {
             [" 120 * 120 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_120P_3,
             [" 180 * 180 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_180P_3,
-            [" 240 * 240 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_240P_3, 
+            [" 240 * 240 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_240P_3,
             [" 360 * 360 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_360P_3,
             [" 480 * 480 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_PORTRAIT_480P_3,
             [" 960 * 720 "] = VIDEO_PROFILE_TYPE.VIDEO_PROFILE_LANDSCAPE_720P_5,
@@ -54,7 +48,7 @@ namespace RSI_X_Desktop.forms
         #endregion
 
         private IFormHostHolder workForm = AgoraObject.GetWorkForm;
-        private static Devices _instance;
+        private static PopUpForm _instance;
 
         private static AgoraAudioRecordingDeviceManager RecordersManager;
         private static AgoraAudioPlaybackDeviceManager SpeakersManager;
@@ -64,11 +58,14 @@ namespace RSI_X_Desktop.forms
         private static List<string> Speakers;
         bool Init = false;
 
+        Padding MarginNormal = new Padding(15, 5, 15, 25);
+        Padding Hovered = new Padding(13, 5, 13, 25);
+
         #region oldDevices
-        public static int oldVolumeIn {get; private set;}
+        public static int oldVolumeIn { get; private set; }
         public static int oldVolumeOut { get; private set; } = 100;
         public static string oldSpeaker { get; private set; }
-        public static string oldRecorder {get; private set;}
+        public static string oldRecorder { get; private set; }
         public static string oldVideoOut { get; private set; }
         public static string oldResolution { get; private set; }
         private static string oldres = null;
@@ -84,7 +81,7 @@ namespace RSI_X_Desktop.forms
         private int input;
         private long prebuf;
 
-        public Devices()
+        public PopUpForm()
         {
             InitializeComponent();
 
@@ -101,11 +98,23 @@ namespace RSI_X_Desktop.forms
             trackBarSoundIn.Value = oldVolumeIn;
             trackBarSoundOut.Value = oldVolumeOut;
 
+            btnCustomImage.ForeColor = IsImageSend ?
+                PushColor : InactiveColor;
+
+            pictureBoxLocalVideoTest.Visible = !IsImageSend;
+            PreviewPanel.BackgroundImage = IsImageSend ?
+                new Bitmap((Owner as Broadcaster).PreviewFilePath) : null;
+
+            workForm?.RefreshLocalWnd();
+            VideoCanvas vc = new((ulong)pictureBoxLocalVideoTest.Handle, 0);
+            vc.renderMode = ((int)RENDER_MODE_TYPE.RENDER_MODE_FIT);
+            AgoraObject.Rtc.StartPreview();
+            AgoraObject.Rtc.SetupLocalVideo(vc);
+
             UpdateComboBoxRecorder();
             UpdateComboBoxVideoOut();
             UpdateComboBoxSpeakers();
-
-            getComputerDescription();
+            AgoraObject.Rtc.DisableAudio();
         }
 
         public static void InitManager()
@@ -254,10 +263,10 @@ namespace RSI_X_Desktop.forms
                 Recorders.FindLastIndex((s) => s == oldRecorder) :
                 getActiveAudioInputDevice();
 
-            if (index == -1) 
-                index = Recorders.Count > 0 ? 0 : - 1;
+            if (index == -1)
+                index = Recorders.Count > 0 ? 0 : -1;
 
-            if (index == -1 || Recorders.Count == 0) 
+            if (index == -1 || Recorders.Count == 0)
             {
                 comboBoxAudioInput.DataSource = new List<string> { "Record Devices Error" };
                 return;
@@ -383,6 +392,22 @@ namespace RSI_X_Desktop.forms
         #endregion
 
         #region ButtonEvents
+        private void ApplyButton_Click(object sender, EventArgs e)
+        {
+            var ain = comboBoxAudioInput.SelectedIndex;
+            var aout = comboBoxAudioOutput.SelectedIndex;
+            var video = comboBoxVideo.SelectedIndex;
+
+            if (Recorders.Count() < ain) oldRecorder = Recorders[ain];
+            if (Speakers.Count() < aout) oldSpeaker = Speakers[aout];
+            if (VideoOut.Count() < video) oldVideoOut = VideoOut[video];
+
+            oldVolumeIn = trackBarSoundIn.Value;
+            oldVolumeOut = trackBarSoundOut.Value;
+            oldResolution = resComboBox.SelectedValue.ToString();
+            oldIndexResolution = resComboBox.SelectedIndex;
+            SetVolume(trackBarSoundOut.Value);
+        }
         private void AcceptButton_Click(object sender, EventArgs e)
         {
             var ain = comboBoxAudioInput.SelectedIndex;
@@ -405,70 +430,49 @@ namespace RSI_X_Desktop.forms
         {
             trackBarSoundIn.Value = oldVolumeIn;
             trackBarSoundIn_ValueChanged();
-            
+
             AcceptAllOldDevices();
             Close();
         }
         private void buttonImgSend_Click(object sender, EventArgs e)
         {
-            if (ImageSender.IsEnable)
+            if (ImageSender.IsEnable || IsImageSend)
             {
                 ImageSender.configImageToSend(null);
                 ImageSender.EnableImageSender(false);
 
-                // wtf?
-                AgoraObject.StopScreenCapture();
                 ResetVideoDevice();
-                button2.ForeColor = InactiveColor;
+                btnCustomImage.ForeColor = InactiveColor;
+                PreviewPanel.BackgroundImage = null;
+                (Owner as Broadcaster).PreviewFilePath = "";
+                pictureBoxLocalVideoTest.Show();
             }
             else
             {
                 var fd = new OpenFileDialog();
                 fd.ShowDialog();
 
-                if (fd.FileName != String.Empty)
+                if (fd.FileName == String.Empty) return;
+
+                try
                 {
-                    try
-                    {
-                        SetImageSend(false);
-                        ImageSender.configImageToSend(new Bitmap(fd.FileName), 5);
-                        ImageSender.EnableImageSender(true);
-                        button2.ForeColor = PushColor;
-                    }
-                    catch (Exception ex)
-                    {
-                        SetImageSend(true);
-                        MessageBox.Show(ex.Message);
-                    }
+                    SetImageSend(false);
+                    btnCustomImage.ForeColor = PushColor;
+                    //btnCustomImage.Cursor = Cursors.WaitCursor;
+
+                    (Owner as Broadcaster).PreviewFilePath = fd.FileName;
+                    ImageSender.configImageToSend(new Bitmap(fd.FileName), 5);
+                    ImageSender.EnableImageSender(true);
+                    PreviewPanel.BackgroundImage = new Bitmap(fd.FileName);
+                    pictureBoxLocalVideoTest.Hide();
+                    //btnCustomImage.Cursor = Cursors.Default;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
-        }
-        #endregion
-
-        #region TabControl Events
-        private void materialShowTabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            MicTestBtn.Text = "Test";
-            ReleaseBass();
-            IsAudioTest = false;
-        }
-        private void materialShowTabControl1_Selecting(object sender, TabControlCancelEventArgs e)
-        {
-            if (e.TabPage == Video)
-            {
-                workForm?.RefreshLocalWnd();
-                VideoCanvas vc = new((ulong)pictureBoxLocalVideoTest.Handle, 0);
-                vc.renderMode = ((int)RENDER_MODE_TYPE.RENDER_MODE_FIT);
-                AgoraObject.Rtc.StartPreview();
-                AgoraObject.Rtc.SetupLocalVideo(vc);
-            }
-        }
-        private void materialShowTabControl1_Deselecting(object sender, TabControlCancelEventArgs e)
-        {
-            if (e.TabPage == Video)
-            {
-                workForm?.SetLocalVideoPreview();
-            }
+            IsImageSend = ImageSender.IsEnable;
         }
         #endregion
 
@@ -479,14 +483,14 @@ namespace RSI_X_Desktop.forms
             if (IsAudioTest)
             {
                 ReleaseBass();
-                MicTestBtn.Text = "Stop";
+                testMic.Text = "Stop";
                 AgoraObject.Rtc.DisableAudio();
                 Bass.LoadMe();
                 InitPlayback();
             }
             else
             {
-                MicTestBtn.Text = "Test";
+                testMic.Text = "Test";
                 ReleaseBass();
                 AgoraObject.Rtc.EnableAudio();
             }
@@ -494,7 +498,7 @@ namespace RSI_X_Desktop.forms
         }
         bool RECORDPROC(int handle, IntPtr buffer, int length, IntPtr user) //This functions is called every time recorder sends stream to the speaker
         {
-            
+
             Bass.BASS_StreamPutData(output, buffer, length);
             if (prebuf > 0)
             { // still prebuffering
@@ -534,7 +538,7 @@ namespace RSI_X_Desktop.forms
         }
         private void SpeakerTestBtn_Click(object sender, EventArgs e) //Plays a simple beep sound to indicate selected speaker
         {
-            MicTestBtn.Text = "Test";
+            testMic.Text = "Test";
             ReleaseBass();
             IsAudioTest = false;
             int device_index = GetDeviceIndex(comboBoxAudioOutput.Text);
@@ -594,9 +598,9 @@ namespace RSI_X_Desktop.forms
             if (_instance.InvokeRequired)
                 _instance.Invoke((MethodInvoker)delegate
                 {
-                    _instance.button2.Enabled = block;
+                    _instance.btnCustomImage.Enabled = block;
                 });
-            else { _instance.button2.Enabled = block; }
+            else { _instance.btnCustomImage.Enabled = block; }
         }
         public static void SetVolume(int value)
         {
@@ -604,10 +608,6 @@ namespace RSI_X_Desktop.forms
             uint NewVolumeAllChannels = (((uint)NewVolume & 0x0000ffff) | ((uint)NewVolume << 16));
 
             waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
-        }
-        public void SetAudienceSettings()
-        {
-            materialShowTabControl1.SelectTab(1);
         }
         public static void ResetVideoDevice()
         {
@@ -628,14 +628,14 @@ namespace RSI_X_Desktop.forms
                 MessageBox.Show(ex.Message);
             }
         }
-        public static void tryReAcceptVideoDevice() 
+        public static void tryReAcceptVideoDevice()
         {
             try
             {
                 AcceptNewVideoRecDevice();
             }
             catch (Exception e)
-            { 
+            {
                 MessageBox.Show(e.Message);
             }
         }
@@ -649,7 +649,7 @@ namespace RSI_X_Desktop.forms
 
         }
 
-        public static void AcceptAllOldDevices() 
+        public static void AcceptAllOldDevices()
         {
             try
             {
@@ -695,19 +695,11 @@ namespace RSI_X_Desktop.forms
             UpdateResolution(oldResolution);
         }
 
-        public void typeOfAlligment(bool sign)
-        {
-            if (sign == true)
-                materialShowTabControl1.Alignment = TabAlignment.Left;
-            else
-                materialShowTabControl1.Alignment = TabAlignment.Right;
-        }
         private void NewDevices_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //AgoraObject.Rtc.EnableLocalVideo(false);
-            if (materialShowTabControl1.SelectedIndex == (int)TabPages.VIDEO)
-                workForm?.SetLocalVideoPreview();
+            workForm?.SetLocalVideoPreview();
             ReleaseBass();
+            AgoraObject.Rtc.EnableAudio();
             Dispose();
         }
         public static void ClearOldDevices()
@@ -717,7 +709,7 @@ namespace RSI_X_Desktop.forms
             Recorders?.Clear();
             VideoOut?.Clear();
         }
-        public static void Clear() 
+        public static void Clear()
         {
             oldVolumeIn = 100;
             oldVolumeOut = 100;
@@ -725,6 +717,38 @@ namespace RSI_X_Desktop.forms
             oldRecorder = null;
             oldVideoOut = null;
             oldIndexResolution = 3; //360p
+        }
+        private void CancelBtn_MouseHover(object sender, EventArgs e)
+        {
+            CancelBtn.Margin = Hovered;
+            CancelBtn.Focus();
+        }
+
+        private void CancelBtn_MouseLeave(object sender, EventArgs e)
+        {
+            CancelBtn.Margin = MarginNormal;
+        }
+
+        private void ConfirmBtn_MouseHover(object sender, EventArgs e)
+        {
+            ConfirmBtn.Margin = Hovered;
+            ConfirmBtn.Focus();
+        }
+
+        private void ConfirmBtn_MouseLeave(object sender, EventArgs e)
+        {
+            ConfirmBtn.Margin = MarginNormal;
+        }
+
+        private void ApplyBtn_MouseHover(object sender, EventArgs e)
+        {
+            ApplyBtn.Margin = Hovered;
+            ApplyBtn.Focus();
+        }
+
+        private void ApplyBtn_MouseLeave(object sender, EventArgs e)
+        {
+            ApplyBtn.Margin = MarginNormal;
         }
     }
 }

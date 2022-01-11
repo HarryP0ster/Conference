@@ -174,46 +174,15 @@ namespace RSI_X_Desktop
         #endregion
 
         #region Screen/Window capture
-        public static bool EnableWindowCapture(HWND index)
+        public static void StartScreenCapture(ScreenCaptureParameters capParam)
         {
-            Rectangle region = new Rectangle();
-            System.Drawing.Rectangle Rectangle2 = new();
-            GetWindowRect((System.IntPtr)index, out Rectangle2);
-            int wdth = Rectangle2.Width;
-            int hgt = Rectangle2.Height;
-            ScreenCaptureParameters capParam = new ScreenCaptureParameters(wdth, hgt);
-            region.x = 0;
-            region.y = 0;
-            region.width = wdth;
-            region.height = hgt;
-            capParam.bitrate = 1200;
-            capParam.frameRate = 30;
-            Rtc.StartScreenCaptureByWindowId((ulong)index, region, capParam);
-            return true;
-        }
-        public static bool EnableScreenCapture(ScreenCaptureParameters capParam = new())
-        {
-            StopScreenCapture();
-            if (capParam.bitrate == 0)
-                capParam = forms.Devices.resolutionsSize[
-                    forms.Devices.oldResolution];
-            Rectangle region = new Rectangle();
-
-            region.width = Screen.PrimaryScreen.Bounds.Width;
-            region.height = Screen.PrimaryScreen.Bounds.Height;
-            capParam.bitrate = 1200;
-            capParam.frameRate = 15;
-
-            IsScreenCapture =
-                ERROR_CODE.ERR_OK == Rtc.StartScreenCaptureByScreenRect(region, region, capParam);
-
-            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: screen sharing enable ({IsScreenCapture})");
-            return IsScreenCapture;
+            //if (capParam)
+            //    capParam = forms.Devices.GetVideoParam();
+            ScreenCapture.StartScreenCapture(capParam);
         }
         public static void StopScreenCapture()
         {
-            Rtc.StopScreenCapture();
-            IsScreenCapture = false;
+            ScreenCapture.StopScreenCapture();
         }
         #endregion
 
