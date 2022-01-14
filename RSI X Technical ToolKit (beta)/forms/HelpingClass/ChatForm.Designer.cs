@@ -305,8 +305,8 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.tablePanel1.SetRow(this.tablePanel2, 2);
             this.tablePanel2.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 3F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 45F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 55F)});
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 64.2F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 35.8F)});
             this.tablePanel2.Size = new System.Drawing.Size(430, 170);
             this.tablePanel2.TabIndex = 1;
             // 
@@ -334,16 +334,16 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.ChatTextBox.HoverBorderColor = System.Drawing.Color.White;
             this.ChatTextBox.Location = new System.Drawing.Point(10, 18);
             this.ChatTextBox.Margin = new System.Windows.Forms.Padding(10, 15, 3, 3);
-            this.ChatTextBox.MaxLength = 32767;
-            this.ChatTextBox.Multiline = false;
+            this.ChatTextBox.MaxLength = 127;
+            this.ChatTextBox.Multiline = true;
             this.ChatTextBox.Name = "ChatTextBox";
             this.ChatTextBox.PasswordChar = '\0';
             this.tablePanel2.SetRow(this.ChatTextBox, 1);
-            this.ChatTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.ChatTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.ChatTextBox.SelectedText = "";
             this.ChatTextBox.SelectionLength = 0;
             this.ChatTextBox.SelectionStart = 0;
-            this.ChatTextBox.Size = new System.Drawing.Size(417, 57);
+            this.ChatTextBox.Size = new System.Drawing.Size(417, 89);
             this.ChatTextBox.TabIndex = 1;
             this.ChatTextBox.TabStop = false;
             this.ChatTextBox.Text = "Type in your message";
@@ -361,12 +361,12 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.tablePanel3.Controls.Add(this.ChatClose);
             this.tablePanel3.Controls.Add(this.SendMsgBtn);
             this.tablePanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel3.Location = new System.Drawing.Point(3, 81);
+            this.tablePanel3.Location = new System.Drawing.Point(3, 113);
             this.tablePanel3.Name = "tablePanel3";
             this.tablePanel2.SetRow(this.tablePanel3, 2);
             this.tablePanel3.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel3.Size = new System.Drawing.Size(424, 86);
+            this.tablePanel3.Size = new System.Drawing.Size(424, 54);
             this.tablePanel3.TabIndex = 2;
             // 
             // ChatClose
@@ -380,7 +380,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.ChatClose.Margin = new System.Windows.Forms.Padding(10);
             this.ChatClose.Name = "ChatClose";
             this.tablePanel3.SetRow(this.ChatClose, 0);
-            this.ChatClose.Size = new System.Drawing.Size(44, 66);
+            this.ChatClose.Size = new System.Drawing.Size(44, 34);
             this.ChatClose.SizeMode = DevExpress.XtraEditors.SvgImageSizeMode.Squeeze;
             this.ChatClose.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("ChatClose.SvgImage")));
             this.ChatClose.TabIndex = 1;
@@ -397,7 +397,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.SendMsgBtn.Margin = new System.Windows.Forms.Padding(10);
             this.SendMsgBtn.Name = "SendMsgBtn";
             this.tablePanel3.SetRow(this.SendMsgBtn, 0);
-            this.SendMsgBtn.Size = new System.Drawing.Size(86, 66);
+            this.SendMsgBtn.Size = new System.Drawing.Size(86, 34);
             this.SendMsgBtn.SizeMode = DevExpress.XtraEditors.SvgImageSizeMode.Squeeze;
             this.SendMsgBtn.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("SendMsgBtn.SvgImage")));
             this.SendMsgBtn.TabIndex = 0;

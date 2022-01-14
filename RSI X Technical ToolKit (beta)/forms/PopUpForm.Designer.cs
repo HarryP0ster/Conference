@@ -33,27 +33,27 @@ namespace RSI_X_Desktop.forms
             this.tablePanel2 = new DevExpress.Utils.Layout.TablePanel();
             this.MainTable = new DevExpress.Utils.Layout.TablePanel();
             this.tablePanel3 = new DevExpress.Utils.Layout.TablePanel();
-            this.resComboBox = new ReaLTaiizor.Controls.AloneComboBox();
-            this.dungeonLabel3 = new ReaLTaiizor.Controls.DungeonLabel();
+            this.resComboBox = new RSI_X_Desktop.forms.HelpingClass.newAloneComboBox();
+            this.ResLabel = new ReaLTaiizor.Controls.DungeonLabel();
             this.tablePanel7 = new DevExpress.Utils.Layout.TablePanel();
             this.PreviewPanel = new System.Windows.Forms.Panel();
             this.pictureBoxLocalVideoTest = new ReaLTaiizor.Controls.HopePictureBox();
             this.btnCustomImage = new ReaLTaiizor.Controls.BigLabel();
             this.tablePanel6 = new DevExpress.Utils.Layout.TablePanel();
-            this.comboBoxVideo = new ReaLTaiizor.Controls.AloneComboBox();
-            this.dungeonLabel2 = new ReaLTaiizor.Controls.DungeonLabel();
-            this.dungeonLabel1 = new ReaLTaiizor.Controls.DungeonLabel();
-            this.bigLabel3 = new ReaLTaiizor.Controls.BigLabel();
+            this.comboBoxVideo = new RSI_X_Desktop.forms.HelpingClass.newAloneComboBox();
+            this.CameraLabel = new ReaLTaiizor.Controls.DungeonLabel();
+            this.SpeakerLabel = new ReaLTaiizor.Controls.DungeonLabel();
+            this.VolumeSpeakLabel = new ReaLTaiizor.Controls.BigLabel();
             this.trackBarSoundOut = new ReaLTaiizor.Controls.DungeonTrackBar();
             this.tablePanel5 = new DevExpress.Utils.Layout.TablePanel();
-            this.comboBoxAudioOutput = new ReaLTaiizor.Controls.AloneComboBox();
+            this.comboBoxAudioOutput = new RSI_X_Desktop.forms.HelpingClass.newAloneComboBox();
             this.testSpeaker = new ReaLTaiizor.Controls.BigLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tablePanel4 = new DevExpress.Utils.Layout.TablePanel();
-            this.comboBoxAudioInput = new ReaLTaiizor.Controls.AloneComboBox();
+            this.comboBoxAudioInput = new RSI_X_Desktop.forms.HelpingClass.newAloneComboBox();
             this.testMic = new ReaLTaiizor.Controls.BigLabel();
-            this.VolumeLabel = new ReaLTaiizor.Controls.BigLabel();
-            this.Microphone = new ReaLTaiizor.Controls.DungeonLabel();
+            this.VolumeMicLabel = new ReaLTaiizor.Controls.BigLabel();
+            this.MicrophoneLabel = new ReaLTaiizor.Controls.DungeonLabel();
             this.trackBarSoundIn = new ReaLTaiizor.Controls.DungeonTrackBar();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.ApplyBtn = new DevExpress.XtraEditors.SvgImageBox();
@@ -113,18 +113,18 @@ namespace RSI_X_Desktop.forms
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 25F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 75F)});
             this.MainTable.Controls.Add(this.tablePanel3);
-            this.MainTable.Controls.Add(this.dungeonLabel3);
+            this.MainTable.Controls.Add(this.ResLabel);
             this.MainTable.Controls.Add(this.tablePanel7);
             this.MainTable.Controls.Add(this.tablePanel6);
-            this.MainTable.Controls.Add(this.dungeonLabel2);
-            this.MainTable.Controls.Add(this.dungeonLabel1);
-            this.MainTable.Controls.Add(this.bigLabel3);
+            this.MainTable.Controls.Add(this.CameraLabel);
+            this.MainTable.Controls.Add(this.SpeakerLabel);
+            this.MainTable.Controls.Add(this.VolumeSpeakLabel);
             this.MainTable.Controls.Add(this.trackBarSoundOut);
             this.MainTable.Controls.Add(this.tablePanel5);
             this.MainTable.Controls.Add(this.pictureBox1);
             this.MainTable.Controls.Add(this.tablePanel4);
-            this.MainTable.Controls.Add(this.VolumeLabel);
-            this.MainTable.Controls.Add(this.Microphone);
+            this.MainTable.Controls.Add(this.VolumeMicLabel);
+            this.MainTable.Controls.Add(this.MicrophoneLabel);
             this.MainTable.Controls.Add(this.trackBarSoundIn);
             this.MainTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainTable.Location = new System.Drawing.Point(0, 0);
@@ -179,21 +179,21 @@ namespace RSI_X_Desktop.forms
             this.resComboBox.TabIndex = 10;
             this.resComboBox.SelectedIndexChanged += new System.EventHandler(this.resComboBox_SelectedIndexChanged);
             // 
-            // dungeonLabel3
+            // ResLabel
             // 
-            this.dungeonLabel3.AutoSize = true;
-            this.dungeonLabel3.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.dungeonLabel3, 0);
-            this.dungeonLabel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dungeonLabel3.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.dungeonLabel3.ForeColor = System.Drawing.Color.Gray;
-            this.dungeonLabel3.Location = new System.Drawing.Point(3, 294);
-            this.dungeonLabel3.Name = "dungeonLabel3";
-            this.MainTable.SetRow(this.dungeonLabel3, 6);
-            this.dungeonLabel3.Size = new System.Drawing.Size(119, 49);
-            this.dungeonLabel3.TabIndex = 17;
-            this.dungeonLabel3.Text = "Resolution";
-            this.dungeonLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ResLabel.AutoSize = true;
+            this.ResLabel.BackColor = System.Drawing.Color.Transparent;
+            this.MainTable.SetColumn(this.ResLabel, 0);
+            this.ResLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ResLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ResLabel.ForeColor = System.Drawing.Color.Gray;
+            this.ResLabel.Location = new System.Drawing.Point(3, 294);
+            this.ResLabel.Name = "ResLabel";
+            this.MainTable.SetRow(this.ResLabel, 6);
+            this.ResLabel.Size = new System.Drawing.Size(119, 49);
+            this.ResLabel.TabIndex = 17;
+            this.ResLabel.Text = "Resolution";
+            this.ResLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tablePanel7
             // 
@@ -295,56 +295,56 @@ namespace RSI_X_Desktop.forms
             this.comboBoxVideo.TabIndex = 1;
             this.comboBoxVideo.SelectedIndexChanged += new System.EventHandler(this.comboBoxVideo_SelectedIndexChanged);
             // 
-            // dungeonLabel2
+            // CameraLabel
             // 
-            this.dungeonLabel2.AutoSize = true;
-            this.dungeonLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.dungeonLabel2, 0);
-            this.dungeonLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dungeonLabel2.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.dungeonLabel2.ForeColor = System.Drawing.Color.Gray;
-            this.dungeonLabel2.Location = new System.Drawing.Point(2, 245);
-            this.dungeonLabel2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.dungeonLabel2.Name = "dungeonLabel2";
-            this.MainTable.SetRow(this.dungeonLabel2, 5);
-            this.dungeonLabel2.Size = new System.Drawing.Size(121, 49);
-            this.dungeonLabel2.TabIndex = 14;
-            this.dungeonLabel2.Text = "Camera";
-            this.dungeonLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.CameraLabel.AutoSize = true;
+            this.CameraLabel.BackColor = System.Drawing.Color.Transparent;
+            this.MainTable.SetColumn(this.CameraLabel, 0);
+            this.CameraLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CameraLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.CameraLabel.ForeColor = System.Drawing.Color.Gray;
+            this.CameraLabel.Location = new System.Drawing.Point(2, 245);
+            this.CameraLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.CameraLabel.Name = "CameraLabel";
+            this.MainTable.SetRow(this.CameraLabel, 5);
+            this.CameraLabel.Size = new System.Drawing.Size(121, 49);
+            this.CameraLabel.TabIndex = 14;
+            this.CameraLabel.Text = "Camera";
+            this.CameraLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // dungeonLabel1
+            // SpeakerLabel
             // 
-            this.dungeonLabel1.AutoSize = true;
-            this.dungeonLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.dungeonLabel1, 0);
-            this.dungeonLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dungeonLabel1.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.dungeonLabel1.ForeColor = System.Drawing.Color.Gray;
-            this.dungeonLabel1.Location = new System.Drawing.Point(2, 147);
-            this.dungeonLabel1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.dungeonLabel1.Name = "dungeonLabel1";
-            this.MainTable.SetRow(this.dungeonLabel1, 3);
-            this.dungeonLabel1.Size = new System.Drawing.Size(121, 49);
-            this.dungeonLabel1.TabIndex = 13;
-            this.dungeonLabel1.Text = "Audio output";
-            this.dungeonLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.SpeakerLabel.AutoSize = true;
+            this.SpeakerLabel.BackColor = System.Drawing.Color.Transparent;
+            this.MainTable.SetColumn(this.SpeakerLabel, 0);
+            this.SpeakerLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SpeakerLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.SpeakerLabel.ForeColor = System.Drawing.Color.Gray;
+            this.SpeakerLabel.Location = new System.Drawing.Point(2, 147);
+            this.SpeakerLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.SpeakerLabel.Name = "SpeakerLabel";
+            this.MainTable.SetRow(this.SpeakerLabel, 3);
+            this.SpeakerLabel.Size = new System.Drawing.Size(121, 49);
+            this.SpeakerLabel.TabIndex = 13;
+            this.SpeakerLabel.Text = "Audio output";
+            this.SpeakerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // bigLabel3
+            // VolumeSpeakLabel
             // 
-            this.bigLabel3.AutoSize = true;
-            this.bigLabel3.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.bigLabel3, 0);
-            this.bigLabel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bigLabel3.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.bigLabel3.ForeColor = System.Drawing.Color.Black;
-            this.bigLabel3.Location = new System.Drawing.Point(2, 196);
-            this.bigLabel3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.bigLabel3.Name = "bigLabel3";
-            this.MainTable.SetRow(this.bigLabel3, 4);
-            this.bigLabel3.Size = new System.Drawing.Size(121, 49);
-            this.bigLabel3.TabIndex = 12;
-            this.bigLabel3.Text = "Volume";
-            this.bigLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.VolumeSpeakLabel.AutoSize = true;
+            this.VolumeSpeakLabel.BackColor = System.Drawing.Color.Transparent;
+            this.MainTable.SetColumn(this.VolumeSpeakLabel, 0);
+            this.VolumeSpeakLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.VolumeSpeakLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.VolumeSpeakLabel.ForeColor = System.Drawing.Color.Black;
+            this.VolumeSpeakLabel.Location = new System.Drawing.Point(2, 196);
+            this.VolumeSpeakLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.VolumeSpeakLabel.Name = "VolumeSpeakLabel";
+            this.MainTable.SetRow(this.VolumeSpeakLabel, 4);
+            this.VolumeSpeakLabel.Size = new System.Drawing.Size(121, 49);
+            this.VolumeSpeakLabel.TabIndex = 12;
+            this.VolumeSpeakLabel.Text = "Volume";
+            this.VolumeSpeakLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // trackBarSoundOut
             // 
@@ -503,39 +503,39 @@ namespace RSI_X_Desktop.forms
             this.testMic.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.testMic.Click += new System.EventHandler(this.MicTestClicked);
             // 
-            // VolumeLabel
+            // VolumeMicLabel
             // 
-            this.VolumeLabel.AutoSize = true;
-            this.VolumeLabel.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.VolumeLabel, 0);
-            this.VolumeLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.VolumeLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.VolumeLabel.ForeColor = System.Drawing.Color.Black;
-            this.VolumeLabel.Location = new System.Drawing.Point(2, 98);
-            this.VolumeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.VolumeLabel.Name = "VolumeLabel";
-            this.MainTable.SetRow(this.VolumeLabel, 2);
-            this.VolumeLabel.Size = new System.Drawing.Size(121, 49);
-            this.VolumeLabel.TabIndex = 7;
-            this.VolumeLabel.Text = "Volume";
-            this.VolumeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.VolumeMicLabel.AutoSize = true;
+            this.VolumeMicLabel.BackColor = System.Drawing.Color.Transparent;
+            this.MainTable.SetColumn(this.VolumeMicLabel, 0);
+            this.VolumeMicLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.VolumeMicLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.VolumeMicLabel.ForeColor = System.Drawing.Color.Black;
+            this.VolumeMicLabel.Location = new System.Drawing.Point(2, 98);
+            this.VolumeMicLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.VolumeMicLabel.Name = "VolumeMicLabel";
+            this.MainTable.SetRow(this.VolumeMicLabel, 2);
+            this.VolumeMicLabel.Size = new System.Drawing.Size(121, 49);
+            this.VolumeMicLabel.TabIndex = 7;
+            this.VolumeMicLabel.Text = "Volume";
+            this.VolumeMicLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Microphone
+            // MicrophoneLabel
             // 
-            this.Microphone.AutoSize = true;
-            this.Microphone.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.Microphone, 0);
-            this.Microphone.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Microphone.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.Microphone.ForeColor = System.Drawing.Color.Gray;
-            this.Microphone.Location = new System.Drawing.Point(2, 49);
-            this.Microphone.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Microphone.Name = "Microphone";
-            this.MainTable.SetRow(this.Microphone, 1);
-            this.Microphone.Size = new System.Drawing.Size(121, 49);
-            this.Microphone.TabIndex = 6;
-            this.Microphone.Text = "Audio input";
-            this.Microphone.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MicrophoneLabel.AutoSize = true;
+            this.MicrophoneLabel.BackColor = System.Drawing.Color.Transparent;
+            this.MainTable.SetColumn(this.MicrophoneLabel, 0);
+            this.MicrophoneLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MicrophoneLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.MicrophoneLabel.ForeColor = System.Drawing.Color.Gray;
+            this.MicrophoneLabel.Location = new System.Drawing.Point(2, 49);
+            this.MicrophoneLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.MicrophoneLabel.Name = "MicrophoneLabel";
+            this.MainTable.SetRow(this.MicrophoneLabel, 1);
+            this.MicrophoneLabel.Size = new System.Drawing.Size(121, 49);
+            this.MicrophoneLabel.TabIndex = 6;
+            this.MicrophoneLabel.Text = "Audio input";
+            this.MicrophoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // trackBarSoundIn
             // 
@@ -769,8 +769,8 @@ namespace RSI_X_Desktop.forms
         private DevExpress.XtraEditors.SvgImageBox ApplyBtn;
         private DevExpress.Utils.Layout.TablePanel MainTable;
         private ReaLTaiizor.Controls.DungeonTrackBar trackBarSoundIn;
-        private ReaLTaiizor.Controls.DungeonLabel Microphone;
-        private ReaLTaiizor.Controls.BigLabel VolumeLabel;
+        private ReaLTaiizor.Controls.DungeonLabel MicrophoneLabel;
+        private ReaLTaiizor.Controls.BigLabel VolumeMicLabel;
         private DevExpress.Utils.Layout.TablePanel tablePanel4;
         private ReaLTaiizor.Controls.BigLabel testMic;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
@@ -779,21 +779,21 @@ namespace RSI_X_Desktop.forms
         private ReaLTaiizor.Controls.BigLabel bigLabel2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private DevExpress.Utils.Layout.TablePanel tablePanel5;
-        private ReaLTaiizor.Controls.DungeonLabel dungeonLabel1;
-        private ReaLTaiizor.Controls.BigLabel bigLabel3;
+        private ReaLTaiizor.Controls.DungeonLabel SpeakerLabel;
+        private ReaLTaiizor.Controls.BigLabel VolumeSpeakLabel;
         private ReaLTaiizor.Controls.DungeonTrackBar trackBarSoundOut;
         private ReaLTaiizor.Controls.BigLabel testSpeaker;
-        private ReaLTaiizor.Controls.DungeonLabel dungeonLabel2;
+        private ReaLTaiizor.Controls.DungeonLabel CameraLabel;
         private DevExpress.Utils.Layout.TablePanel tablePanel6;
         private DevExpress.Utils.Layout.TablePanel tablePanel7;
         private ReaLTaiizor.Controls.HopePictureBox pictureBoxLocalVideoTest;
-        private ReaLTaiizor.Controls.DungeonLabel dungeonLabel3;
+        private ReaLTaiizor.Controls.DungeonLabel ResLabel;
         private DevExpress.Utils.Layout.TablePanel tablePanel3;
         private ReaLTaiizor.Controls.BigLabel btnCustomImage;
         private System.Windows.Forms.Panel PreviewPanel;
-        private ReaLTaiizor.Controls.AloneComboBox comboBoxAudioInput;
-        private ReaLTaiizor.Controls.AloneComboBox comboBoxAudioOutput;
-        private ReaLTaiizor.Controls.AloneComboBox comboBoxVideo;
-        private ReaLTaiizor.Controls.AloneComboBox resComboBox;
+        private RSI_X_Desktop.forms.HelpingClass.newAloneComboBox comboBoxAudioInput;
+        private RSI_X_Desktop.forms.HelpingClass.newAloneComboBox comboBoxAudioOutput;
+        private RSI_X_Desktop.forms.HelpingClass.newAloneComboBox comboBoxVideo;
+        private RSI_X_Desktop.forms.HelpingClass.newAloneComboBox resComboBox;
     }
 }

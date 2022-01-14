@@ -65,6 +65,7 @@ namespace RSI_X_Desktop
         public Broadcaster()
         {
             InitializeComponent();
+
             AgoraObject.SetWndEventHandler(this);
         }
 

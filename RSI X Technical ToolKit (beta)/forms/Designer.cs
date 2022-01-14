@@ -18,6 +18,10 @@ namespace RSI_X_Desktop.forms
         bool canSelect = true;
         bool IsChatActive = false;
         private bool IsSharingScreen = false;
+
+        static private Font RoomNameLabelFont = Constants.GetBanshiftLightSemiCondensed(24);
+        static private Font cmbLangFont = Constants.GetBanshiftCondesed(14, FontStyle.Bold);
+
         #region Rectangles
         public Rectangle HomeBtnRect
         {
@@ -79,8 +83,37 @@ namespace RSI_X_Desktop.forms
         public Designer()
         {
             InitializeComponent();
+            AdjustDpi();
         }
 
+        private void AdjustDpi()
+        {
+
+            int dpi = this.DeviceDpi;
+            if (dpi >= (int)Constants.DPI.P175)
+            {
+                RoomNameLabelFont = Constants.GetBanshiftLightSemiCondensed(16);
+                cmbLangFont = Constants.GetBanshiftCondesed(10);
+            }
+            else if (dpi >= (int)Constants.DPI.P150)
+            {
+                RoomNameLabelFont = Constants.GetBanshiftLightSemiCondensed(18);
+                cmbLangFont = Constants.GetBanshiftCondesed(12);
+            }
+            else if (dpi >= (int)Constants.DPI.P125)
+            {
+                RoomNameLabelFont = Constants.GetBanshiftLightSemiCondensed(22);
+                cmbLangFont = Constants.GetBanshiftCondesed(14);
+            }
+            else if (dpi >= (int)Constants.DPI.P100)
+            {
+                RoomNameLabelFont = Constants.GetBanshiftLightSemiCondensed(24);
+                cmbLangFont = Constants.GetBanshiftCondesed(16);
+            }
+
+            RoomNameLabel.Font = RoomNameLabelFont;
+            cmblang.Font = cmbLangFont;
+        }
         private void Designer_Load(object sender, EventArgs e)
         {
             Owner.SizeChanged += delegate {

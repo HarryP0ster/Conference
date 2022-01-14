@@ -80,10 +80,25 @@ namespace RSI_X_Desktop.forms
         private int output;
         private int input;
         private long prebuf;
+        private Font CommonFont = Constants.Bahnschrift16;
 
         public PopUpForm()
         {
+            adjustDpi();
+
             InitializeComponent();
+
+            comboBoxAudioInput.Font = CommonFont;
+            comboBoxAudioOutput.Font = CommonFont;
+            comboBoxVideo.Font = CommonFont;
+            resComboBox.Font = CommonFont;
+
+            MicrophoneLabel.Font = CommonFont;
+            VolumeMicLabel.Font = CommonFont;
+            SpeakerLabel.Font = CommonFont;
+            VolumeSpeakLabel.Font = CommonFont;
+            CameraLabel.Font = CommonFont;
+            ResLabel.Font = CommonFont;
 
             Recorders = getListAudioInputDevices();
             Speakers = getListAudioOutDevices();
@@ -91,6 +106,23 @@ namespace RSI_X_Desktop.forms
 
             resComboBox.DataSource = new List<string>(resolutions.Keys);
             resComboBox.SelectedIndex = oldIndexResolution;
+        }
+
+        private void adjustDpi()
+        {
+            int dpi = this.DeviceDpi;
+            Font font = Constants.Bahnschrift16;
+
+            if (dpi >= (int)Constants.DPI.P175)
+                font = Constants.GetBanshiftCondesed(10F);
+            else if (dpi >= (int)Constants.DPI.P150)
+                font = Constants.GetBanshiftCondesed(11F);
+            else if (dpi >= (int)Constants.DPI.P125)
+                font = Constants.GetBanshiftCondesed(14F);
+            else if (dpi >= (int)Constants.DPI.P100)
+                font = Constants.GetBanshiftCondesed(16F);
+
+            CommonFont = font;
         }
         private void NewDevices_Load(object sender, EventArgs e)
         {
@@ -156,11 +188,11 @@ namespace RSI_X_Desktop.forms
 
         private void getComputerDescription()
         {
-            dungeonLabel1.Text = "Версия ОС - " + OSVersion.VersionString;
-            dungeonLabel2.Text = Is64BitOperatingSystem ?
+            SpeakerLabel.Text = "Версия ОС - " + OSVersion.VersionString;
+            CameraLabel.Text = Is64BitOperatingSystem ?
                 "64 Bit операционная система" :
                 "32 Bit операционная система";
-            dungeonLabel3.Text = "Пользователь - " + UserName;
+            ResLabel.Text = "Пользователь - " + UserName;
         }
         private static int getActiveAudioInputDevice()
         {

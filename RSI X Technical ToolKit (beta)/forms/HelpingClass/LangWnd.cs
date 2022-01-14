@@ -17,6 +17,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
         public bool GetOutCode { get; private set; } = false;
         public string NickName { get; private set; } = string.Empty;
         public int RoomIndex { get; private set; } = 0;
+        public Font LabelFont { get; }
 
         bool EnableCamera = true;
         bool EnableMic = true;
@@ -34,7 +35,26 @@ namespace RSI_X_Desktop.forms.HelpingClass
         public LangWnd()
         {
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            int dpi = this.DeviceDpi;
+            if (dpi >= (int)Constants.DPI.P175)
+            {
+                LabelFont = Constants.GetBanshiftSemiCondensed(10F);
+            }
+            else if (dpi >= (int)Constants.DPI.P150)
+            {
+                LabelFont = Constants.GetBanshiftSemiCondensed(12F);
+            }
+            else if (dpi >= (int)Constants.DPI.P125)
+            {
+                LabelFont = Constants.GetBanshiftSemiCondensed(14F);
+            }
+            else if (dpi >= (int)Constants.DPI.P100)
+            {
+                LabelFont = Constants.GetBanshiftSemiCondensed(16F);
+            }
             InitializeComponent();
+
+            langBox.Font = LabelFont;
         }
 
         private void LangWnd_Load(object sender, EventArgs e)
@@ -69,10 +89,9 @@ namespace RSI_X_Desktop.forms.HelpingClass
         private void label1_Paint(object sender, PaintEventArgs e)
         {
             label1.Text = "";
-            Font fnt = new Font("Bahnschrift SemiCondensed", 16);
             Brush br = new SolidBrush(label1.ForeColor);
 
-            e.Graphics.DrawString("Source language", fnt, br, 0, 0);
+            e.Graphics.DrawString("Source language", LabelFont, br, 0, 0);
         }
 
         private void ContinueBtn_Click(object sender, EventArgs e)
@@ -130,6 +149,11 @@ namespace RSI_X_Desktop.forms.HelpingClass
         {
             PopUpForm dlg = new();
             dlg.ShowDialog(this);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
