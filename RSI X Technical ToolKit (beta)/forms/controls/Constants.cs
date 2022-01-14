@@ -19,5 +19,8 @@ namespace RSI_X_Desktop.forms
         public static Font Bahnschrift14 { get => new Font("Bahnschrift Condensed", 14F); }
         public static Font Bahnschrift12 { get => new Font("Bahnschrift Condensed", 12F); }
         public static Font Bahnschrift10 { get => new Font("Bahnschrift Condensed", 10F); }
+        public static Font Leelawadee14 { get => new Font("Leelawadee", 14F); }
+        public static Font Leelawadee12 { get => new Font("Leelawadee", 12F); }
+        public static Font Leelawadee10 { get => new Font("Leelawadee", 10F); }
     }
 }

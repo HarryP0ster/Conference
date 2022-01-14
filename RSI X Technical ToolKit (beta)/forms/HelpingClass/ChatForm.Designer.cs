@@ -47,7 +47,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.label1 = new System.Windows.Forms.Label();
             this.tablePanel2 = new DevExpress.Utils.Layout.TablePanel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.bigTextBox2 = new ReaLTaiizor.Controls.HopeRichTextBox();
+            this.ChatTextBox = new ReaLTaiizor.Controls.HopeRichTextBox();
             this.tablePanel3 = new DevExpress.Utils.Layout.TablePanel();
             this.ChatClose = new DevExpress.XtraEditors.SvgImageBox();
             this.SendMsgBtn = new DevExpress.XtraEditors.SvgImageBox();
@@ -296,7 +296,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.tablePanel2.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 55F)});
             this.tablePanel2.Controls.Add(this.panel2);
-            this.tablePanel2.Controls.Add(this.bigTextBox2);
+            this.tablePanel2.Controls.Add(this.ChatTextBox);
             this.tablePanel2.Controls.Add(this.tablePanel3);
             this.tablePanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablePanel2.Location = new System.Drawing.Point(10, 630);
@@ -322,34 +322,34 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.panel2.Size = new System.Drawing.Size(430, 3);
             this.panel2.TabIndex = 3;
             // 
-            // bigTextBox2
+            // ChatTextBox
             // 
-            this.bigTextBox2.BorderColor = System.Drawing.Color.White;
-            this.tablePanel2.SetColumn(this.bigTextBox2, 0);
-            this.bigTextBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.bigTextBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bigTextBox2.Font = new System.Drawing.Font("Leelawadee", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.bigTextBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
-            this.bigTextBox2.Hint = "";
-            this.bigTextBox2.HoverBorderColor = System.Drawing.Color.White;
-            this.bigTextBox2.Location = new System.Drawing.Point(10, 18);
-            this.bigTextBox2.Margin = new System.Windows.Forms.Padding(10, 15, 3, 3);
-            this.bigTextBox2.MaxLength = 32767;
-            this.bigTextBox2.Multiline = false;
-            this.bigTextBox2.Name = "bigTextBox2";
-            this.bigTextBox2.PasswordChar = '\0';
-            this.tablePanel2.SetRow(this.bigTextBox2, 1);
-            this.bigTextBox2.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.bigTextBox2.SelectedText = "";
-            this.bigTextBox2.SelectionLength = 0;
-            this.bigTextBox2.SelectionStart = 0;
-            this.bigTextBox2.Size = new System.Drawing.Size(417, 57);
-            this.bigTextBox2.TabIndex = 1;
-            this.bigTextBox2.TabStop = false;
-            this.bigTextBox2.Text = "Type in your message";
-            this.bigTextBox2.UseSystemPasswordChar = false;
-            this.bigTextBox2.Enter += new System.EventHandler(this.bigTextBox2_Enter);
-            this.bigTextBox2.Leave += new System.EventHandler(this.bigTextBox2_Leave);
+            this.ChatTextBox.BorderColor = System.Drawing.Color.White;
+            this.tablePanel2.SetColumn(this.ChatTextBox, 0);
+            this.ChatTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.ChatTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ChatTextBox.Font = new System.Drawing.Font("Leelawadee", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ChatTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
+            this.ChatTextBox.Hint = "";
+            this.ChatTextBox.HoverBorderColor = System.Drawing.Color.White;
+            this.ChatTextBox.Location = new System.Drawing.Point(10, 18);
+            this.ChatTextBox.Margin = new System.Windows.Forms.Padding(10, 15, 3, 3);
+            this.ChatTextBox.MaxLength = 32767;
+            this.ChatTextBox.Multiline = false;
+            this.ChatTextBox.Name = "ChatTextBox";
+            this.ChatTextBox.PasswordChar = '\0';
+            this.tablePanel2.SetRow(this.ChatTextBox, 1);
+            this.ChatTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.ChatTextBox.SelectedText = "";
+            this.ChatTextBox.SelectionLength = 0;
+            this.ChatTextBox.SelectionStart = 0;
+            this.ChatTextBox.Size = new System.Drawing.Size(417, 57);
+            this.ChatTextBox.TabIndex = 1;
+            this.ChatTextBox.TabStop = false;
+            this.ChatTextBox.Text = "Type in your message";
+            this.ChatTextBox.UseSystemPasswordChar = false;
+            this.ChatTextBox.Enter += new System.EventHandler(this.bigTextBox2_Enter);
+            this.ChatTextBox.Leave += new System.EventHandler(this.bigTextBox2_Leave);
             // 
             // tablePanel3
             // 
@@ -465,7 +465,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
         private ReaLTaiizor.Controls.Panel PGeneral;
         private System.Windows.Forms.Panel panel1;
         private ReaLTaiizor.Controls.PoisonScrollBar GeneralScroll;
-        private ReaLTaiizor.Controls.HopeRichTextBox bigTextBox2;
+        private ReaLTaiizor.Controls.HopeRichTextBox ChatTextBox;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Panel panel2;
         private DevExpress.XtraEditors.SvgImageBox ChatClose;

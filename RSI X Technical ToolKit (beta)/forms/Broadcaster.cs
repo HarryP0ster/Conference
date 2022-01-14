@@ -11,6 +11,21 @@ using System.IO.Pipes;
 
 namespace RSI_X_Desktop
 {
+    public struct Data
+    {
+        public int RoomIndex;
+        public bool CamControl;
+        public bool MicControl;
+        public string Nickname;
+        public Data(int room, bool camera, bool mic, string name)
+        {
+            RoomIndex = room;
+            CamControl = camera;
+            MicControl = mic;
+            Nickname = name;
+        }
+    }
+
     enum TARGET_MESSAGES
     { 
         MUTE = 0,
@@ -35,6 +50,7 @@ namespace RSI_X_Desktop
         internal Designer ExternWnd = new();
         private FireBaseReader GetFireBase = new();
         private Process TargetPublisher = null;
+        Data InitData;
 
         private static IntPtr LocalWinId;
         private bool IsSharingScreen = false;
@@ -58,67 +74,64 @@ namespace RSI_X_Desktop
             get => chat;
         }
 
+        public Data SetTransData
+        {
+            set
+            {
+                InitData = value;
+            }
+        }
+
         private void Conference_Load(object sender, EventArgs e)
         {
             StreamLayout.ColumnStyles[1].SizeType = SizeType.Absolute;
             StreamLayout.ColumnStyles[0].Width = 100;
             StreamLayout.ColumnStyles[1].Width = 0;
 
-            LangSelectDlg dlg = new();
             Show();
             CenterToScreen();
+
+            LocalWinId = pictureBoxLocalVideo.Handle;
+            Init();
+
+            // srcLangIndex < 0 //IS HOST
+
+            AgoraObject.UpdateNickName(InitData.Nickname);
+
+            GetFireBase.SetChannelName(
+                AgoraObject.GetComplexToken().GetHostName);
+            chat.HandleCreated += (s, e) =>
+            {
+                chat.UpdateFireBase(GetFireBase);
+                GetFireBase.Connect();
+            };
+
             bottomPanel.Show(this);
             bottomPanel.Enabled = false;
             ExternWnd.Show(this);
-            dlg.ShowDialog(this);
-            dlg.BringToFront();
 
-            if (dlg.GetOutCode)
+            List<string> langsShort = new();
+            langsShort.Add("HOST");
+            foreach (var lang in AgoraObject.GetComplexToken().GetTranslLangs)
+            { langsShort.Add(lang.langShort); }
+            ExternWnd.cmblang.DataSource = langsShort;
+
+            srcLangIndex = InitData.RoomIndex;
+            if (langsShort.Count < 0)
             {
-                LocalWinId = pictureBoxLocalVideo.Handle;
-                // srcLangIndex < 0 //IS HOST
-
-                GetFireBase.SetChannelName(
-                    AgoraObject.GetComplexToken().GetHostName);
-                chat.HandleCreated += (s, e) =>
-                {
-                    chat.UpdateFireBase(GetFireBase);
-                    GetFireBase.Connect();
-                };
-
-                List<string> langsShort = new();
-                langsShort.Add("HOST");
-                foreach (var lang in AgoraObject.GetComplexToken().GetTranslLangs)
-                { langsShort.Add(lang.langShort); }
-                ExternWnd.cmblang.DataSource = langsShort;
-
-                srcLangIndex = dlg.PrimaryLang;
-                if (langsShort.Count < 0)
-                {
-                    ExternWnd.cmblang.Enabled = false;
-                    ExternWnd.cmblang.Hide();
-                    getAudioFrom = STATE.FLOOR;
-                }
-                else
-                {
-                    getAudioFrom = srcLangIndex == 0 ?
-                        STATE.FLOOR :
-                        STATE.TRANSl;
-
-                    ExternWnd.cmblang.SelectedIndex = Math.Max(0, srcLangIndex);
-                    cmblang_SelectedIndexChanged(null, new());
-                    floor_CheckedChanged(getAudioFrom);
-                }
-                Init();
-
-                //MuteMic(dlg.MicMute);
-                //MuteCam(dlg.CamMute);
+                ExternWnd.cmblang.Enabled = false;
+                ExternWnd.cmblang.Hide();
+                getAudioFrom = STATE.FLOOR;
             }
             else
             {
-                Owner.Show();
-                Dispose();
-                GC.Collect();
+                getAudioFrom = srcLangIndex == 0 ?
+                    STATE.FLOOR :
+                    STATE.TRANSl;
+
+                ExternWnd.cmblang.SelectedIndex = Math.Max(0, srcLangIndex);
+                cmblang_SelectedIndexChanged(null, new());
+                floor_CheckedChanged(getAudioFrom);
             }
         }
         private void Init()
@@ -131,8 +144,9 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.EnableVideo();
             AgoraObject.Rtc.EnableAudio();
             AgoraObject.Rtc.EnableLocalVideo(true);
+
+            AgoraObject.MuteLocalVideoStream(false);
             AgoraObject.MuteLocalAudioStream(true);
-            AgoraObject.MuteLocalVideoStream(true);
             AgoraObject.Rtc.SetChannelProfile(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
             AgoraObject.Rtc.SetClientRole(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
             hostBroadcasters.Add(0, pictureBoxLocalVideo);
@@ -144,12 +158,10 @@ namespace RSI_X_Desktop
                 AgoraObject.GetComplexToken().GetHostName,
                 AgoraObject.GetComplexToken().GetHostToken, 0, "");
 
-            //AgoraObject.MuteLocalAudioStream(AgoraObject.IsLocalAudioMute);
-            //AgoraObject.MuteLocalVideoStream(AgoraObject.IsLocalVideoMute);
-            AgoraObject.MuteLocalAudioStream(false);
-            AgoraObject.MuteLocalVideoStream(false);
-
             SetLocalVideoPreview();
+            AgoraObject.MuteLocalVideoStream(!InitData.CamControl);
+            AgoraObject.MuteLocalAudioStream(!InitData.MicControl);
+            pictureBoxLocalVideo.Visible = !AgoraObject.IsLocalVideoMute;
         }
 
         public void SetLocalVideoPreview()

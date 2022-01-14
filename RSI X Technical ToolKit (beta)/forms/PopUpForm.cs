@@ -94,6 +94,10 @@ namespace RSI_X_Desktop.forms
         }
         private void NewDevices_Load(object sender, EventArgs e)
         {
+            AgoraObject.Rtc.DisableAudio();
+            AgoraObject.Rtc.EnableVideo();
+
+            SetWndRegion();
             oldVolumeIn = RecordersManager.GetDeviceVolume();
             trackBarSoundIn.Value = oldVolumeIn;
             trackBarSoundOut.Value = oldVolumeOut;
@@ -114,7 +118,18 @@ namespace RSI_X_Desktop.forms
             UpdateComboBoxRecorder();
             UpdateComboBoxVideoOut();
             UpdateComboBoxSpeakers();
-            AgoraObject.Rtc.DisableAudio();
+        }
+
+        private void SetWndRegion()
+        {
+            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+            int d = 45;
+            System.Drawing.Rectangle r = new System.Drawing.Rectangle(0, 0, Width, Height);
+            path.AddArc(r.X, r.Y, d, d, 180, 90);
+            path.AddArc(r.X + r.Width - d, r.Y, d, d, 270, 90);
+            path.AddArc(r.X + r.Width - d, r.Y + r.Height - d, d, d, 0, 90);
+            path.AddArc(r.X, r.Y + r.Height - d, d, d, 90, 90);
+            this.Region = new Region(path);
         }
 
         public static void InitManager()
@@ -402,6 +417,9 @@ namespace RSI_X_Desktop.forms
             if (Speakers.Count() < aout) oldSpeaker = Speakers[aout];
             if (VideoOut.Count() < video) oldVideoOut = VideoOut[video];
 
+            oldRecorder = (string)comboBoxAudioInput.SelectedItem;
+            oldSpeaker = (string)comboBoxAudioOutput.SelectedItem;
+            oldVideoOut = (string)comboBoxVideo.SelectedItem;
             oldVolumeIn = trackBarSoundIn.Value;
             oldVolumeOut = trackBarSoundOut.Value;
             oldResolution = resComboBox.SelectedValue.ToString();
@@ -410,20 +428,7 @@ namespace RSI_X_Desktop.forms
         }
         private void AcceptButton_Click(object sender, EventArgs e)
         {
-            var ain = comboBoxAudioInput.SelectedIndex;
-            var aout = comboBoxAudioOutput.SelectedIndex;
-            var video = comboBoxVideo.SelectedIndex;
-
-            if (Recorders.Count() < ain) oldRecorder = Recorders[ain];
-            if (Speakers.Count() < aout) oldSpeaker = Speakers[aout];
-            if (VideoOut.Count() < video) oldVideoOut = VideoOut[video];
-
-            oldVolumeIn = trackBarSoundIn.Value;
-            oldVolumeOut = trackBarSoundOut.Value;
-            oldResolution = resComboBox.SelectedValue.ToString();
-            oldIndexResolution = resComboBox.SelectedIndex;
-            SetVolume(trackBarSoundOut.Value);
-
+            ApplyButton_Click(sender, e);
             CloseButton_Click(sender, e);
         }
         internal void CloseButton_Click(object sender, EventArgs e)

@@ -186,6 +186,18 @@ namespace RSI_X_Desktop.forms
                 SvgImage.FromFile("Resources\\sharing.svg") :
                 SvgImage.FromFile("Resources\\screen_sharing.svg");
         }
+
+        internal void MuteLocalAudio(bool mute)
+        {
+            AgoraObject.MuteLocalAudioStream(mute);
+            AudioColorUpdate();
+        }
+
+        internal void MuteLocalVideo(bool mute)
+        {
+            AgoraObject.MuteLocalVideoStream(mute);
+            VideoColorUpdate();
+        }
         #endregion
 
         #region EventHandlers

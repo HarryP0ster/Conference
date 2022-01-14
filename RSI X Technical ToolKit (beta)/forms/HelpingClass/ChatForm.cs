@@ -23,7 +23,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
         const int TAB_COUNT = 2;
         int[] scroll_offset = new int[TAB_COUNT * 2];
         List<Control>[] messages_list = new List<Control>[TAB_COUNT];
-        bool[] ScrollEnabled = new bool[2];
+        bool[] ScrollEnabled = new bool[2] { true, true };
         ReaLTaiizor.Controls.PoisonScrollBar[] chat_scrolls = new ReaLTaiizor.Controls.PoisonScrollBar[2];
 
         HelpingClass.FireBaseReader FireBase;
@@ -35,6 +35,20 @@ namespace RSI_X_Desktop.forms.HelpingClass
         public ChatForm()
         {
             InitializeComponent();
+
+            Font font = Constants.Leelawadee14;
+            int dpi = this.DeviceDpi;
+
+            if (dpi >= (int)Constants.DPI.P175)
+                font = Constants.Leelawadee10;
+            else if (dpi >= (int)Constants.DPI.P150)
+                font = Constants.Leelawadee12;
+            else if (dpi >= (int)Constants.DPI.P125)
+                font = Constants.Leelawadee12;
+            else if (dpi >= (int)Constants.DPI.P100)
+                font = Constants.Leelawadee14;
+            ChatTextBox.Font = font;
+
             foreach (Control ctr in Controls)
             {
                 ctr.KeyDown += Enter_KeyDown;
@@ -54,6 +68,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             }
             chat_scrolls[0] = GeneralScroll;
             chat_scrolls[1] = SupportScroll;
+
             PGeneral.Resize += Chat_SizeChanged;
             PSupport.Resize += Chat_SizeChanged;
 
@@ -102,25 +117,38 @@ namespace RSI_X_Desktop.forms.HelpingClass
 
         private void Enter_KeyDown(object sender, KeyEventArgs e)
         {
-            if (bigTextBox2.Text != "" && e.KeyCode == Keys.Enter)
+            if (ChatTextBox.Text != "" && e.KeyCode == Keys.Enter)
+            {
                 chatButtonRight2_Click(sender, null);
+                ChatTextBox.Text = "";
+            }
         }
 
+        private void ChatTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (ChatTextBox.Text != "" && e.KeyCode == Keys.Enter)
+                ChatTextBox.Text = "";
+        }
         private void chatButtonRight2_Click(object sender, EventArgs e)
         {
-            if (bigTextBox2.Text != "" && bigTextBox2.ForeColor != Color.FromArgb(185, 185, 185))
+            string msg = ChatTextBox.Text;
+            if (ChatTextBox.Text != "" && ChatTextBox.ForeColor != Color.FromArgb(185, 185, 185))
             {
+                if (msg[0] == '\n' || msg[0] == (char)13)
+                {
+                    ChatTextBox.Text = "";
+                    return;
+                }
                 if (CurPanel == PANEL.GENERAL)
                 {
-                    AgoraObject.SendMessageToHost(bigTextBox2.Text);
-                    AddOwnMessageGeneral(bigTextBox2.Text);
-                    bigTextBox2.Text = "";
+                    AgoraObject.SendMessageToHost(msg);
+                    AddOwnMessageGeneral(msg);
                 }
                 else
                 {
-                    FireBase.SendMessage(bigTextBox2.Text);
-                    bigTextBox2.Text = "";
+                    FireBase.SendMessage(msg);
                 }
+                ChatTextBox.Text = "";
             }
         }
 
@@ -128,16 +156,16 @@ namespace RSI_X_Desktop.forms.HelpingClass
         {
             if (InvokeRequired)
                 Invoke((MethodInvoker)delegate
-                { chat_NewMessage(message, "Host", channel); });
+                { chat_NewMessage(message, nickname, channel); });
             else
-                chat_NewMessage(message, "Host", channel);
+                chat_NewMessage(message, nickname, channel);
         }
         private void chat_NewMessage(string message, string nickname, CHANNEL_TYPE channel)
         {
             switch (channel)
             {
                 case CHANNEL_TYPE.HOST:
-                    RelocateBubbles(new HelpingClass.MessagePanelL(message, nickname, PGeneral), PGeneral, (int)PANEL.GENERAL);
+                    RelocateBubbles(new MessagePanelL(message, nickname, PGeneral), PGeneral, (int)PANEL.GENERAL);
                     break;
             }
         }
@@ -156,24 +184,24 @@ namespace RSI_X_Desktop.forms.HelpingClass
         {
             if (IsHandleCreated)
             {
-                RelocateBubbles(new HelpingClass.MessagePanelL(arg.Msg.msg, arg.Msg.username, PSupport), PSupport, (int)PANEL.SUPPORT);
+                RelocateBubbles(new MessagePanelL(arg.Msg.msg, arg.Msg.username, PSupport), PSupport, (int)PANEL.SUPPORT);
             }
         }
         private void AddOwnMessageGeneral(string msg)
         {
-            RelocateBubbles(new HelpingClass.MessagePanelL(msg, HelpingClass.MessagePanelL.MyOwn, PGeneral), PGeneral, (int)PANEL.GENERAL);
+            RelocateBubbles(new MessagePanelL(msg, MessagePanelL.MyOwn, PGeneral), PGeneral, (int)PANEL.GENERAL);
         }
 
         private void RelocateBubbles(Control new_ctr, Control panel, int index)
         {
             //panel.Controls.Add(new_ctr);
             messages_list[index].Add(new_ctr);
-            Chat_SizeChanged(panel, new EventArgs());
             if (ScrollEnabled[index])
             {
                 chat_scrolls[index].Maximum = messages_list[index].Count - scroll_offset[TAB_COUNT + index];
                 chat_scrolls[index].Value = chat_scrolls[index].Maximum - scroll_offset[index];
             }
+            Chat_SizeChanged(panel, new EventArgs());
         }
 
         public void UpdateFireBase(HelpingClass.FireBaseReader FireBaseReader)
@@ -255,16 +283,16 @@ namespace RSI_X_Desktop.forms.HelpingClass
 
         private void bigTextBox2_Enter(object sender, EventArgs e)
         {
-            bigTextBox2.ForeColor = Color.Black;
-            if (bigTextBox2.Text == "Type in your message")
-                bigTextBox2.Text = "";
+            ChatTextBox.ForeColor = Color.Black;
+            if (ChatTextBox.Text == "Type in your message")
+                ChatTextBox.Text = "";
         }
 
         private void bigTextBox2_Leave(object sender, EventArgs e)
         {
-            bigTextBox2.ForeColor = Color.FromArgb(185, 185, 185);
-            if (bigTextBox2.Text == "")
-                bigTextBox2.Text = "Type in your message";
+            ChatTextBox.ForeColor = Color.FromArgb(185, 185, 185);
+            if (ChatTextBox.Text == "")
+                ChatTextBox.Text = "Type in your message";
         }
 
         private void General_Click(object sender, EventArgs e)
@@ -273,6 +301,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             TablePanels.Columns[1].Width = 0;
             TablePanels.Columns[0].Width = 100;
             timer1.Start();
+            Chat_SizeChanged(PGeneral, new());
             General.Enabled = false;
         }
 
@@ -282,6 +311,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             TablePanels.Columns[0].Width = 0;
             TablePanels.Columns[1].Width = 100;
             timer1.Start();
+            Chat_SizeChanged(PSupport, new());
             Support.Enabled = false;
         }
 

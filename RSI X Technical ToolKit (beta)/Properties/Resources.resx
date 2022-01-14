@@ -121,6 +121,15 @@
   <data name="apply" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\apply.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="BckgFade" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BckgFade.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonShadow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cameraRadio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cameraRadio.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Cancel.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -157,6 +166,12 @@
   <data name="LeftSidePanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LeftSidePanel.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="LobbyCont" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LobbyCont.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="LobbyDevices" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LobbyDevices.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="LoginForm" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LoginForm.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -168,6 +183,9 @@
   </data>
   <data name="logotype_compressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logotype_compressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="micRadio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\micRadio.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="mute" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\mute.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -213,6 +231,9 @@
   </data>
   <data name="SupportChatSelected" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SupportChatSelected.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TextBoxShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TextBoxShadow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="video" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\video.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
