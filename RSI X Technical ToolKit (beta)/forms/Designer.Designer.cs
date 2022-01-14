@@ -412,6 +412,7 @@ namespace RSI_X_Desktop.forms
             this.ClientSize = new System.Drawing.Size(1280, 800);
             this.Controls.Add(this.MainLayout);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.IconOptions.Icon = ((System.Drawing.Icon)(resources.GetObject("Designer.IconOptions.Icon")));
             this.Name = "Designer";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
