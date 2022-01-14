@@ -406,7 +406,7 @@ namespace RSI_X_Desktop
                     if (ImageSender.IsEnable)
                     {
                         ImageSender.SetLocalFrame();
-                        forms.Devices.SetImageSend(true);
+                        forms.PopUpForm.SetImageSend(true);
                     }
                     else
                         ImageSender.SetLocalFrame(clear: true);

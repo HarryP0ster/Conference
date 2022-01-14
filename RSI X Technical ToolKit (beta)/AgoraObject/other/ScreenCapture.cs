@@ -41,8 +41,8 @@ namespace RSI_X_Desktop
             //proc.BeginOutputReadLine();
 
             if (capParam.bitrate == 0)
-                capParam = forms.Devices.resolutionsSize[
-                    forms.Devices.oldResolution];
+                capParam = forms.PopUpForm.resolutionsSize[
+                    forms.PopUpForm.oldResolution];
             Rectangle region = new();
 
             region.width = Screen.PrimaryScreen.Bounds.Width;

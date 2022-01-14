@@ -281,6 +281,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.ClientSize = new System.Drawing.Size(450, 450);
             this.Controls.Add(this.tablePanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.IconOptions.Icon = ((System.Drawing.Icon)(resources.GetObject("LangWnd.IconOptions.Icon")));
             this.Name = "LangWnd";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

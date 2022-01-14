@@ -418,6 +418,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.ClientSize = new System.Drawing.Size(450, 800);
             this.Controls.Add(this.tablePanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.IconOptions.Icon = ((System.Drawing.Icon)(resources.GetObject("ChatForm.IconOptions.Icon")));
             this.Name = "ChatForm";
             this.ShowInTaskbar = false;
             this.Text = "ChatForm";

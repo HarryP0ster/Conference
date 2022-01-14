@@ -83,7 +83,6 @@ namespace RSI_X_Desktop
             Rtc = AgoraRtcEngine.CreateRtcEngine();
             Rtc.Initialize(new RtcEngineContext(AppID));
             
-            forms.Devices.InitManager();
             SetPublishProfile();
             Rtc.SetVideoEncoderConfiguration(new VideoEncoderConfiguration(new VideoDimensions(1024, 720), FRAME_RATE.FRAME_RATE_FPS_15, 1040, ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE));
         }

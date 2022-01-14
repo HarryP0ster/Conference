@@ -35,12 +35,14 @@ namespace RSI_X_Desktop
             this.StreamLayout = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.streamsTable = new System.Windows.Forms.TableLayoutPanel();
+            this.Nothing = new System.Windows.Forms.Panel();
             this.pictureBoxLocalVideo = new System.Windows.Forms.PictureBox();
             this.nightControlBox1 = new ReaLTaiizor.Controls.NightControlBox();
             this.formTheme1.SuspendLayout();
             this.MainLayout.SuspendLayout();
             this.StreamLayout.SuspendLayout();
             this.streamsTable.SuspendLayout();
+            this.Nothing.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLocalVideo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -66,6 +68,7 @@ namespace RSI_X_Desktop
             // MainLayout
             // 
             this.MainLayout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MainLayout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.MainLayout.ColumnCount = 2;
             this.MainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.MainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -114,7 +117,7 @@ namespace RSI_X_Desktop
             this.streamsTable.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.streamsTable.ColumnCount = 1;
             this.streamsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.streamsTable.Controls.Add(this.pictureBoxLocalVideo, 0, 0);
+            this.streamsTable.Controls.Add(this.Nothing, 0, 0);
             this.streamsTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.streamsTable.Location = new System.Drawing.Point(0, 0);
             this.streamsTable.Margin = new System.Windows.Forms.Padding(0);
@@ -123,6 +126,18 @@ namespace RSI_X_Desktop
             this.streamsTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.streamsTable.Size = new System.Drawing.Size(991, 778);
             this.streamsTable.TabIndex = 5;
+            // 
+            // Nothing
+            // 
+            this.Nothing.BackgroundImage = global::RSI_X_Desktop.Properties.Resources.logotype;
+            this.Nothing.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.Nothing.Controls.Add(this.pictureBoxLocalVideo);
+            this.Nothing.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Nothing.Location = new System.Drawing.Point(0, 0);
+            this.Nothing.Margin = new System.Windows.Forms.Padding(0);
+            this.Nothing.Name = "Nothing";
+            this.Nothing.Size = new System.Drawing.Size(991, 778);
+            this.Nothing.TabIndex = 0;
             // 
             // pictureBoxLocalVideo
             // 
@@ -184,6 +199,7 @@ namespace RSI_X_Desktop
             this.StreamLayout.ResumeLayout(false);
             this.StreamLayout.PerformLayout();
             this.streamsTable.ResumeLayout(false);
+            this.Nothing.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLocalVideo)).EndInit();
             this.ResumeLayout(false);
 
@@ -197,5 +213,6 @@ namespace RSI_X_Desktop
         internal System.Windows.Forms.TableLayoutPanel StreamLayout;
         internal System.Windows.Forms.TableLayoutPanel streamsTable;
         internal System.Windows.Forms.PictureBox pictureBoxLocalVideo;
+        private System.Windows.Forms.Panel Nothing;
     }
 }

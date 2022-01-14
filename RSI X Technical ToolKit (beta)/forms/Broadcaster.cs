@@ -66,7 +66,6 @@ namespace RSI_X_Desktop
         {
             InitializeComponent();
             AgoraObject.SetWndEventHandler(this);
-            PopUpForm.InitManager();
         }
 
         internal ChatForm GetChat
@@ -141,6 +140,10 @@ namespace RSI_X_Desktop
             streamsTable.MouseMove += Mouse_MouseMove;
             pictureBoxLocalVideo.Click += Mouse_Click;
             pictureBoxLocalVideo.MouseMove += Mouse_MouseMove;
+
+            Nothing.Click += Mouse_Click;
+            Nothing.MouseMove += Mouse_MouseMove;
+
             AgoraObject.Rtc.EnableVideo();
             AgoraObject.Rtc.EnableAudio();
             AgoraObject.Rtc.EnableLocalVideo(true);
@@ -290,7 +293,7 @@ namespace RSI_X_Desktop
             else
             {
                 AgoraObject.StopScreenCapture();
-                Devices.tryReAcceptVideoDevice();
+                PopUpForm.tryReAcceptVideoDevice();
                 
                 pictureBoxLocalVideo.Refresh ();
             }
@@ -327,8 +330,8 @@ namespace RSI_X_Desktop
                 ImageSender.EnableImageSender(false);
             ImageSender.Dispose();
             
-            Devices.ClearOldDevices();
-            Devices.Clear();
+            PopUpForm.ClearOldDevices();
+            PopUpForm.Clear();
             
             if (!Owner.Visible) Application.Exit();
             GC.Collect();
@@ -393,7 +396,7 @@ namespace RSI_X_Desktop
 
             List<string> args = new() { 
                 lh.token, lh.langFull, 
-                Devices.oldRecorder,
+                PopUpForm.oldRecorder,
                 Process.GetCurrentProcess().Id.ToString(),
                 AgoraObject.NickName};
 
