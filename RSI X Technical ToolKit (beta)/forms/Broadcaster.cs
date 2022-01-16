@@ -92,11 +92,11 @@ namespace RSI_X_Desktop
             CenterToScreen();
 
             LocalWinId = pictureBoxLocalVideo.Handle;
+            AgoraObject.UpdateNickName(InitData.Nickname);
             Init();
 
             // srcLangIndex < 0 //IS HOST
 
-            AgoraObject.UpdateNickName(InitData.Nickname);
 
             GetFireBase.SetChannelName(
                 AgoraObject.GetComplexToken().GetHostName);
