@@ -71,7 +71,10 @@ namespace RSI_X_Desktop.forms.HelpingClass
             var t = AgoraObject.room;
             foreach (var lang in AgoraObject.GetComplexToken().GetTargetLangs)
             {
-                langsShort.Add(lang.langShort);
+                if (lang.langShort != "HOST")
+                    langsShort.Add(lang.langShort);
+                else
+                    langsShort.Add("FLOOR");
             }
             langBox.DataSource = langsShort;
 

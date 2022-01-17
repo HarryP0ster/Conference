@@ -111,7 +111,7 @@ namespace RSI_X_Desktop
             ExternWnd.Show(this);
 
             List<string> langsShort = new();
-            langsShort.Add("HOST");
+            langsShort.Add("FLOOR");
             foreach (var lang in AgoraObject.GetComplexToken().GetTranslLangs)
             { langsShort.Add(lang.langShort); }
             ExternWnd.cmblang.DataSource = langsShort;
@@ -266,7 +266,7 @@ namespace RSI_X_Desktop
             srcLangIndex = ExternWnd.cmblang.SelectedIndex;
             var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex);
 
-            getAudioFrom = l.langShort != "HOST" ?
+            getAudioFrom = l.langShort != "FLOOR" ?
                 STATE.TRANSl : STATE.FLOOR;
             floor_CheckedChanged(getAudioFrom);
         }
