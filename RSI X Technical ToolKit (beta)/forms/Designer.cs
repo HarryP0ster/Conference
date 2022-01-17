@@ -363,6 +363,7 @@ namespace RSI_X_Desktop.forms
                 devicesLabel.Hide();
                 ChatRgn();
                 SighnOffToCenter();
+                (Owner as Broadcaster).GetChat.Focus();
             }
             else
             {
