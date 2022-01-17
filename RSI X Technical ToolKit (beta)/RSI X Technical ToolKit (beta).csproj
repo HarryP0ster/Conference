@@ -336,6 +336,12 @@
     <None Update="Resources\LobbyDevices.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\LocalChat.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\LocalChatSelected.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\LoginForm.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

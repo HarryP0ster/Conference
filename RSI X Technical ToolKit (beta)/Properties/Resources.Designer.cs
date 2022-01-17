@@ -243,6 +243,26 @@ namespace RSI_X_Desktop.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] LocalChat {
+            get {
+                object obj = ResourceManager.GetObject("LocalChat", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] LocalChatSelected {
+            get {
+                object obj = ResourceManager.GetObject("LocalChatSelected", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] LoginForm {
             get {
                 object obj = ResourceManager.GetObject("LoginForm", resourceCulture);

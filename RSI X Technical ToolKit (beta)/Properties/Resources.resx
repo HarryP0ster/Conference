@@ -172,6 +172,12 @@
   <data name="LobbyDevices" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LobbyDevices.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="LocalChat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LocalChat.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="LocalChatSelected" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LocalChatSelected.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="LoginForm" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LoginForm.svg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

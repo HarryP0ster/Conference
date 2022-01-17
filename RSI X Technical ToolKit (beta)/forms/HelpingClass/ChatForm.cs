@@ -13,18 +13,19 @@ namespace RSI_X_Desktop.forms.HelpingClass
 {
     enum PANEL
     {
-        GENERAL = 0,
-        SUPPORT
+        BOOTH = 0,
+        GENERAL = 1,
+        SUPPORT = 2
     }
     public partial class ChatForm : DevExpress.XtraEditors.XtraForm
     {
         private static ChatForm instance_;
 
-        const int TAB_COUNT = 2;
+        const int TAB_COUNT = 3;
         int[] scroll_offset = new int[TAB_COUNT * 2];
         List<Control>[] messages_list = new List<Control>[TAB_COUNT];
-        bool[] ScrollEnabled = new bool[2] { true, true };
-        ReaLTaiizor.Controls.PoisonScrollBar[] chat_scrolls = new ReaLTaiizor.Controls.PoisonScrollBar[2];
+        bool[] ScrollEnabled = new bool[TAB_COUNT] { true, true, true };
+        ReaLTaiizor.Controls.PoisonScrollBar[] chat_scrolls = new ReaLTaiizor.Controls.PoisonScrollBar[TAB_COUNT];
 
         HelpingClass.FireBaseReader FireBase;
 
@@ -34,6 +35,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
 
         ToolTip GlobalTip = new();
         ToolTip SupportTip = new();
+        ToolTip BoothTip = new();
 
         public ChatForm()
         {
@@ -41,18 +43,19 @@ namespace RSI_X_Desktop.forms.HelpingClass
 
             GlobalTip.SetToolTip(General, "Global chat");
             SupportTip.SetToolTip(Support, "Technical chat");
+            BoothTip.SetToolTip(Booth, "Conference chat");
 
             Font font = Constants.Leelawadee14;
             int dpi = this.DeviceDpi;
 
             if (dpi >= (int)Constants.DPI.P175)
-                font = Constants.Leelawadee10;
+                font = Constants.GetLeelawadee(10F);
             else if (dpi >= (int)Constants.DPI.P150)
-                font = Constants.Leelawadee12;
+                font = Constants.GetLeelawadee(12F);
             else if (dpi >= (int)Constants.DPI.P125)
-                font = Constants.Leelawadee12;
+                font = Constants.GetLeelawadee(12F);
             else if (dpi >= (int)Constants.DPI.P100)
-                font = Constants.Leelawadee14;
+                font = Constants.GetLeelawadee(14F);
             ChatTextBox.Font = font;
 
             foreach (Control ctr in Controls)
@@ -72,9 +75,10 @@ namespace RSI_X_Desktop.forms.HelpingClass
                 messages_list[i] = new List<Control>();
                 scroll_offset[i] = 0;
             }
-            chat_scrolls[0] = GeneralScroll;
-            chat_scrolls[1] = SupportScroll;
-
+            chat_scrolls[(int)PANEL.BOOTH] = BoothScroll;
+            chat_scrolls[(int)PANEL.GENERAL] = GeneralScroll;
+            chat_scrolls[(int)PANEL.SUPPORT] = SupportScroll;
+            PBooth.Resize += Chat_SizeChanged;
             PGeneral.Resize += Chat_SizeChanged;
             PSupport.Resize += Chat_SizeChanged;
 
@@ -83,7 +87,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
 
         private void ChatForm_Load(object sender, EventArgs e)
         {
-            General_Click(null, null);
+            Booth_Click(null, null);
         }
         private void ChatWnd_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -110,6 +114,10 @@ namespace RSI_X_Desktop.forms.HelpingClass
 
             switch ((int)CurPanel)
             {
+                case (int)PANEL.BOOTH:
+                    chat_scrolls[(int)PANEL.BOOTH].Value = chat_scrolls[(int)PANEL.BOOTH].Maximum - scroll_offset[(int)PANEL.BOOTH];
+                    Chat_SizeChanged(PBooth, new EventArgs());
+                    break;
                 case (int)PANEL.GENERAL:
                     chat_scrolls[(int)PANEL.GENERAL].Value = chat_scrolls[(int)PANEL.GENERAL].Maximum - scroll_offset[(int)PANEL.GENERAL];
                     Chat_SizeChanged(PGeneral, new EventArgs());
@@ -124,38 +132,36 @@ namespace RSI_X_Desktop.forms.HelpingClass
         private void Enter_KeyDown(object sender, KeyEventArgs e)
         {
             if (ChatTextBox.Text != "" && e.KeyCode == Keys.Enter)
-            {
                 chatButtonRight2_Click(sender, null);
-                ChatTextBox.Text = "";
-            }
         }
 
-        private void ChatTextBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (ChatTextBox.Text != "" && e.KeyCode == Keys.Enter)
-                ChatTextBox.Text = "";
-        }
         private void chatButtonRight2_Click(object sender, EventArgs e)
         {
-            string msg = ChatTextBox.Text;
             if (ChatTextBox.Text != "" && ChatTextBox.ForeColor != Color.FromArgb(185, 185, 185))
             {
-                if (msg[0] == '\n' || msg[0] == (char)13)
-                {
-                    ChatTextBox.Text = "";
-                    return;
-                }
                 if (CurPanel == PANEL.GENERAL)
                 {
-                    AgoraObject.SendMessageToGlobal(msg);
-                    AddOwnMessageGeneral(msg);
+                    AgoraObject.SendMessageToGlobal(ChatTextBox.Text);
+                    AddOwnMessageGeneral(ChatTextBox.Text);
+                    ChatTextBox.Text = "";
+                }
+                else if (CurPanel == PANEL.SUPPORT)
+                {
+                    FireBase.SendMessage(ChatTextBox.Text);
+                    ChatTextBox.Text = "";
                 }
                 else
                 {
-                    FireBase.SendMessage(msg);
+                    AgoraObject.SendMessageToConference(ChatTextBox.Text);
+                    AddOwnMessageLocal(ChatTextBox.Text);
+                    ChatTextBox.Text = "";
                 }
-                ChatTextBox.Text = "";
             }
+        }
+
+        private void AddOwnMessageLocal(string msg)
+        {
+            RelocateBubbles(new HelpingClass.MessagePanelL(msg, HelpingClass.MessagePanelL.MyOwn, PBooth), PBooth, (int)PANEL.BOOTH);
         }
 
         public void chat_NewMessageInvoke(string message, string nickname, CHANNEL_TYPE channel)
@@ -171,7 +177,10 @@ namespace RSI_X_Desktop.forms.HelpingClass
             switch (channel)
             {
                 case CHANNEL_TYPE.HOST:
-                    RelocateBubbles(new MessagePanelL(message, nickname, PGeneral), PGeneral, (int)PANEL.GENERAL);
+                    RelocateBubbles(new HelpingClass.MessagePanelL(message, nickname, PGeneral), PGeneral, (int)PANEL.GENERAL);
+                    break;
+                case CHANNEL_TYPE.CONFERENCE:
+                    RelocateBubbles(new HelpingClass.MessagePanelL(message, nickname, PBooth), PBooth, (int)PANEL.BOOTH);
                     break;
             }
         }
@@ -190,24 +199,24 @@ namespace RSI_X_Desktop.forms.HelpingClass
         {
             if (IsHandleCreated)
             {
-                RelocateBubbles(new MessagePanelL(arg.Msg.msg, arg.Msg.username, PSupport), PSupport, (int)PANEL.SUPPORT);
+                RelocateBubbles(new HelpingClass.MessagePanelL(arg.Msg.msg, arg.Msg.username, PSupport), PSupport, (int)PANEL.SUPPORT);
             }
         }
         private void AddOwnMessageGeneral(string msg)
         {
-            RelocateBubbles(new MessagePanelL(msg, MessagePanelL.MyOwn, PGeneral), PGeneral, (int)PANEL.GENERAL);
+            RelocateBubbles(new HelpingClass.MessagePanelL(msg, HelpingClass.MessagePanelL.MyOwn, PGeneral), PGeneral, (int)PANEL.GENERAL);
         }
 
         private void RelocateBubbles(Control new_ctr, Control panel, int index)
         {
             //panel.Controls.Add(new_ctr);
             messages_list[index].Add(new_ctr);
+            Chat_SizeChanged(panel, new EventArgs());
             if (ScrollEnabled[index])
             {
                 chat_scrolls[index].Maximum = messages_list[index].Count - scroll_offset[TAB_COUNT + index];
                 chat_scrolls[index].Value = chat_scrolls[index].Maximum - scroll_offset[index];
             }
-            Chat_SizeChanged(panel, new EventArgs());
         }
 
         public void UpdateFireBase(HelpingClass.FireBaseReader FireBaseReader)
@@ -259,11 +268,19 @@ namespace RSI_X_Desktop.forms.HelpingClass
             {
                 General.SvgImage = SvgImage.FromFile("Resources\\GeneralChatSelected.svg");
                 Support.SvgImage = SvgImage.FromFile("Resources\\SupportChat.svg");
+                Booth.SvgImage = SvgImage.FromFile("Resources\\LocalChat.svg");
+            }
+            else if (CurPanel == PANEL.SUPPORT)
+            {
+                General.SvgImage = SvgImage.FromFile("Resources\\GeneralChat.svg");
+                Support.SvgImage = SvgImage.FromFile("Resources\\SupportChatSelected.svg");
+                Booth.SvgImage = SvgImage.FromFile("Resources\\LocalChat.svg");
             }
             else
             {
                 General.SvgImage = SvgImage.FromFile("Resources\\GeneralChat.svg");
-                Support.SvgImage = SvgImage.FromFile("Resources\\SupportChatSelected.svg");
+                Support.SvgImage = SvgImage.FromFile("Resources\\SupportChat.svg");
+                Booth.SvgImage = SvgImage.FromFile("Resources\\LocalChatSelected.svg");
             }
         }
 
@@ -277,14 +294,20 @@ namespace RSI_X_Desktop.forms.HelpingClass
 
         private void SupportScroll_ValueChanged(object sender, int newValue)
         {
-            scroll_offset[1] = SupportScroll.Maximum - newValue;
+            scroll_offset[(int)PANEL.SUPPORT] = SupportScroll.Maximum - newValue;
             Chat_SizeChanged(PSupport, new EventArgs());
         }
 
         private void GeneralScroll_ValueChanged(object sender, int newValue)
         {
-            scroll_offset[0] = GeneralScroll.Maximum - newValue;
+            scroll_offset[(int)PANEL.GENERAL] = GeneralScroll.Maximum - newValue;
             Chat_SizeChanged(PGeneral, new EventArgs());
+        }
+
+        private void BoothScroll_ValueChanged(object sender, int newValue)
+        {
+            scroll_offset[(int)PANEL.BOOTH] = BoothScroll.Maximum - newValue;
+            Chat_SizeChanged(PBooth, new EventArgs());
         }
 
         private void bigTextBox2_Enter(object sender, EventArgs e)
@@ -304,21 +327,34 @@ namespace RSI_X_Desktop.forms.HelpingClass
         private void General_Click(object sender, EventArgs e)
         {
             CurPanel = PANEL.GENERAL;
-            TablePanels.Columns[1].Width = 0;
-            TablePanels.Columns[0].Width = 100;
+            TablePanels.Hide();
+            TablePanels.Columns[(int)PANEL.BOOTH].Width = 0;
+            TablePanels.Columns[(int)PANEL.GENERAL].Width = 100;
+            TablePanels.Columns[(int)PANEL.SUPPORT].Width = 0;
             timer1.Start();
-            Chat_SizeChanged(PGeneral, new());
             General.Enabled = false;
         }
 
         private void Support_Click(object sender, EventArgs e)
         {
             CurPanel = PANEL.SUPPORT;
-            TablePanels.Columns[0].Width = 0;
-            TablePanels.Columns[1].Width = 100;
+            TablePanels.Hide();
+            TablePanels.Columns[(int)PANEL.BOOTH].Width = 0;
+            TablePanels.Columns[(int)PANEL.GENERAL].Width = 0;
+            TablePanels.Columns[(int)PANEL.SUPPORT].Width = 100;
             timer1.Start();
-            Chat_SizeChanged(PSupport, new());
             Support.Enabled = false;
+        }
+
+        private void Booth_Click(object sender, EventArgs e)
+        {
+            CurPanel = PANEL.BOOTH;
+            TablePanels.Hide();
+            TablePanels.Columns[(int)PANEL.BOOTH].Width = 100;
+            TablePanels.Columns[(int)PANEL.GENERAL].Width = 0;
+            TablePanels.Columns[(int)PANEL.SUPPORT].Width = 0;
+            timer1.Start();
+            Booth.Enabled = false;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -328,11 +364,13 @@ namespace RSI_X_Desktop.forms.HelpingClass
             Cursor.Hide();
             Cursor.Position = PointToScreen(new Point(Width / 2, Height / 2));
             UpdateSelectedPanel();
-            Cursor.Show();
+            TablePanels.Show();
             Cursor.Position = oldPos;
+            Cursor.Show();
             System.Threading.Thread.Sleep(100);
             General.Enabled = true;
             Support.Enabled = true;
+            Booth.Enabled = true;
         }
 
         private void SendMsgBtn_MouseHover(object sender, EventArgs e)
@@ -358,6 +396,12 @@ namespace RSI_X_Desktop.forms.HelpingClass
         private void ChatClose_Click(object sender, EventArgs e)
         {
             AgoraObject.GetWorkForm?.CloseChat();
+        }
+
+        private void bigTextBox2_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (ChatTextBox.Text != "" && e.KeyCode == Keys.Enter)
+                ChatTextBox.Text = "";
         }
     }
 }
