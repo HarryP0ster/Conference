@@ -7,7 +7,7 @@ using System.Diagnostics;
 using RSI_X_Desktop.forms;
 using RSI_X_Desktop.forms.HelpingClass;
 using agorartc;
-using System.IO.Pipes;
+using RSI_X_Desktop.other;
 
 namespace RSI_X_Desktop
 {
@@ -67,6 +67,7 @@ namespace RSI_X_Desktop
             InitializeComponent();
 
             AgoraObject.SetWndEventHandler(this);
+            Messager.SetPermission((int)(PERMISSIONS.GLOBAL | PERMISSIONS.CONFERENCE));
         }
 
         internal ChatForm GetChat
@@ -136,7 +137,7 @@ namespace RSI_X_Desktop
         }
         private void Init()
         {
-            Un4seen.Bass.BassNet.Registration("rhenrhee@gmail.com", "2X37312318152222");
+            //Un4seen.Bass.BassNet.Registration("rhenrhee@gmail.com", "2X37312318152222");
             streamsTable.Click += Mouse_Click;
             streamsTable.MouseMove += Mouse_MouseMove;
             pictureBoxLocalVideo.Click += Mouse_Click;
@@ -266,8 +267,8 @@ namespace RSI_X_Desktop
             srcLangIndex = ExternWnd.cmblang.SelectedIndex;
             var l = AgoraObject.GetComplexToken().GetTargetRoomsAt(srcLangIndex);
 
-            getAudioFrom = l.langShort != "FLOOR" ?
-                STATE.TRANSl : STATE.FLOOR;
+            getAudioFrom = (l.langShort == "HOST" || l.langShort == "FLOOR") ?
+                STATE.FLOOR : STATE.TRANSl;
             floor_CheckedChanged(getAudioFrom);
         }
 
@@ -316,7 +317,7 @@ namespace RSI_X_Desktop
         }
         private void Broadcaster_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Owner.Show();
+            //Owner.Show();
 
             enableScreenShare(false);
             stopPublishToTarget();
@@ -334,7 +335,7 @@ namespace RSI_X_Desktop
             PopUpForm.ClearOldDevices();
             PopUpForm.Clear();
             
-            if (!Owner.Visible) Application.Exit();
+            Application.Exit();
             GC.Collect();
         }
         #endregion

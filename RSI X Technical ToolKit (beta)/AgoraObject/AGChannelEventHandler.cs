@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RSI_X_Desktop.other;
 using agorartc;
-using System.Windows.Forms;
 
 
 namespace RSI_X_Desktop
@@ -19,16 +19,10 @@ namespace RSI_X_Desktop
             form = form_new;
             chType = new_chType;
         }
-        public override void OnChannelWarning(string channelId, int warn, string msg)
-        {
-        }
-
-        public override void OnChannelError(string channelId, int err, string msg)
-        {
-        }
 
         public override void OnChannelJoinChannelSuccess(string channelId, uint uid, int elapsed)
         {
+            DebugWriter.WriteTime($"ChannelCallback. i [{uid}] succ join to [{chType}]{channelId}");
             switch (chType)
             {
                 case CHANNEL_TYPE.TRANSL:
@@ -268,7 +262,13 @@ namespace RSI_X_Desktop
             AgoraObject.Rtc.GetUserInfoByUid(uid, out name);
             string UserName = name.userAccount;
             var formInterpr = (form as Broadcaster);
-            formInterpr.GetMessage(Message, UserName, chType);
+
+            byte perm = Messager.CheckMsgPerm(Message);
+
+            if ((perm & (byte)PERMISSIONS.GLOBAL) > 0)
+                formInterpr.GetMessage(Message, UserName, chType);
+            if ((perm & (byte)PERMISSIONS.CONFERENCE) > 0)
+                formInterpr.GetMessage(Message, UserName, CHANNEL_TYPE.CONFERENCE);
         }
 
         public override void OnChannelStreamMessageError(string channelId, uint uid, int streamId, int code,

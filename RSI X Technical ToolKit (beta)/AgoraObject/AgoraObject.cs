@@ -14,6 +14,7 @@ namespace RSI_X_Desktop
         TRANSL,
         DEST,
         HOST,
+        CONFERENCE,
         UNKNOWN
     };
     enum CurForm
@@ -79,7 +80,6 @@ namespace RSI_X_Desktop
 
         static AgoraObject()
         {
-
             Rtc = AgoraRtcEngine.CreateRtcEngine();
             Rtc.Initialize(new RtcEngineContext(AppID));
             
@@ -290,9 +290,15 @@ namespace RSI_X_Desktop
                 System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: remove conf {uid}");
             }
         }
-        public static void SendMessageToHost(string msg)
+        public static void SendMessageToGlobal(string msg)
         {
-            m_channelHost.SendStreamMessage(_hostStreamID, utf8enc.GetBytes(msg));
+            var buffer = other.Messager.PrepareToGlobal(msg);
+            m_channelHost.SendStreamMessage(_hostStreamID, buffer);
+        }
+        public static void SendMessageToConference(string msg)
+        {
+            var buffer = other.Messager.PrepareToConference(msg);
+            m_channelHost.SendStreamMessage(_hostStreamID, buffer);
         }
     }
 }

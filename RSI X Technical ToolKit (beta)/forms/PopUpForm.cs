@@ -707,7 +707,7 @@ namespace RSI_X_Desktop.forms
                 out string devName, out string videoID);
             videoDeviceManager.SetCurrentDevice(videoID);
 
-            System.Diagnostics.Debug.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")}: select video: {devName}");
+            DebugWriter.WriteTime($"select video: {devName}");
         }
         private static void AcceptNewSpeakerDevice()
         {

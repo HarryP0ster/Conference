@@ -147,7 +147,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
                 }
                 if (CurPanel == PANEL.GENERAL)
                 {
-                    AgoraObject.SendMessageToHost(msg);
+                    AgoraObject.SendMessageToGlobal(msg);
                     AddOwnMessageGeneral(msg);
                 }
                 else
