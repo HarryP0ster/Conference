@@ -32,9 +32,15 @@ namespace RSI_X_Desktop.forms.HelpingClass
         Padding MarginNormal = new Padding(10);
         Padding Hovered = new Padding(8);
 
+        ToolTip GlobalTip = new();
+        ToolTip SupportTip = new();
+
         public ChatForm()
         {
             InitializeComponent();
+
+            GlobalTip.SetToolTip(General, "Global chat");
+            SupportTip.SetToolTip(Support, "Technical chat");
 
             Font font = Constants.Leelawadee14;
             int dpi = this.DeviceDpi;
