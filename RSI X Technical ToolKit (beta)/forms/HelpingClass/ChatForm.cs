@@ -99,7 +99,8 @@ namespace RSI_X_Desktop.forms.HelpingClass
         }
         private void ChatWnd_FormClosed(object sender, FormClosedEventArgs e)
         {
-            FireBase.OnNewMessage -= chat_NewMessageSupInvoke;
+            if (FireBase != null)
+                FireBase.OnNewMessage -= chat_NewMessageSupInvoke;
             Dispose();
         }
 
@@ -182,13 +183,14 @@ namespace RSI_X_Desktop.forms.HelpingClass
         }
         private void chat_NewMessage(string message, string nickname, CHANNEL_TYPE channel)
         {
+            string senderNick = NickCenter.GetNickHostFromMsg(nickname);
             switch (channel)
             {
                 case CHANNEL_TYPE.HOST:
-                    RelocateBubbles(new HelpingClass.MessagePanelL(message, nickname, PGeneral), PGeneral, (int)PANEL.GENERAL);
+                    RelocateBubbles(new MessagePanelL(message, senderNick, PGeneral), PGeneral, (int)PANEL.GENERAL);
                     break;
                 case CHANNEL_TYPE.CONFERENCE:
-                    RelocateBubbles(new HelpingClass.MessagePanelL(message, nickname, PBooth), PBooth, (int)PANEL.BOOTH);
+                    RelocateBubbles(new MessagePanelL(message, senderNick, PBooth), PBooth, (int)PANEL.BOOTH);
                     break;
             }
         }
@@ -205,9 +207,12 @@ namespace RSI_X_Desktop.forms.HelpingClass
         }
         public void chat_NewMessageSup(object sender, HelpingClass.FireBaseUpdateEventArgs arg)
         {
+            string senderNick;
+
             if (IsHandleCreated)
             {
-                RelocateBubbles(new HelpingClass.MessagePanelL(arg.Msg.msg, arg.Msg.username, PSupport), PSupport, (int)PANEL.SUPPORT);
+                senderNick = NickCenter.GetNickHostFromMsg(arg.Msg.username);
+                RelocateBubbles(new MessagePanelL(arg.Msg.msg, senderNick, PSupport), PSupport, (int)PANEL.SUPPORT);
             }
         }
         private void AddOwnMessageGeneral(string msg)
@@ -232,7 +237,12 @@ namespace RSI_X_Desktop.forms.HelpingClass
             FireBase = FireBaseReader;
             FireBase.OnNewMessage += chat_NewMessageSupInvoke;
         }
-
+        public void DisconnectFireBase()
+        {
+            if (FireBase != null)
+                FireBase.OnNewMessage -= chat_NewMessageSupInvoke;
+            FireBase = null;
+        }
         internal void Chat_SizeChanged(object sender, EventArgs e) //Actually Updates chat wnd
         {
             if (sender == PGeneral && CurPanel != PANEL.GENERAL) return;
