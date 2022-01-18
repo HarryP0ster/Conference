@@ -353,6 +353,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             TablePanels.Columns[(int)PANEL.BOOTH].Width = 0;
             TablePanels.Columns[(int)PANEL.GENERAL].Width = 100;
             TablePanels.Columns[(int)PANEL.SUPPORT].Width = 0;
+            Chat_SizeChanged(PGeneral, new());
             timer1.Start();
             General.Enabled = false;
         }
@@ -364,6 +365,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             TablePanels.Columns[(int)PANEL.BOOTH].Width = 0;
             TablePanels.Columns[(int)PANEL.GENERAL].Width = 0;
             TablePanels.Columns[(int)PANEL.SUPPORT].Width = 100;
+            Chat_SizeChanged(PSupport, new());
             timer1.Start();
             Support.Enabled = false;
         }
@@ -375,6 +377,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             TablePanels.Columns[(int)PANEL.BOOTH].Width = 100;
             TablePanels.Columns[(int)PANEL.GENERAL].Width = 0;
             TablePanels.Columns[(int)PANEL.SUPPORT].Width = 0;
+            Chat_SizeChanged(PBooth, new());
             timer1.Start();
             Booth.Enabled = false;
         }
