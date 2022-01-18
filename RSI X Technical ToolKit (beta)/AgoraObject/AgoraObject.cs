@@ -92,7 +92,8 @@ namespace RSI_X_Desktop
         }
         static public void UpdateNickName(string nick)
         { 
-            NickName = NickCenter.ToHostNick(nick);
+            NickName = NickCenter.ToConferenceNick(nick);
+            DebugWriter.WriteTime($"AgoraObject. New nickname {NickName}");
         }
         static public void UpdateRoomName(string name)
         { RoomName = name; }

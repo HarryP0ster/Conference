@@ -258,11 +258,13 @@ namespace RSI_X_Desktop
         {
             UserInfo name;
             string Message = AgoraObject.utf8enc.GetString(data);
-
-            AgoraObject.Rtc.GetUserInfoByUid(uid, out name);
-            string UserName = name.userAccount;
+            string UserName = "";
+            
             var formInterpr = (form as Broadcaster);
 
+            AgoraObject.Rtc.GetUserInfoByUid(uid, out name);
+            
+            UserName = name.userAccount;
             byte perm = Messager.CheckMsgPerm(Message);
 
             if ((perm & (byte)PERMISSIONS.GLOBAL) > 0)
