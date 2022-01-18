@@ -24,7 +24,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
         const int TAB_COUNT = 3;
         int[] scroll_offset = new int[TAB_COUNT * 2];
         List<Control>[] messages_list = new List<Control>[TAB_COUNT];
-        bool[] ScrollEnabled = new bool[TAB_COUNT] { true, true, true };
+        bool[] ScrollEnabled = new bool[TAB_COUNT] { false, false, false };
         ReaLTaiizor.Controls.PoisonScrollBar[] chat_scrolls = new ReaLTaiizor.Controls.PoisonScrollBar[TAB_COUNT];
 
         HelpingClass.FireBaseReader FireBase;
@@ -215,8 +215,8 @@ namespace RSI_X_Desktop.forms.HelpingClass
             if (ScrollEnabled[index])
             {
                 chat_scrolls[index].Maximum = messages_list[index].Count - scroll_offset[TAB_COUNT + index];
-                chat_scrolls[index].Value = chat_scrolls[index].Maximum - scroll_offset[index];
             }
+            chat_scrolls[index].Value = chat_scrolls[index].Maximum - scroll_offset[index];
         }
 
         public void UpdateFireBase(HelpingClass.FireBaseReader FireBaseReader)
@@ -227,6 +227,9 @@ namespace RSI_X_Desktop.forms.HelpingClass
 
         internal void Chat_SizeChanged(object sender, EventArgs e) //Actually Updates chat wnd
         {
+            if (sender == PGeneral && CurPanel != PANEL.GENERAL) return;
+            if (sender == PSupport && CurPanel != PANEL.SUPPORT) return;
+            if (sender == PBooth && CurPanel != PANEL.BOOTH) return;
             if (Visible)
             {
                 Control prev_ctr = null;
