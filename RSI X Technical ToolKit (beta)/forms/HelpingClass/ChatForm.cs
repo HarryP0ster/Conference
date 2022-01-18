@@ -26,6 +26,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
         List<Control>[] messages_list = new List<Control>[TAB_COUNT];
         bool[] ScrollEnabled = new bool[TAB_COUNT] { false, false, false };
         ReaLTaiizor.Controls.PoisonScrollBar[] chat_scrolls = new ReaLTaiizor.Controls.PoisonScrollBar[TAB_COUNT];
+        Control[] scrolls = new Control[TAB_COUNT];
 
         HelpingClass.FireBaseReader FireBase;
 
@@ -40,6 +41,13 @@ namespace RSI_X_Desktop.forms.HelpingClass
         public ChatForm()
         {
             InitializeComponent();
+
+            scrolls[(int)PANEL.GENERAL] = GeneralScroll;
+            scrolls[(int)PANEL.SUPPORT] = SupportScroll;
+            scrolls[(int)PANEL.BOOTH] = BoothScroll;
+            GeneralScroll.Enabled = false;
+            SupportScroll.Enabled = false;
+            BoothScroll.Enabled = false;
 
             GlobalTip.SetToolTip(General, "Global chat");
             SupportTip.SetToolTip(Support, "Technical chat");
@@ -211,12 +219,12 @@ namespace RSI_X_Desktop.forms.HelpingClass
         {
             //panel.Controls.Add(new_ctr);
             messages_list[index].Add(new_ctr);
-            Chat_SizeChanged(panel, new EventArgs());
             if (ScrollEnabled[index])
             {
                 chat_scrolls[index].Maximum = messages_list[index].Count - scroll_offset[TAB_COUNT + index];
             }
             chat_scrolls[index].Value = chat_scrolls[index].Maximum - scroll_offset[index];
+            Chat_SizeChanged(panel, new EventArgs());
         }
 
         public void UpdateFireBase(HelpingClass.FireBaseReader FireBaseReader)
@@ -258,6 +266,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
                             ScrollEnabled[ind] = true;
                             chat_scrolls[ind].Maximum = messages_list[ind].Count - scroll_offset[TAB_COUNT + ind];
                             chat_scrolls[ind].Value = chat_scrolls[ind].Maximum - scroll_offset[ind];
+                            scrolls[ind].Enabled = true;
                         }
                         return;
                     }
