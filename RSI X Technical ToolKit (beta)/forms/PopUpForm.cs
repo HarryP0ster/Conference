@@ -130,6 +130,11 @@ namespace RSI_X_Desktop.forms
             AgoraObject.Rtc.EnableVideo();
 
             SetWndRegion();
+            TableMisc.Hide();
+            TableGeneral.Show();
+            MainLayout.ColumnStyles[0].Width = 100;
+            MainLayout.ColumnStyles[1].Width = 0;
+
             oldVolumeIn = RecordersManager.GetDeviceVolume();
             trackBarSoundIn.Value = oldVolumeIn;
             trackBarSoundOut.Value = oldVolumeOut;
