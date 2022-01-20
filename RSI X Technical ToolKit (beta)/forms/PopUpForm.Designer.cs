@@ -30,8 +30,9 @@ namespace RSI_X_Desktop.forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PopUpForm));
-            this.tablePanel2 = new DevExpress.Utils.Layout.TablePanel();
-            this.MainTable = new DevExpress.Utils.Layout.TablePanel();
+            this.tablepanel = new DevExpress.Utils.Layout.TablePanel();
+            this.MainLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.TableGeneral = new DevExpress.Utils.Layout.TablePanel();
             this.tablePanel3 = new DevExpress.Utils.Layout.TablePanel();
             this.resComboBox = new RSI_X_Desktop.forms.HelpingClass.newAloneComboBox();
             this.ResLabel = new ReaLTaiizor.Controls.DungeonLabel();
@@ -55,6 +56,11 @@ namespace RSI_X_Desktop.forms
             this.VolumeMicLabel = new ReaLTaiizor.Controls.BigLabel();
             this.MicrophoneLabel = new ReaLTaiizor.Controls.DungeonLabel();
             this.trackBarSoundIn = new ReaLTaiizor.Controls.DungeonTrackBar();
+            this.TableMisc = new DevExpress.Utils.Layout.TablePanel();
+            this.AudioQualityCmb = new RSI_X_Desktop.forms.HelpingClass.newAloneComboBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.LabelGeneral = new System.Windows.Forms.Label();
+            this.LabelMisc = new System.Windows.Forms.Label();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.ApplyBtn = new DevExpress.XtraEditors.SvgImageBox();
             this.ConfirmBtn = new DevExpress.XtraEditors.SvgImageBox();
@@ -63,10 +69,11 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.BCloseGeneral = new ReaLTaiizor.Controls.Button();
             this.bigLabel2 = new ReaLTaiizor.Controls.BigLabel();
-            ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).BeginInit();
-            this.tablePanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MainTable)).BeginInit();
-            this.MainTable.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tablepanel)).BeginInit();
+            this.tablepanel.SuspendLayout();
+            this.MainLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TableGeneral)).BeginInit();
+            this.TableGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel3)).BeginInit();
             this.tablePanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel7)).BeginInit();
@@ -80,6 +87,9 @@ namespace RSI_X_Desktop.forms
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel4)).BeginInit();
             this.tablePanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TableMisc)).BeginInit();
+            this.TableMisc.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ApplyBtn)).BeginInit();
@@ -89,49 +99,67 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel8.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tablePanel2
+            // tablepanel
             // 
-            this.tablePanel2.Appearance.BackColor = System.Drawing.Color.White;
-            this.tablePanel2.Appearance.Options.UseBackColor = true;
-            this.tablePanel2.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            this.tablepanel.Appearance.BackColor = System.Drawing.Color.White;
+            this.tablepanel.Appearance.Options.UseBackColor = true;
+            this.tablepanel.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 25F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
-            this.tablePanel2.Controls.Add(this.MainTable);
-            this.tablePanel2.Controls.Add(this.tablePanel1);
-            this.tablePanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel2.Location = new System.Drawing.Point(0, 0);
-            this.tablePanel2.Name = "tablePanel2";
-            this.tablePanel2.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            this.tablepanel.Controls.Add(this.MainLayout);
+            this.tablepanel.Controls.Add(this.tableLayoutPanel1);
+            this.tablepanel.Controls.Add(this.tablePanel1);
+            this.tablepanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablepanel.Location = new System.Drawing.Point(0, 0);
+            this.tablepanel.Name = "tablepanel";
+            this.tablepanel.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 85F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 15F)});
-            this.tablePanel2.Size = new System.Drawing.Size(500, 600);
-            this.tablePanel2.TabIndex = 1;
+            this.tablepanel.Size = new System.Drawing.Size(525, 600);
+            this.tablepanel.TabIndex = 1;
             // 
-            // MainTable
+            // MainLayout
             // 
-            this.tablePanel2.SetColumn(this.MainTable, 0);
-            this.MainTable.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            this.tablepanel.SetColumn(this.MainLayout, 1);
+            this.MainLayout.ColumnCount = 2;
+            this.MainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.MainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.MainLayout.Controls.Add(this.TableGeneral, 0, 0);
+            this.MainLayout.Controls.Add(this.TableMisc, 1, 0);
+            this.MainLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainLayout.Location = new System.Drawing.Point(25, 0);
+            this.MainLayout.Margin = new System.Windows.Forms.Padding(0);
+            this.MainLayout.Name = "MainLayout";
+            this.tablepanel.SetRow(this.MainLayout, 0);
+            this.MainLayout.RowCount = 1;
+            this.MainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.MainLayout.Size = new System.Drawing.Size(500, 510);
+            this.MainLayout.TabIndex = 3;
+            // 
+            // TableGeneral
+            // 
+            this.TableGeneral.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 25F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 75F)});
-            this.MainTable.Controls.Add(this.tablePanel3);
-            this.MainTable.Controls.Add(this.ResLabel);
-            this.MainTable.Controls.Add(this.tablePanel7);
-            this.MainTable.Controls.Add(this.tablePanel6);
-            this.MainTable.Controls.Add(this.CameraLabel);
-            this.MainTable.Controls.Add(this.SpeakerLabel);
-            this.MainTable.Controls.Add(this.VolumeSpeakLabel);
-            this.MainTable.Controls.Add(this.trackBarSoundOut);
-            this.MainTable.Controls.Add(this.tablePanel5);
-            this.MainTable.Controls.Add(this.pictureBox1);
-            this.MainTable.Controls.Add(this.tablePanel4);
-            this.MainTable.Controls.Add(this.VolumeMicLabel);
-            this.MainTable.Controls.Add(this.MicrophoneLabel);
-            this.MainTable.Controls.Add(this.trackBarSoundIn);
-            this.MainTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainTable.Location = new System.Drawing.Point(0, 0);
-            this.MainTable.Margin = new System.Windows.Forms.Padding(0);
-            this.MainTable.Name = "MainTable";
-            this.tablePanel2.SetRow(this.MainTable, 0);
-            this.MainTable.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            this.TableGeneral.Controls.Add(this.tablePanel3);
+            this.TableGeneral.Controls.Add(this.ResLabel);
+            this.TableGeneral.Controls.Add(this.tablePanel7);
+            this.TableGeneral.Controls.Add(this.tablePanel6);
+            this.TableGeneral.Controls.Add(this.CameraLabel);
+            this.TableGeneral.Controls.Add(this.SpeakerLabel);
+            this.TableGeneral.Controls.Add(this.VolumeSpeakLabel);
+            this.TableGeneral.Controls.Add(this.trackBarSoundOut);
+            this.TableGeneral.Controls.Add(this.tablePanel5);
+            this.TableGeneral.Controls.Add(this.pictureBox1);
+            this.TableGeneral.Controls.Add(this.tablePanel4);
+            this.TableGeneral.Controls.Add(this.VolumeMicLabel);
+            this.TableGeneral.Controls.Add(this.MicrophoneLabel);
+            this.TableGeneral.Controls.Add(this.trackBarSoundIn);
+            this.TableGeneral.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TableGeneral.Location = new System.Drawing.Point(0, 0);
+            this.TableGeneral.Margin = new System.Windows.Forms.Padding(0);
+            this.TableGeneral.Name = "TableGeneral";
+            this.TableGeneral.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 10F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 10F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 10F),
@@ -140,23 +168,23 @@ namespace RSI_X_Desktop.forms
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 10F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 10F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 35F)});
-            this.MainTable.Size = new System.Drawing.Size(500, 510);
-            this.MainTable.TabIndex = 1;
+            this.TableGeneral.Size = new System.Drawing.Size(250, 510);
+            this.TableGeneral.TabIndex = 1;
             // 
             // tablePanel3
             // 
-            this.MainTable.SetColumn(this.tablePanel3, 1);
+            this.TableGeneral.SetColumn(this.tablePanel3, 1);
             this.tablePanel3.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 75F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 25F)});
             this.tablePanel3.Controls.Add(this.resComboBox);
             this.tablePanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel3.Location = new System.Drawing.Point(128, 297);
+            this.tablePanel3.Location = new System.Drawing.Point(66, 297);
             this.tablePanel3.Name = "tablePanel3";
-            this.MainTable.SetRow(this.tablePanel3, 6);
+            this.TableGeneral.SetRow(this.tablePanel3, 6);
             this.tablePanel3.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel3.Size = new System.Drawing.Size(369, 43);
+            this.tablePanel3.Size = new System.Drawing.Size(182, 43);
             this.tablePanel3.TabIndex = 18;
             // 
             // resComboBox
@@ -175,7 +203,7 @@ namespace RSI_X_Desktop.forms
             this.resComboBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.resComboBox.Name = "resComboBox";
             this.tablePanel3.SetRow(this.resComboBox, 0);
-            this.resComboBox.Size = new System.Drawing.Size(273, 26);
+            this.resComboBox.Size = new System.Drawing.Size(133, 26);
             this.resComboBox.TabIndex = 10;
             this.resComboBox.SelectedIndexChanged += new System.EventHandler(this.resComboBox_SelectedIndexChanged);
             // 
@@ -183,21 +211,21 @@ namespace RSI_X_Desktop.forms
             // 
             this.ResLabel.AutoSize = true;
             this.ResLabel.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.ResLabel, 0);
+            this.TableGeneral.SetColumn(this.ResLabel, 0);
             this.ResLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ResLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.ResLabel.ForeColor = System.Drawing.Color.Gray;
             this.ResLabel.Location = new System.Drawing.Point(3, 294);
             this.ResLabel.Name = "ResLabel";
-            this.MainTable.SetRow(this.ResLabel, 6);
-            this.ResLabel.Size = new System.Drawing.Size(119, 49);
+            this.TableGeneral.SetRow(this.ResLabel, 6);
+            this.ResLabel.Size = new System.Drawing.Size(57, 49);
             this.ResLabel.TabIndex = 17;
             this.ResLabel.Text = "Resolution";
             this.ResLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tablePanel7
             // 
-            this.MainTable.SetColumn(this.tablePanel7, 1);
+            this.TableGeneral.SetColumn(this.tablePanel7, 1);
             this.tablePanel7.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 10F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 55F),
@@ -205,13 +233,13 @@ namespace RSI_X_Desktop.forms
             this.tablePanel7.Controls.Add(this.PreviewPanel);
             this.tablePanel7.Controls.Add(this.btnCustomImage);
             this.tablePanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel7.Location = new System.Drawing.Point(128, 346);
+            this.tablePanel7.Location = new System.Drawing.Point(66, 346);
             this.tablePanel7.Name = "tablePanel7";
-            this.MainTable.SetRow(this.tablePanel7, 7);
+            this.TableGeneral.SetRow(this.tablePanel7, 7);
             this.tablePanel7.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 75F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 25F)});
-            this.tablePanel7.Size = new System.Drawing.Size(369, 161);
+            this.tablePanel7.Size = new System.Drawing.Size(182, 161);
             this.tablePanel7.TabIndex = 16;
             // 
             // PreviewPanel
@@ -220,11 +248,11 @@ namespace RSI_X_Desktop.forms
             this.tablePanel7.SetColumn(this.PreviewPanel, 1);
             this.PreviewPanel.Controls.Add(this.pictureBoxLocalVideoTest);
             this.PreviewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreviewPanel.Location = new System.Drawing.Point(39, 0);
+            this.PreviewPanel.Location = new System.Drawing.Point(19, 0);
             this.PreviewPanel.Margin = new System.Windows.Forms.Padding(0);
             this.PreviewPanel.Name = "PreviewPanel";
             this.tablePanel7.SetRow(this.PreviewPanel, 0);
-            this.PreviewPanel.Size = new System.Drawing.Size(214, 121);
+            this.PreviewPanel.Size = new System.Drawing.Size(105, 121);
             this.PreviewPanel.TabIndex = 4;
             // 
             // pictureBoxLocalVideoTest
@@ -235,7 +263,7 @@ namespace RSI_X_Desktop.forms
             this.pictureBoxLocalVideoTest.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.pictureBoxLocalVideoTest.Name = "pictureBoxLocalVideoTest";
             this.pictureBoxLocalVideoTest.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.pictureBoxLocalVideoTest.Size = new System.Drawing.Size(214, 121);
+            this.pictureBoxLocalVideoTest.Size = new System.Drawing.Size(105, 121);
             this.pictureBoxLocalVideoTest.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.pictureBoxLocalVideoTest.TabIndex = 2;
             this.pictureBoxLocalVideoTest.TabStop = false;
@@ -250,10 +278,10 @@ namespace RSI_X_Desktop.forms
             this.btnCustomImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCustomImage.Font = new System.Drawing.Font("Bahnschrift SemiCondensed", 14.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
             this.btnCustomImage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(1)))), ((int)(((byte)(243)))));
-            this.btnCustomImage.Location = new System.Drawing.Point(42, 121);
+            this.btnCustomImage.Location = new System.Drawing.Point(22, 121);
             this.btnCustomImage.Name = "btnCustomImage";
             this.tablePanel7.SetRow(this.btnCustomImage, 1);
-            this.btnCustomImage.Size = new System.Drawing.Size(208, 40);
+            this.btnCustomImage.Size = new System.Drawing.Size(99, 40);
             this.btnCustomImage.TabIndex = 3;
             this.btnCustomImage.Text = "Custom image";
             this.btnCustomImage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -261,18 +289,18 @@ namespace RSI_X_Desktop.forms
             // 
             // tablePanel6
             // 
-            this.MainTable.SetColumn(this.tablePanel6, 1);
+            this.TableGeneral.SetColumn(this.tablePanel6, 1);
             this.tablePanel6.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 75F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 25F)});
             this.tablePanel6.Controls.Add(this.comboBoxVideo);
             this.tablePanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel6.Location = new System.Drawing.Point(128, 248);
+            this.tablePanel6.Location = new System.Drawing.Point(66, 248);
             this.tablePanel6.Name = "tablePanel6";
-            this.MainTable.SetRow(this.tablePanel6, 5);
+            this.TableGeneral.SetRow(this.tablePanel6, 5);
             this.tablePanel6.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
-            this.tablePanel6.Size = new System.Drawing.Size(369, 43);
+            this.tablePanel6.Size = new System.Drawing.Size(182, 43);
             this.tablePanel6.TabIndex = 15;
             // 
             // comboBoxVideo
@@ -291,7 +319,7 @@ namespace RSI_X_Desktop.forms
             this.comboBoxVideo.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.comboBoxVideo.Name = "comboBoxVideo";
             this.tablePanel6.SetRow(this.comboBoxVideo, 0);
-            this.comboBoxVideo.Size = new System.Drawing.Size(273, 26);
+            this.comboBoxVideo.Size = new System.Drawing.Size(133, 26);
             this.comboBoxVideo.TabIndex = 1;
             this.comboBoxVideo.SelectedIndexChanged += new System.EventHandler(this.comboBoxVideo_SelectedIndexChanged);
             // 
@@ -299,15 +327,15 @@ namespace RSI_X_Desktop.forms
             // 
             this.CameraLabel.AutoSize = true;
             this.CameraLabel.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.CameraLabel, 0);
+            this.TableGeneral.SetColumn(this.CameraLabel, 0);
             this.CameraLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CameraLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.CameraLabel.ForeColor = System.Drawing.Color.Gray;
             this.CameraLabel.Location = new System.Drawing.Point(2, 245);
             this.CameraLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.CameraLabel.Name = "CameraLabel";
-            this.MainTable.SetRow(this.CameraLabel, 5);
-            this.CameraLabel.Size = new System.Drawing.Size(121, 49);
+            this.TableGeneral.SetRow(this.CameraLabel, 5);
+            this.CameraLabel.Size = new System.Drawing.Size(59, 49);
             this.CameraLabel.TabIndex = 14;
             this.CameraLabel.Text = "Camera";
             this.CameraLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -316,15 +344,15 @@ namespace RSI_X_Desktop.forms
             // 
             this.SpeakerLabel.AutoSize = true;
             this.SpeakerLabel.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.SpeakerLabel, 0);
+            this.TableGeneral.SetColumn(this.SpeakerLabel, 0);
             this.SpeakerLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SpeakerLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.SpeakerLabel.ForeColor = System.Drawing.Color.Gray;
             this.SpeakerLabel.Location = new System.Drawing.Point(2, 147);
             this.SpeakerLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SpeakerLabel.Name = "SpeakerLabel";
-            this.MainTable.SetRow(this.SpeakerLabel, 3);
-            this.SpeakerLabel.Size = new System.Drawing.Size(121, 49);
+            this.TableGeneral.SetRow(this.SpeakerLabel, 3);
+            this.SpeakerLabel.Size = new System.Drawing.Size(59, 49);
             this.SpeakerLabel.TabIndex = 13;
             this.SpeakerLabel.Text = "Audio output";
             this.SpeakerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -333,15 +361,15 @@ namespace RSI_X_Desktop.forms
             // 
             this.VolumeSpeakLabel.AutoSize = true;
             this.VolumeSpeakLabel.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.VolumeSpeakLabel, 0);
+            this.TableGeneral.SetColumn(this.VolumeSpeakLabel, 0);
             this.VolumeSpeakLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.VolumeSpeakLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VolumeSpeakLabel.ForeColor = System.Drawing.Color.Black;
             this.VolumeSpeakLabel.Location = new System.Drawing.Point(2, 196);
             this.VolumeSpeakLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.VolumeSpeakLabel.Name = "VolumeSpeakLabel";
-            this.MainTable.SetRow(this.VolumeSpeakLabel, 4);
-            this.VolumeSpeakLabel.Size = new System.Drawing.Size(121, 49);
+            this.TableGeneral.SetRow(this.VolumeSpeakLabel, 4);
+            this.VolumeSpeakLabel.Size = new System.Drawing.Size(59, 49);
             this.VolumeSpeakLabel.TabIndex = 12;
             this.VolumeSpeakLabel.Text = "Volume";
             this.VolumeSpeakLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -353,20 +381,20 @@ namespace RSI_X_Desktop.forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarSoundOut.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.trackBarSoundOut.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.MainTable.SetColumn(this.trackBarSoundOut, 1);
+            this.TableGeneral.SetColumn(this.trackBarSoundOut, 1);
             this.trackBarSoundOut.Cursor = System.Windows.Forms.Cursors.Hand;
             this.trackBarSoundOut.DrawValueString = false;
             this.trackBarSoundOut.EmptyBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.trackBarSoundOut.FillBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(1)))), ((int)(((byte)(143)))));
             this.trackBarSoundOut.JumpToMouse = true;
-            this.trackBarSoundOut.Location = new System.Drawing.Point(127, 209);
+            this.trackBarSoundOut.Location = new System.Drawing.Point(65, 209);
             this.trackBarSoundOut.Margin = new System.Windows.Forms.Padding(2, 3, 45, 3);
             this.trackBarSoundOut.Maximum = 100;
             this.trackBarSoundOut.Minimum = 0;
             this.trackBarSoundOut.MinimumSize = new System.Drawing.Size(34, 21);
             this.trackBarSoundOut.Name = "trackBarSoundOut";
-            this.MainTable.SetRow(this.trackBarSoundOut, 4);
-            this.trackBarSoundOut.Size = new System.Drawing.Size(328, 22);
+            this.TableGeneral.SetRow(this.trackBarSoundOut, 4);
+            this.trackBarSoundOut.Size = new System.Drawing.Size(141, 22);
             this.trackBarSoundOut.TabIndex = 11;
             this.trackBarSoundOut.Text = "dungeonTrackBar1";
             this.trackBarSoundOut.ThumbBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(1)))), ((int)(((byte)(143)))));
@@ -378,19 +406,19 @@ namespace RSI_X_Desktop.forms
             // 
             // tablePanel5
             // 
-            this.MainTable.SetColumn(this.tablePanel5, 1);
+            this.TableGeneral.SetColumn(this.tablePanel5, 1);
             this.tablePanel5.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 75F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 25F)});
             this.tablePanel5.Controls.Add(this.comboBoxAudioOutput);
             this.tablePanel5.Controls.Add(this.testSpeaker);
             this.tablePanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel5.Location = new System.Drawing.Point(128, 150);
+            this.tablePanel5.Location = new System.Drawing.Point(66, 150);
             this.tablePanel5.Name = "tablePanel5";
-            this.MainTable.SetRow(this.tablePanel5, 3);
+            this.TableGeneral.SetRow(this.tablePanel5, 3);
             this.tablePanel5.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
-            this.tablePanel5.Size = new System.Drawing.Size(369, 43);
+            this.tablePanel5.Size = new System.Drawing.Size(182, 43);
             this.tablePanel5.TabIndex = 10;
             // 
             // comboBoxAudioOutput
@@ -409,7 +437,7 @@ namespace RSI_X_Desktop.forms
             this.comboBoxAudioOutput.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.comboBoxAudioOutput.Name = "comboBoxAudioOutput";
             this.tablePanel5.SetRow(this.comboBoxAudioOutput, 0);
-            this.comboBoxAudioOutput.Size = new System.Drawing.Size(273, 26);
+            this.comboBoxAudioOutput.Size = new System.Drawing.Size(133, 26);
             this.comboBoxAudioOutput.TabIndex = 4;
             this.comboBoxAudioOutput.SelectedIndexChanged += new System.EventHandler(this.comboBoxAudioOutput_SelectedIndexChanged);
             // 
@@ -422,11 +450,11 @@ namespace RSI_X_Desktop.forms
             this.testSpeaker.Dock = System.Windows.Forms.DockStyle.Fill;
             this.testSpeaker.Font = new System.Drawing.Font("Bahnschrift SemiCondensed", 14.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
             this.testSpeaker.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(1)))), ((int)(((byte)(243)))));
-            this.testSpeaker.Location = new System.Drawing.Point(279, 0);
+            this.testSpeaker.Location = new System.Drawing.Point(139, 0);
             this.testSpeaker.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.testSpeaker.Name = "testSpeaker";
             this.tablePanel5.SetRow(this.testSpeaker, 0);
-            this.testSpeaker.Size = new System.Drawing.Size(88, 43);
+            this.testSpeaker.Size = new System.Drawing.Size(42, 43);
             this.testSpeaker.TabIndex = 3;
             this.testSpeaker.Text = "Test!";
             this.testSpeaker.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -435,33 +463,33 @@ namespace RSI_X_Desktop.forms
             // pictureBox1
             // 
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.MainTable.SetColumn(this.pictureBox1, 0);
+            this.TableGeneral.SetColumn(this.pictureBox1, 0);
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Image = global::RSI_X_Desktop.Properties.Resources.logotype_compressed;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox1.Name = "pictureBox1";
-            this.MainTable.SetRow(this.pictureBox1, 0);
-            this.pictureBox1.Size = new System.Drawing.Size(125, 49);
+            this.TableGeneral.SetRow(this.pictureBox1, 0);
+            this.pictureBox1.Size = new System.Drawing.Size(63, 49);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
             // tablePanel4
             // 
-            this.MainTable.SetColumn(this.tablePanel4, 1);
+            this.TableGeneral.SetColumn(this.tablePanel4, 1);
             this.tablePanel4.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 75F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 25F)});
             this.tablePanel4.Controls.Add(this.comboBoxAudioInput);
             this.tablePanel4.Controls.Add(this.testMic);
             this.tablePanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel4.Location = new System.Drawing.Point(128, 52);
+            this.tablePanel4.Location = new System.Drawing.Point(66, 52);
             this.tablePanel4.Name = "tablePanel4";
-            this.MainTable.SetRow(this.tablePanel4, 1);
+            this.TableGeneral.SetRow(this.tablePanel4, 1);
             this.tablePanel4.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel4.Size = new System.Drawing.Size(369, 43);
+            this.tablePanel4.Size = new System.Drawing.Size(182, 43);
             this.tablePanel4.TabIndex = 8;
             // 
             // comboBoxAudioInput
@@ -480,7 +508,7 @@ namespace RSI_X_Desktop.forms
             this.comboBoxAudioInput.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.comboBoxAudioInput.Name = "comboBoxAudioInput";
             this.tablePanel4.SetRow(this.comboBoxAudioInput, 0);
-            this.comboBoxAudioInput.Size = new System.Drawing.Size(273, 26);
+            this.comboBoxAudioInput.Size = new System.Drawing.Size(133, 26);
             this.comboBoxAudioInput.TabIndex = 3;
             this.comboBoxAudioInput.SelectedIndexChanged += new System.EventHandler(this.comboBoxAudioInput_SelectedIndexChanged);
             // 
@@ -493,11 +521,11 @@ namespace RSI_X_Desktop.forms
             this.testMic.Dock = System.Windows.Forms.DockStyle.Fill;
             this.testMic.Font = new System.Drawing.Font("Bahnschrift SemiCondensed", 14.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
             this.testMic.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(1)))), ((int)(((byte)(243)))));
-            this.testMic.Location = new System.Drawing.Point(279, 0);
+            this.testMic.Location = new System.Drawing.Point(139, 0);
             this.testMic.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.testMic.Name = "testMic";
             this.tablePanel4.SetRow(this.testMic, 0);
-            this.testMic.Size = new System.Drawing.Size(88, 43);
+            this.testMic.Size = new System.Drawing.Size(42, 43);
             this.testMic.TabIndex = 2;
             this.testMic.Text = "Test!";
             this.testMic.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -507,15 +535,15 @@ namespace RSI_X_Desktop.forms
             // 
             this.VolumeMicLabel.AutoSize = true;
             this.VolumeMicLabel.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.VolumeMicLabel, 0);
+            this.TableGeneral.SetColumn(this.VolumeMicLabel, 0);
             this.VolumeMicLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.VolumeMicLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.VolumeMicLabel.ForeColor = System.Drawing.Color.Black;
             this.VolumeMicLabel.Location = new System.Drawing.Point(2, 98);
             this.VolumeMicLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.VolumeMicLabel.Name = "VolumeMicLabel";
-            this.MainTable.SetRow(this.VolumeMicLabel, 2);
-            this.VolumeMicLabel.Size = new System.Drawing.Size(121, 49);
+            this.TableGeneral.SetRow(this.VolumeMicLabel, 2);
+            this.VolumeMicLabel.Size = new System.Drawing.Size(59, 49);
             this.VolumeMicLabel.TabIndex = 7;
             this.VolumeMicLabel.Text = "Volume";
             this.VolumeMicLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -524,15 +552,15 @@ namespace RSI_X_Desktop.forms
             // 
             this.MicrophoneLabel.AutoSize = true;
             this.MicrophoneLabel.BackColor = System.Drawing.Color.Transparent;
-            this.MainTable.SetColumn(this.MicrophoneLabel, 0);
+            this.TableGeneral.SetColumn(this.MicrophoneLabel, 0);
             this.MicrophoneLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MicrophoneLabel.Font = new System.Drawing.Font("Bahnschrift Condensed", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MicrophoneLabel.ForeColor = System.Drawing.Color.Gray;
             this.MicrophoneLabel.Location = new System.Drawing.Point(2, 49);
             this.MicrophoneLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.MicrophoneLabel.Name = "MicrophoneLabel";
-            this.MainTable.SetRow(this.MicrophoneLabel, 1);
-            this.MicrophoneLabel.Size = new System.Drawing.Size(121, 49);
+            this.TableGeneral.SetRow(this.MicrophoneLabel, 1);
+            this.MicrophoneLabel.Size = new System.Drawing.Size(59, 49);
             this.MicrophoneLabel.TabIndex = 6;
             this.MicrophoneLabel.Text = "Audio input";
             this.MicrophoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -544,20 +572,20 @@ namespace RSI_X_Desktop.forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarSoundIn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.trackBarSoundIn.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.MainTable.SetColumn(this.trackBarSoundIn, 1);
+            this.TableGeneral.SetColumn(this.trackBarSoundIn, 1);
             this.trackBarSoundIn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.trackBarSoundIn.DrawValueString = false;
             this.trackBarSoundIn.EmptyBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.trackBarSoundIn.FillBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(1)))), ((int)(((byte)(143)))));
             this.trackBarSoundIn.JumpToMouse = true;
-            this.trackBarSoundIn.Location = new System.Drawing.Point(127, 111);
+            this.trackBarSoundIn.Location = new System.Drawing.Point(65, 111);
             this.trackBarSoundIn.Margin = new System.Windows.Forms.Padding(2, 3, 45, 3);
             this.trackBarSoundIn.Maximum = 100;
             this.trackBarSoundIn.Minimum = 0;
             this.trackBarSoundIn.MinimumSize = new System.Drawing.Size(34, 21);
             this.trackBarSoundIn.Name = "trackBarSoundIn";
-            this.MainTable.SetRow(this.trackBarSoundIn, 2);
-            this.trackBarSoundIn.Size = new System.Drawing.Size(328, 22);
+            this.TableGeneral.SetRow(this.trackBarSoundIn, 2);
+            this.trackBarSoundIn.Size = new System.Drawing.Size(141, 22);
             this.trackBarSoundIn.TabIndex = 4;
             this.trackBarSoundIn.Text = "dungeonTrackBar1";
             this.trackBarSoundIn.ThumbBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(1)))), ((int)(((byte)(143)))));
@@ -567,9 +595,85 @@ namespace RSI_X_Desktop.forms
             this.trackBarSoundIn.ValueToSet = 1F;
             this.trackBarSoundIn.ValueChanged += new ReaLTaiizor.Controls.DungeonTrackBar.ValueChangedEventHandler(this.trackBarSoundIn_ValueChanged);
             // 
+            // TableMisc
+            // 
+            this.TableMisc.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 55F)});
+            this.TableMisc.Controls.Add(this.AudioQualityCmb);
+            this.TableMisc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TableMisc.Location = new System.Drawing.Point(250, 0);
+            this.TableMisc.Margin = new System.Windows.Forms.Padding(0);
+            this.TableMisc.Name = "TableMisc";
+            this.TableMisc.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 26F)});
+            this.TableMisc.Size = new System.Drawing.Size(250, 510);
+            this.TableMisc.TabIndex = 2;
+            // 
+            // AudioQualityCmb
+            // 
+            this.TableMisc.SetColumn(this.AudioQualityCmb, 0);
+            this.AudioQualityCmb.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AudioQualityCmb.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.AudioQualityCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AudioQualityCmb.EnabledCalc = true;
+            this.AudioQualityCmb.FormattingEnabled = true;
+            this.AudioQualityCmb.ItemHeight = 20;
+            this.AudioQualityCmb.Location = new System.Drawing.Point(3, 242);
+            this.AudioQualityCmb.Name = "AudioQualityCmb";
+            this.TableMisc.SetRow(this.AudioQualityCmb, 0);
+            this.AudioQualityCmb.Size = new System.Drawing.Size(244, 26);
+            this.AudioQualityCmb.TabIndex = 0;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tablepanel.SetColumn(this.tableLayoutPanel1, 0);
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.LabelGeneral, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.LabelMisc, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tablepanel.SetRow(this.tableLayoutPanel1, 0);
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(25, 510);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // LabelGeneral
+            // 
+            this.LabelGeneral.AutoSize = true;
+            this.LabelGeneral.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LabelGeneral.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LabelGeneral.Location = new System.Drawing.Point(0, 0);
+            this.LabelGeneral.Margin = new System.Windows.Forms.Padding(0);
+            this.LabelGeneral.Name = "LabelGeneral";
+            this.LabelGeneral.Size = new System.Drawing.Size(25, 100);
+            this.LabelGeneral.TabIndex = 0;
+            this.LabelGeneral.Click += new System.EventHandler(this.LabelGeneral_Click);
+            this.LabelGeneral.Paint += new System.Windows.Forms.PaintEventHandler(this.LabelGeneral_Paint);
+            // 
+            // LabelMisc
+            // 
+            this.LabelMisc.AutoSize = true;
+            this.LabelMisc.BackColor = System.Drawing.Color.Gray;
+            this.LabelMisc.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LabelMisc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LabelMisc.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.LabelMisc.Location = new System.Drawing.Point(0, 100);
+            this.LabelMisc.Margin = new System.Windows.Forms.Padding(0);
+            this.LabelMisc.Name = "LabelMisc";
+            this.LabelMisc.Size = new System.Drawing.Size(25, 100);
+            this.LabelMisc.TabIndex = 1;
+            this.LabelMisc.Click += new System.EventHandler(this.LabelMisc_Click);
+            this.LabelMisc.Paint += new System.Windows.Forms.PaintEventHandler(this.LabelMisc_Paint);
+            // 
             // tablePanel1
             // 
-            this.tablePanel2.SetColumn(this.tablePanel1, 0);
+            this.tablepanel.SetColumn(this.tablePanel1, 1);
             this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 150F),
@@ -580,9 +684,9 @@ namespace RSI_X_Desktop.forms
             this.tablePanel1.Controls.Add(this.ConfirmBtn);
             this.tablePanel1.Controls.Add(this.CancelBtn);
             this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel1.Location = new System.Drawing.Point(3, 513);
+            this.tablePanel1.Location = new System.Drawing.Point(28, 513);
             this.tablePanel1.Name = "tablePanel1";
-            this.tablePanel2.SetRow(this.tablePanel1, 1);
+            this.tablepanel.SetRow(this.tablePanel1, 1);
             this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
             this.tablePanel1.Size = new System.Drawing.Size(494, 84);
@@ -718,8 +822,8 @@ namespace RSI_X_Desktop.forms
             this.Appearance.BackColor = System.Drawing.Color.White;
             this.Appearance.Options.UseBackColor = true;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(500, 600);
-            this.Controls.Add(this.tablePanel2);
+            this.ClientSize = new System.Drawing.Size(525, 600);
+            this.Controls.Add(this.tablepanel);
             this.FormBorderEffect = DevExpress.XtraEditors.FormBorderEffect.None;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.IconOptions.Icon = ((System.Drawing.Icon)(resources.GetObject("PopUpForm.IconOptions.Icon")));
@@ -729,11 +833,12 @@ namespace RSI_X_Desktop.forms
             this.TransparencyKey = System.Drawing.Color.Silver;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.NewDevices_FormClosed);
             this.Load += new System.EventHandler(this.NewDevices_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).EndInit();
-            this.tablePanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.MainTable)).EndInit();
-            this.MainTable.ResumeLayout(false);
-            this.MainTable.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tablepanel)).EndInit();
+            this.tablepanel.ResumeLayout(false);
+            this.MainLayout.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TableGeneral)).EndInit();
+            this.TableGeneral.ResumeLayout(false);
+            this.TableGeneral.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel3)).EndInit();
             this.tablePanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel7)).EndInit();
@@ -750,6 +855,10 @@ namespace RSI_X_Desktop.forms
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel4)).EndInit();
             this.tablePanel4.ResumeLayout(false);
             this.tablePanel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TableMisc)).EndInit();
+            this.TableMisc.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ApplyBtn)).EndInit();
@@ -762,12 +871,12 @@ namespace RSI_X_Desktop.forms
         }
 
         #endregion
-        private DevExpress.Utils.Layout.TablePanel tablePanel2;
+        private DevExpress.Utils.Layout.TablePanel tablepanel;
         private DevExpress.Utils.Layout.TablePanel tablePanel1;
         private DevExpress.XtraEditors.SvgImageBox CancelBtn;
         private DevExpress.XtraEditors.SvgImageBox ConfirmBtn;
         private DevExpress.XtraEditors.SvgImageBox ApplyBtn;
-        private DevExpress.Utils.Layout.TablePanel MainTable;
+        private DevExpress.Utils.Layout.TablePanel TableGeneral;
         private ReaLTaiizor.Controls.DungeonTrackBar trackBarSoundIn;
         private ReaLTaiizor.Controls.DungeonLabel MicrophoneLabel;
         private ReaLTaiizor.Controls.BigLabel VolumeMicLabel;
@@ -795,5 +904,11 @@ namespace RSI_X_Desktop.forms
         private RSI_X_Desktop.forms.HelpingClass.newAloneComboBox comboBoxAudioOutput;
         private RSI_X_Desktop.forms.HelpingClass.newAloneComboBox comboBoxVideo;
         private RSI_X_Desktop.forms.HelpingClass.newAloneComboBox resComboBox;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label LabelGeneral;
+        private System.Windows.Forms.Label LabelMisc;
+        private System.Windows.Forms.TableLayoutPanel MainLayout;
+        private DevExpress.Utils.Layout.TablePanel TableMisc;
+        private HelpingClass.newAloneComboBox AudioQualityCmb;
     }
 }
