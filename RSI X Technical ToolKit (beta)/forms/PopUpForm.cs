@@ -15,6 +15,12 @@ using Un4seen.Bass;
 
 namespace RSI_X_Desktop.forms
 {
+    public enum AUDIO_QUALITY
+    {
+        Low,
+        Medium,
+        High,
+    }
     public partial class PopUpForm : DevExpress.XtraEditors.XtraForm
     {
         [DllImport("winmm.dll")]
@@ -70,6 +76,7 @@ namespace RSI_X_Desktop.forms
         public static string oldResolution { get; private set; }
         private static string oldres = null;
         private static int oldIndexResolution = 3; //360p
+        private static AUDIO_QUALITY oldAudioQuality = AUDIO_QUALITY.Medium;
         #endregion
 
         private int frames = 0;
@@ -92,6 +99,7 @@ namespace RSI_X_Desktop.forms
             comboBoxAudioOutput.Font = CommonFont;
             comboBoxVideo.Font = CommonFont;
             resComboBox.Font = CommonFont;
+            AudioQualityCmb.Font = CommonFont;
 
             MicrophoneLabel.Font = CommonFont;
             VolumeMicLabel.Font = CommonFont;
@@ -142,6 +150,9 @@ namespace RSI_X_Desktop.forms
             pictureBoxLocalVideoTest.Visible = !IsImageSend;
             PreviewPanel.BackgroundImage = IsImageSend ?
                 new Bitmap((Owner as Broadcaster).PreviewFilePath) : null;
+
+            AudioQualityCmb.DataSource = new List<string> { "Low", "Medium", "Hight" };
+            AudioQualityCmb.SelectedIndex = (int)oldAudioQuality;
 
             workForm?.RefreshLocalWnd();
             VideoCanvas vc = new((ulong)pictureBoxLocalVideoTest.Handle, 0);
@@ -469,6 +480,7 @@ namespace RSI_X_Desktop.forms
             oldVolumeOut = trackBarSoundOut.Value;
             oldResolution = resComboBox.SelectedValue.ToString();
             oldIndexResolution = resComboBox.SelectedIndex;
+            oldAudioQuality = (AUDIO_QUALITY)AudioQualityCmb.SelectedIndex;
             SetVolume(trackBarSoundOut.Value);
         }
         private void AcceptButton_Click(object sender, EventArgs e)
@@ -707,6 +719,7 @@ namespace RSI_X_Desktop.forms
                 AcceptNewSpeakerDevice();
                 AcceptNewVideoRecDevice();
                 AcceptNewResolution();
+                ChangeAuidoQuality(oldAudioQuality);
             }
             catch (Exception ex)
             {
@@ -768,6 +781,13 @@ namespace RSI_X_Desktop.forms
             oldVideoOut = null;
             oldIndexResolution = 3; //360p
         }
+        public static void ChangeAuidoQuality(AUDIO_QUALITY quality)
+        {
+            if (quality == oldAudioQuality) return;
+
+            AgoraObject.UpdateAudioQualiti(quality);
+        }
+
         private void CancelBtn_MouseHover(object sender, EventArgs e)
         {
             CancelBtn.Margin = Hovered;
@@ -848,6 +868,11 @@ namespace RSI_X_Desktop.forms
             MainLayout.ColumnStyles[1].Width = 100;
             MainLayout.ColumnStyles[0].Width = 0;
             AudioQualityCmb.Refresh();
+        }
+
+        private void AudioQualityCmb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ChangeAuidoQuality((AUDIO_QUALITY)AudioQualityCmb.SelectedIndex);
         }
     }
 }

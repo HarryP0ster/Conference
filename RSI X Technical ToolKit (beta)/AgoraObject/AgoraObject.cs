@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using agorartc;
-using HWND = System.IntPtr;
+using RSI_X_Desktop.forms;
 
 namespace RSI_X_Desktop
 {
@@ -83,7 +83,7 @@ namespace RSI_X_Desktop
             Rtc = AgoraRtcEngine.CreateRtcEngine();
             Rtc.Initialize(new RtcEngineContext(AppID));
             
-            SetPublishProfile();
+            UpdateAudioQualiti(AUDIO_QUALITY.Medium);
             Rtc.SetVideoEncoderConfiguration(new VideoEncoderConfiguration(new VideoDimensions(1024, 720), FRAME_RATE.FRAME_RATE_FPS_15, 1040, ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE));
         }
         private static void SetPublishProfile()
@@ -300,6 +300,32 @@ namespace RSI_X_Desktop
         {
             var buffer = other.Messager.PrepareToConference(msg);
             m_channelHost.SendStreamMessage(_hostStreamID, buffer);
+        }
+
+        internal static void UpdateAudioQualiti(AUDIO_QUALITY quality)
+        {
+            LeaveHostChannel();
+
+            switch (quality)
+            {
+                case AUDIO_QUALITY.Low:
+                    Rtc.SetAudioProfile(
+                        AUDIO_PROFILE_TYPE.AUDIO_PROFILE_SPEECH_STANDARD,
+                        AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+                    break;
+                case AUDIO_QUALITY.Medium:
+                    Rtc.SetAudioProfile(
+                        AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_STANDARD,
+                        AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+                    break;
+                case AUDIO_QUALITY.High:
+                    Rtc.SetAudioProfile(
+                        AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY,
+                        AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+                    break;
+            }
+            DebugWriter.WriteTime($"AgoraObject. {quality}");
+            JoinChannelHost();
         }
     }
 }
