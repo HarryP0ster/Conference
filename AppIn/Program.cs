@@ -86,8 +86,10 @@ namespace ConsoleAppIn
             Rtc.InitEventHandler(new AEngineEventHandler());
             Rtc.MuteLocalVideoStream(true);
             Rtc.Initialize(new RtcEngineContext(AppID));
-            Rtc.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY, AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_CHATROOM_GAMING);
 
+            Rtc.SetAudioProfile(
+                AUDIO_PROFILE_TYPE.AUDIO_PROFILE_SPEECH_STANDARD,
+                AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
 
             audioInDeviceManager = Rtc.CreateAudioRecordingDeviceManager();
         }

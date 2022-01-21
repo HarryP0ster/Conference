@@ -663,6 +663,7 @@ namespace RSI_X_Desktop.forms
             this.TableMisc.SetRow(this.AudioQualityCmb, 1);
             this.AudioQualityCmb.Size = new System.Drawing.Size(138, 26);
             this.AudioQualityCmb.TabIndex = 0;
+            this.AudioQualityCmb.SelectedIndexChanged += new System.EventHandler(this.AudioQualityCmb_SelectedIndexChanged);
             // 
             // tableLayoutPanel1
             // 
