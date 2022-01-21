@@ -751,8 +751,8 @@ namespace RSI_X_Desktop.forms
             this.ApplyBtn.Text = "svgImageBox3";
             this.ApplyBtn.UseDirectXPaint = DevExpress.Utils.DefaultBoolean.True;
             this.ApplyBtn.Click += new System.EventHandler(this.ApplyButton_Click);
-            this.ApplyBtn.MouseLeave += new System.EventHandler(this.ApplyBtn_MouseLeave);
-            this.ApplyBtn.MouseHover += new System.EventHandler(this.ApplyBtn_MouseHover);
+            this.ApplyBtn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ApplyBtn_MouseLeave);
+            this.ApplyBtn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ApplyBtn_MouseHover);
             // 
             // ConfirmBtn
             // 
@@ -772,8 +772,8 @@ namespace RSI_X_Desktop.forms
             this.ConfirmBtn.Text = "svgImageBox2";
             this.ConfirmBtn.UseDirectXPaint = DevExpress.Utils.DefaultBoolean.True;
             this.ConfirmBtn.Click += new System.EventHandler(this.AcceptButton_Click);
-            this.ConfirmBtn.MouseLeave += new System.EventHandler(this.ConfirmBtn_MouseLeave);
-            this.ConfirmBtn.MouseHover += new System.EventHandler(this.ConfirmBtn_MouseHover);
+            this.ConfirmBtn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ConfirmBtn_MouseLeave);
+            this.ConfirmBtn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ConfirmBtn_MouseHover);
             // 
             // CancelBtn
             // 
@@ -792,8 +792,8 @@ namespace RSI_X_Desktop.forms
             this.CancelBtn.Text = "svgImageBox1";
             this.CancelBtn.UseDirectXPaint = DevExpress.Utils.DefaultBoolean.True;
             this.CancelBtn.Click += new System.EventHandler(this.CloseButton_Click);
-            this.CancelBtn.MouseLeave += new System.EventHandler(this.CancelBtn_MouseLeave);
-            this.CancelBtn.MouseHover += new System.EventHandler(this.CancelBtn_MouseHover);
+            this.CancelBtn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CancelBtn_MouseLeave);
+            this.CancelBtn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CancelBtn_MouseHover);
             // 
             // tableLayoutPanel5
             // 

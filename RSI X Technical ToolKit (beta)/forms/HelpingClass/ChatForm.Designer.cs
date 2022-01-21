@@ -493,8 +493,8 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.SendMsgBtn.TabIndex = 0;
             this.SendMsgBtn.UseDirectXPaint = DevExpress.Utils.DefaultBoolean.True;
             this.SendMsgBtn.Click += new System.EventHandler(this.chatButtonRight2_Click);
-            this.SendMsgBtn.MouseLeave += new System.EventHandler(this.SendMsgBtn_MouseLeave);
-            this.SendMsgBtn.MouseHover += new System.EventHandler(this.SendMsgBtn_MouseHover);
+            this.SendMsgBtn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SendMsgBtn_MouseLeave);
+            this.SendMsgBtn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SendMsgBtn_MouseHover);
             // 
             // timer1
             // 

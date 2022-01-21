@@ -398,12 +398,12 @@ namespace RSI_X_Desktop.forms.HelpingClass
             Booth.Enabled = true;
         }
 
-        private void SendMsgBtn_MouseHover(object sender, EventArgs e)
+        private void SendMsgBtn_MouseHover(object sender, MouseEventArgs e)
         {
             SendMsgBtn.Margin = Hovered;
         }
 
-        private void SendMsgBtn_MouseLeave(object sender, EventArgs e)
+        private void SendMsgBtn_MouseLeave(object sender, MouseEventArgs e)
         {
             SendMsgBtn.Margin = MarginNormal;
         }
