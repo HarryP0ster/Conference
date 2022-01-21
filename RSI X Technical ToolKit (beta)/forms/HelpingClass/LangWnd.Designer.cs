@@ -138,6 +138,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.ContinueBtn.SizeMode = DevExpress.XtraEditors.SvgImageSizeMode.Squeeze;
             this.ContinueBtn.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("ContinueBtn.SvgImage")));
             this.ContinueBtn.TabIndex = 0;
+            this.ContinueBtn.UseDirectXPaint = DevExpress.Utils.DefaultBoolean.True;
             this.ContinueBtn.Click += new System.EventHandler(this.ContinueBtn_Click);
             // 
             // DevicesBtn
@@ -151,6 +152,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.DevicesBtn.SizeMode = DevExpress.XtraEditors.SvgImageSizeMode.Squeeze;
             this.DevicesBtn.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("DevicesBtn.SvgImage")));
             this.DevicesBtn.TabIndex = 1;
+            this.DevicesBtn.UseDirectXPaint = DevExpress.Utils.DefaultBoolean.True;
             this.DevicesBtn.Click += new System.EventHandler(this.DevicesBtn_Click);
             // 
             // MuteMic
@@ -273,6 +275,7 @@ namespace RSI_X_Desktop.forms.HelpingClass
             this.NicknameBox.SizeMode = DevExpress.XtraEditors.SvgImageSizeMode.Squeeze;
             this.NicknameBox.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("NicknameBox.SvgImage")));
             this.NicknameBox.TabIndex = 0;
+            this.NicknameBox.UseDirectXPaint = DevExpress.Utils.DefaultBoolean.True;
             // 
             // LangWnd
             // 
