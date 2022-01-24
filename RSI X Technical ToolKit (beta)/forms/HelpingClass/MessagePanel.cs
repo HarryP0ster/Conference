@@ -11,12 +11,30 @@ using ReaLTaiizor.Controls;
 
 namespace RSI_X_Desktop.forms.HelpingClass
 {
+    public partial class ChatForm
+    {
+        public static void UpdateChat()
+        {
+            switch ((int)instance_.CurPanel)
+            {
+                case (int)PANEL.GENERAL:
+                    instance_.Chat_SizeChanged(instance_.PGeneral, null);
+                    break;
+                case (int)PANEL.SUPPORT:
+                    instance_.Chat_SizeChanged(instance_.PSupport, null);
+                    break;
+                case (int)PANEL.BOOTH:
+                    instance_.Chat_SizeChanged(instance_.PBooth, null);
+                    break;
+            }
+        }
+    }
+
     public partial class MessagePanelL : System.Windows.Forms.TableLayoutPanel
     {
         public const string MyOwn = "Me";
-        const int maxSymbol = 25;
-        ChatBubbleLeft labelL;
-        newRightBubble labelR;
+        readonly int maxSymbol;
+        newRightBubble buble;
         Font font;
         Label Sender;
         Control Owner;
@@ -26,22 +44,34 @@ namespace RSI_X_Desktop.forms.HelpingClass
             int dpi = this.DeviceDpi;
 
             if (dpi >= (int)Constants.DPI.P175)
+            {
                 font = Constants.Bahnschrift10;
+                maxSymbol = 14;
+            }
             else if (dpi >= (int)Constants.DPI.P150)
+            {
                 font = Constants.Bahnschrift12;
+                maxSymbol = 15;
+            }
             else if (dpi >= (int)Constants.DPI.P125)
+            {
                 font = Constants.Bahnschrift14;
+                maxSymbol = 20;
+            }
             else if (dpi >= (int)Constants.DPI.P100)
+            {
                 font = Constants.Bahnschrift14;
+                maxSymbol = 25;
+            }
 
             Owner = owner;
             Owner.SizeChanged += delegate
             {
                 Width = Owner.Width;
             };
+
             this.AutoSize = true;
             Width = Owner.Width;
-            Height = 65;
             Sender = new Label();
 
             Sender.Text = sender;
@@ -52,61 +82,94 @@ namespace RSI_X_Desktop.forms.HelpingClass
             RowStyles.Add(new RowStyle(SizeType.Absolute, 25));
             RowStyles.Add(new RowStyle(SizeType.AutoSize, 100));
 
-            //Date = new Label();
+            buble = new newRightBubble();
+            buble.Text = CutMessage(text, buble.Font, 300);
 
             if (sender == MyOwn)
             {
                 ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                 ColumnStyles[0].SizeType = SizeType.Percent;
                 ColumnStyles[0].Width = 100;
-                labelR = new newRightBubble();
-                labelR.ForeColor = Color.White;
-                labelR.SizeAuto = true;
-                labelR.SizeAutoW = true;
-                labelR.SizeAutoH = true;
-                labelR.Margin = new Padding(0, 0, 13, 0);
+                buble.ForeColor = Color.White;
+                buble.ArrowRight = true;
+                buble.BubbleColor = Color.FromArgb(254, 1, 143);
+                buble.Margin = new Padding(0, 0, 13, 0);
                 Sender.TextAlign = ContentAlignment.BottomRight;
-
-                if (text.Length > 0) labelR.Text += text[0];
-
-                labelR.Text = text;
-
-                for (int i = maxSymbol - 1; i < text.Length; i += maxSymbol)
-                {
-                    labelR.Text = labelR.Text.Insert(i, " \n");
-                }
-
-                labelR.Show();
+                Sender.Dock = DockStyle.Right;
+                Sender.Text += "\t";
                 Name = "Right";
-                Controls.Add(labelR, 1, 1);
+                Controls.Add(buble, 1, 1);
                 Controls.Add(Sender, 1, 0);
-                labelR.SuspendLayout();
-                labelR.Enabled = false;
-                Sender.SuspendLayout();
             }
             else
             {
-                labelL = new ChatBubbleLeft();
-                labelL.SizeAuto = true;
-                labelL.SizeAutoW = true;
-                labelL.SizeAutoH = true;
+                buble.BubbleColor = Color.FromArgb(217, 217, 217);
+                buble.ArrowRight = false;
 
-                if (text.Length > 0) labelL.Text += text[0];
-
-                labelL.Text = text + " ";
-
-                for (int i = maxSymbol - 1; i < text.Length; i += maxSymbol)
-                {
-                    labelL.Text = labelL.Text.Insert(i, " \n");
-                }
-                labelL.Show();
                 Name = "Left";
-                Controls.Add(labelL, 0, 1);
+                Controls.Add(buble, 0, 1);
                 Controls.Add(Sender, 0, 0);
-                labelL.SuspendLayout();
-                labelL.Enabled = false;
-                Sender.SuspendLayout();
             }
+
+            buble.Margin = new Padding(5, 5, 5, 5);
+
+            buble.Show();
+            buble.SuspendLayout();
+            buble.Enabled = false;
+            Sender.SuspendLayout();
+            ChatForm.UpdateChat();
+        }
+
+        private string CutMessage(string _text, Font _font, int _width)
+        {
+            var _words = _text.Split(' ');
+            int _line = 0;
+            string output = "";
+
+            if (_words.Length > 0)
+            {
+                foreach (var word in _words)
+                {
+                    Size word_size = TextRenderer.MeasureText(word, _font);
+
+                    if (word_size.Width >= _width)
+                    {
+                        foreach (char _letter in word)
+                        {
+                            Size char_size = TextRenderer.MeasureText(_letter.ToString(), _font);
+
+                            if (_line + char_size.Width < _width)
+                            {
+                                _line += char_size.Width;
+                                output += _letter;
+                            }
+                            else
+                            {
+                                output += "\n" + _letter;
+                                _line = char_size.Width;
+                            }
+                        }
+                        output += " ";
+                    }
+                    else
+                    {
+                        if (_line + word_size.Width < _width)
+                        {
+                            _line += word_size.Width;
+                            output += word + " ";
+                        }
+                        else
+                        {
+                            output += "\n" + word + " ";
+                            _line = word_size.Width;
+                        }
+                    }
+                }
+
+                return output;
+            }
+
+            return _text;
         }
     }
 }
