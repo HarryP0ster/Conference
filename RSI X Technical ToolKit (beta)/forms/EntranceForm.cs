@@ -43,6 +43,7 @@ namespace RSI_X_Desktop.forms
             timer1.Start();
             Controls.Remove(LoginBackground);
             InitLoginTable();
+            panel1.Paint += panel1_Paint;
             _instance = this;
         }
 
@@ -71,6 +72,7 @@ namespace RSI_X_Desktop.forms
             LoginTable.BackgroundImage = Properties.Resources.BckgFade;
             LoginTable.BackgroundImageLayout = ImageLayout.Stretch;
             LoginTable.BackColor = Color.FromArgb(97, 54, 79);
+            LoginTable.Paint += panel1_Paint;
         }
 
         private void JoinBtn_Click(object sender, EventArgs e)
@@ -140,6 +142,15 @@ namespace RSI_X_Desktop.forms
             reg = new Region(path);
 
             LoginBackground.Region = reg;
+        }
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            Font CommonFont = Constants.Bahnschrift12;
+            Brush br = new SolidBrush(Color.LightGray);
+
+            e.Graphics.TranslateTransform((sender as Control).Width - 140, (sender as Control).Height - 30);
+
+            e.Graphics.DrawString("Build date DD :: MM :: YY", CommonFont, br, 0, 0);
         }
     }
 }
