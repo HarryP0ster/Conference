@@ -172,6 +172,7 @@
   <ItemGroup>
     <ProjectReference Include="..\agorartc\agorartc\agorartc\agorartc.csproj" />
     <ProjectReference Include="..\AppIn\appIn.csproj" />
+    <ProjectReference Include="..\DesctopAudioRecorder\appInDesctop.csproj" />
   </ItemGroup>
 
   <ItemGroup>

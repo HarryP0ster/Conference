@@ -85,6 +85,8 @@ namespace ConsoleAppIn
             Rtc = AgoraRtcEngine.CreateRtcEngine();
             Rtc.InitEventHandler(new AEngineEventHandler());
             Rtc.MuteLocalVideoStream(true);
+            Rtc.MuteAllRemoteAudioStreams(true);
+            Rtc.MuteAllRemoteVideoStreams(true);
             Rtc.Initialize(new RtcEngineContext(AppID));
 
             Rtc.SetAudioProfile(
@@ -103,8 +105,6 @@ namespace ConsoleAppIn
 
         public ERROR_CODE Publish(string token, string channel, string account = null)
         {
-            Rtc.MuteAllRemoteAudioStreams(true);
-            Rtc.MuteAllRemoteVideoStreams(true);
             ERROR_CODE res = ERROR_CODE.ERR_NOT_READY;
 
             if (account == null)

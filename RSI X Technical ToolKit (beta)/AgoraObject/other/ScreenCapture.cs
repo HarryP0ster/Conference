@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using NAudio.Wave;
 using agorartc;
 
 namespace RSI_X_Desktop
@@ -29,16 +28,16 @@ namespace RSI_X_Desktop
             foreach (var a in args)
                 arguments += $"\"{a}\" ";
 
-            //proc = new();
-            //proc.StartInfo.Arguments = arguments;
-            //proc.StartInfo.CreateNoWindow = true;
-            //proc.StartInfo.RedirectStandardOutput = true;
-            //proc.StartInfo.RedirectStandardInput = true;
-            //proc.StartInfo.FileName = "appInDesctop.exe";
-            //proc.OutputDataReceived += proc_OutputDataReceived;
+            proc = new();
+            proc.StartInfo.Arguments = arguments;
+            proc.StartInfo.CreateNoWindow = true;
+            proc.StartInfo.RedirectStandardOutput = true;
+            proc.StartInfo.RedirectStandardInput = true;
+            proc.StartInfo.FileName = "appInDesctop.exe";
+            proc.OutputDataReceived += proc_OutputDataReceived;
 
-            //proc.Start();
-            //proc.BeginOutputReadLine();
+            proc.Start();
+            proc.BeginOutputReadLine();
 
             if (capParam.bitrate == 0)
                 capParam = forms.PopUpForm.resolutionsSize[

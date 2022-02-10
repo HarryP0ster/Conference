@@ -183,6 +183,7 @@ namespace RSI_X_Desktop
         public static void StopScreenCapture()
         {
             ScreenCapture.StopScreenCapture();
+            PopUpForm.AcceptAllOldDevices();
         }
         #endregion
 

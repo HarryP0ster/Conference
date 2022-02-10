@@ -165,6 +165,26 @@ namespace RSI_X_Desktop.forms
             UpdateComboBoxSpeakers();
         }
 
+        public static void SetupOldDevices()
+        {
+            VideoOut = getListVideoDevices();
+            Recorders = getListAudioInputDevices();
+
+            bool hasOldRecorder = Recorders.Any((s) => s == oldRecorder);
+
+            int index = (oldRecorder != null) ?
+                Recorders.FindLastIndex((s) => s == oldRecorder) :
+                index = getActiveAudioInputDevice();
+
+
+            oldRecorder = Recorders[index];
+
+            if (VideoOut.Count > 0)
+                oldVideoOut = VideoOut[0];
+
+            oldResolution = resolutions.Keys.ToArray()[oldIndexResolution];
+            UpdateResolution(oldResolution);
+        }
         private void SetWndRegion()
         {
             Region reg = new();
