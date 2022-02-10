@@ -42,6 +42,11 @@ namespace RSI_X_Desktop.forms.HelpingClass
         private IDisposable subscription;
 
         string path = string.Empty;
+        private DateTime loadDAte;
+        public FireBaseReader()
+        {
+            loadDAte = DateTime.Now;
+        }
         public void SetChannelName(string channel) 
         {
             path = AgoraObject.GetComplexToken().GetRoomName + "/" +
@@ -117,7 +122,17 @@ namespace RSI_X_Desktop.forms.HelpingClass
                     msg = JsonSerializer.Deserialize<Message>(resp.Object.ToString());
                 }
 
-                OnNewMessage?.Invoke(this, new FireBaseUpdateEventArgs(msg));
+                try
+                {
+                    string msgDate = resp.Key.Replace("_User", "");
+                    UInt64 second = Convert.ToUInt64(msgDate);
+                    var Date = new DateTime(1970, 1, 1).AddMilliseconds(second);
+
+                    if (loadDAte < Date)
+                        OnNewMessage?.Invoke(this, new FireBaseUpdateEventArgs(msg));
+                }
+                catch (Exception ex) 
+                { }
             }
         }
         private async void IncremCounter()
