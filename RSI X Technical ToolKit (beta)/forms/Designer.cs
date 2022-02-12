@@ -264,6 +264,7 @@ namespace RSI_X_Desktop.forms
                 canSelect = false;
                 AgoraObject.MuteLocalVideoStream(!AgoraObject.IsLocalVideoMute);
                 (Owner as Broadcaster).pictureBoxLocalVideo.Visible = !AgoraObject.IsLocalVideoMute;
+                (Owner as Broadcaster).SetLocalVideoPreview();
                 timer1.Start();
 
                 if (AgoraObject.IsLocalVideoMute)

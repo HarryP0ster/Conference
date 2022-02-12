@@ -33,7 +33,7 @@ namespace RSI_X_Desktop
         public const string AppID = "31f0e571a89542b09049087e3283417f";
         public static bool IsLocalAudioMute { get; private set; }
         public static bool IsLocalVideoMute { get; private set; }
-        public static bool IsScreenCapture { get; private set; } = false;
+        public static bool IsScreenCapture { get => ScreenCapture.IsCapture; }
         public static bool IsAllRemoteAudioMute { get; private set; }
         public static bool IsAllRemoteVideoMute { get; private set; }
 
@@ -125,6 +125,14 @@ namespace RSI_X_Desktop
 
             if (res == ERROR_CODE.ERR_OK)
                 IsLocalAudioMute = mute;
+
+            if (IsScreenCapture) 
+            {
+                if (IsLocalAudioMute)
+                    ScreenCapture.StopAudioCapture();
+                else
+                    ScreenCapture.StartAudioCapture();
+            }
 
             return res;
         }
@@ -265,6 +273,13 @@ namespace RSI_X_Desktop
 
         internal static void NewUserOnHost(uint uid, UserInfo user, string channelId)
         {
+            if (UidChecker.IsMutedUid(uid)) 
+            {
+                m_channelHost.MuteRemoteAudioStream(uid, true);
+                m_channelHost.MuteRemoteVideoStream(uid, true);
+                return;
+            }
+
             if (hostBroacsters.ContainsKey(uid))
                 hostBroacsters[uid] = user; 
             else

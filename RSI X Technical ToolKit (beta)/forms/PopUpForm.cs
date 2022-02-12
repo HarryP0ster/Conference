@@ -277,9 +277,17 @@ namespace RSI_X_Desktop.forms
         }
         private static int getActiveVideoDevice()
         {
+            //bool localVideoMute = AgoraObject.IsLocalVideoMute;
+
+            //if (localVideoMute)
+            //    AgoraObject.Rtc.MuteLocalVideoStream(false);
+
             int id = -1;
 
             string idActive = videoDeviceManager.GetCurrentDevice();
+
+            //if (localVideoMute)
+            //    AgoraObject.Rtc.MuteLocalVideoStream(true);
 
             for (int i = 0; i < videoDeviceManager.GetDeviceCount(); i++)
             {

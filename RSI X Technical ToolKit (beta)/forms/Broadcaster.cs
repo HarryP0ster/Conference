@@ -744,6 +744,10 @@ namespace RSI_X_Desktop
             AgoraObject.LeaveHostChannel();
             AgoraObject.MuteAllRemoteAudioStream(false);
             AgoraObject.MuteAllRemoteVideoStream(false);
+            
+            if (AgoraObject.IsScreenCapture)
+                AgoraObject.StopScreenCapture();
+
             chat.DisconnectFireBase();
             //PopUpForm.waveOutSetVolume(IntPtr.Zero, uint.MaxValue);
 

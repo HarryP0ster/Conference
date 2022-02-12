@@ -16,7 +16,39 @@ namespace RSI_X_Desktop
         internal static void StartScreenCapture(ScreenCaptureParameters capParam)
         {
             StopScreenCapture();
+            StartAudioCapture();
 
+            if (capParam.bitrate == 0)
+                capParam = forms.PopUpForm.resolutionsSize[
+                    forms.PopUpForm.oldResolution];
+            Rectangle region = new();
+
+            region.width = Screen.PrimaryScreen.Bounds.Width;
+            region.height = Screen.PrimaryScreen.Bounds.Height;
+            capParam.bitrate = 1200;
+            capParam.frameRate = 15;
+
+            IsCapture =
+                (int)ERROR_CODE.ERR_OK == AgoraObject.Rtc.StartScreenCaptureByScreenRect(region, region, capParam);
+
+            DebugWriter.WriteTime($"ScreenCapture. screen sharing enable ({IsCapture})");
+        }
+
+        private static void proc_OutputDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
+        {
+            DebugWriter.Write($"ScreenCapture. {e.Data}");
+
+            if (e.Data == null ||
+                e.Data.StartsWith("uid:") == false) return;
+
+            uint selfSpeakerUid = Convert.ToUInt32(
+                e.Data.Split(':')[1]);
+
+            if (selfSpeakerUid != 0) 
+                UidChecker.MuteUid(selfSpeakerUid);
+        }
+        public static void StartAudioCapture() 
+        {
             List<string> args = new()
             {
                 AgoraObject.GetHostToken(),
@@ -38,40 +70,19 @@ namespace RSI_X_Desktop
 
             proc.Start();
             proc.BeginOutputReadLine();
-
-            if (capParam.bitrate == 0)
-                capParam = forms.PopUpForm.resolutionsSize[
-                    forms.PopUpForm.oldResolution];
-            Rectangle region = new();
-
-            region.width = Screen.PrimaryScreen.Bounds.Width;
-            region.height = Screen.PrimaryScreen.Bounds.Height;
-            capParam.bitrate = 1200;
-            capParam.frameRate = 15;
-
-            IsCapture =
-                (int)ERROR_CODE.ERR_OK == AgoraObject.Rtc.StartScreenCaptureByScreenRect(region, region, capParam);
-            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss:fff}: screen sharing enable ({IsCapture})");
         }
-        private static void proc_OutputDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
+
+        public static void StopAudioCapture() 
         {
-            DebugWriter.Write(e.Data);
-
-            if (e.Data == null ||
-                e.Data.StartsWith("uid:") == false) return;
-
-            uint selfSpeakerUid = Convert.ToUInt32(
-                e.Data.Split(':')[1]);
-
-            if (selfSpeakerUid != 0)
-                AgoraObject.Rtc.SetRemoteVoicePosition(selfSpeakerUid, 0, 0);
+            proc?.Kill();
+            proc = null;
+            UidChecker.ClearMuteUids();
         }
 
         internal static void StopScreenCapture()
         {
             AgoraObject.Rtc.StopScreenCapture();
-            proc?.Kill();
-            proc = null;
+            StopAudioCapture();
 
             IsCapture = false;
         }

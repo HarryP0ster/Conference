@@ -20,7 +20,7 @@ namespace DesctopAudioRecorder
             Rtc.Initialize(new RtcEngineContext(AppID));
 
             Rtc.InitEventHandler(new AEngineEventHandler());
-            System.Diagnostics.Debugger.Break();
+            //System.Diagnostics.Debugger.Break();
 
             Rtc.EnableAudio();
             Rtc.SetExternalAudioSource(true, 44100, 1);
@@ -29,6 +29,8 @@ namespace DesctopAudioRecorder
         internal static void JoinChannel(string token, string chName)
         {
             ERROR_CODE res = Rtc.JoinChannel(token, chName, "", 0);
+            Rtc.MuteAllRemoteAudioStreams(true);
+            Rtc.MuteAllRemoteVideoStreams(true);
 
             Console.WriteLine($"join succ: {res}");
 
@@ -41,7 +43,6 @@ namespace DesctopAudioRecorder
 
         internal static void StartScreenCapture()
         {
-
             CaptureInstance = new WasapiLoopbackCapture();
             CaptureInstance.DataAvailable += DataAvaible;
             CaptureInstance.StartRecording();
