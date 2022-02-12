@@ -16,7 +16,9 @@ namespace RSI_X_Desktop
         internal static void StartScreenCapture(ScreenCaptureParameters capParam)
         {
             StopScreenCapture();
-            StartAudioCapture();
+
+            if (AgoraObject.IsLocalAudioMute == false)
+                StartAudioCapture();
 
             if (capParam.bitrate == 0)
                 capParam = forms.PopUpForm.resolutionsSize[
