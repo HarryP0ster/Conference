@@ -87,7 +87,7 @@ namespace RSI_X_Desktop.forms
             this.MainLayout.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 22F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 26F)});
-            this.MainLayout.Size = new System.Drawing.Size(1280, 740);
+            this.MainLayout.Size = new System.Drawing.Size(1280, 800);
             this.MainLayout.TabIndex = 0;
             // 
             // CenterPanel
@@ -105,7 +105,7 @@ namespace RSI_X_Desktop.forms
             this.MainLayout.SetRow(this.CenterPanel, 1);
             this.CenterPanel.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 85F)});
-            this.CenterPanel.Size = new System.Drawing.Size(1160, 718);
+            this.CenterPanel.Size = new System.Drawing.Size(1160, 778);
             this.CenterPanel.TabIndex = 2;
             // 
             // panelChat
@@ -118,7 +118,7 @@ namespace RSI_X_Desktop.forms
             this.panelChat.Margin = new System.Windows.Forms.Padding(0);
             this.panelChat.Name = "panelChat";
             this.CenterPanel.SetRow(this.panelChat, 0);
-            this.panelChat.Size = new System.Drawing.Size(100, 718);
+            this.panelChat.Size = new System.Drawing.Size(100, 778);
             this.panelChat.TabIndex = 3;
             this.panelChat.Text = "sidePanel1";
             // 
@@ -137,7 +137,7 @@ namespace RSI_X_Desktop.forms
             this.tablePanel2.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 120F)});
-            this.tablePanel2.Size = new System.Drawing.Size(1060, 718);
+            this.tablePanel2.Size = new System.Drawing.Size(1060, 778);
             this.tablePanel2.TabIndex = 2;
             // 
             // panel1
@@ -146,7 +146,7 @@ namespace RSI_X_Desktop.forms
             this.tablePanel2.SetColumn(this.panel1, 0);
             this.panel1.Controls.Add(this.IconsPanel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 598);
+            this.panel1.Location = new System.Drawing.Point(0, 658);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(0, 15, 0, 15);
@@ -313,7 +313,7 @@ namespace RSI_X_Desktop.forms
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 7F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 93F)});
-            this.tablePanel1.Size = new System.Drawing.Size(1060, 598);
+            this.tablePanel1.Size = new System.Drawing.Size(1060, 658);
             this.tablePanel1.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -326,7 +326,7 @@ namespace RSI_X_Desktop.forms
             this.tableLayoutPanel1.Controls.Add(this.RoomNameLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cmblang, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 39);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 43);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tablePanel1.SetRow(this.tableLayoutPanel1, 1);
@@ -396,7 +396,7 @@ namespace RSI_X_Desktop.forms
             this.LeftSidePanel.Name = "LeftSidePanel";
             this.LeftSidePanel.Padding = new System.Windows.Forms.Padding(5, 35, 20, 0);
             this.MainLayout.SetRow(this.LeftSidePanel, 1);
-            this.LeftSidePanel.Size = new System.Drawing.Size(120, 718);
+            this.LeftSidePanel.Size = new System.Drawing.Size(120, 778);
             this.LeftSidePanel.TabIndex = 0;
             this.LeftSidePanel.Text = "sidePanel1";
             // 
@@ -424,7 +424,7 @@ namespace RSI_X_Desktop.forms
             this.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(175)))), ((int)(((byte)(175)))), ((int)(((byte)(175)))));
             this.Appearance.Options.UseBackColor = true;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1280, 740);
+            this.ClientSize = new System.Drawing.Size(1280, 800);
             this.Controls.Add(this.MainLayout);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.IconOptions.Icon = ((System.Drawing.Icon)(resources.GetObject("Designer.IconOptions.Icon")));
