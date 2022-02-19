@@ -123,6 +123,12 @@ namespace RSI_X_Desktop.forms
                 SetLeftSidePanelRegion();
                 ChatRgn();
                 SighnOffToCenter();
+
+                IconsPanel.Dock = DockStyle.None;
+                if (!panel1.HorizontalScroll.Visible)
+                    IconsPanel.Dock = DockStyle.Fill;
+                else
+                    IconsPanel.Dock = DockStyle.Left;
             };
             cmblang.SelectedIndexChanged += (Owner as Broadcaster).cmblang_SelectedIndexChanged;
             (Owner as Broadcaster).GetChat.TopLevel = false;

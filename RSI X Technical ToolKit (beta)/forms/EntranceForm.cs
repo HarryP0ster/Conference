@@ -18,9 +18,11 @@ namespace RSI_X_Desktop.forms
         public static EntranceForm _instance;
         LoginWnd loginWnd;
         TableLayoutPanel LoginTable = new();
+        public static SizeF wndScale;
 
         public EntranceForm()
         {
+            wndScale = new SizeF(Screen.PrimaryScreen.Bounds.Width / 1920f, Screen.PrimaryScreen.Bounds.Height / 1080f);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             InitializeComponent();
             PopUpForm.InitManager();

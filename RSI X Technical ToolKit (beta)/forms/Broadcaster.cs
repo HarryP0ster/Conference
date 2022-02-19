@@ -61,6 +61,8 @@ namespace RSI_X_Desktop
         internal string PreviewFilePath = "";
         private int srcLangIndex = -2;
         private STATE getAudioFrom = STATE.UNDEFINED;
+        Size minimizedSize = new Size(1280, 800);
+        bool isMaximized = false;
 
         public Broadcaster()
         {
@@ -68,6 +70,7 @@ namespace RSI_X_Desktop
 
             AgoraObject.SetWndEventHandler(this);
             Messager.SetPermission((int)(PERMISSIONS.GLOBAL | PERMISSIONS.CONFERENCE));
+            minimizedSize = new Size((int)(1280 * EntranceForm.wndScale.Width), (int)(800 * EntranceForm.wndScale.Height));
         }
 
         internal ChatForm GetChat
@@ -134,6 +137,9 @@ namespace RSI_X_Desktop
                 cmblang_SelectedIndexChanged(null, new());
                 floor_CheckedChanged(getAudioFrom);
             }
+
+            ResizeForm(minimizedSize, this);
+            ResizeForm(minimizedSize, formTheme1);
         }
         private void Init()
         {
@@ -247,16 +253,17 @@ namespace RSI_X_Desktop
             Point ptn = e.Location;
             if (!(ptn.X > 46 && ptn.X < 94)) return;
             this.BringToFront();
-            if (this.Size.Width == 1280)
+            if (!isMaximized)
             {
                 ResizeForm(Screen.PrimaryScreen.WorkingArea.Size, this);
                 ResizeForm(Screen.PrimaryScreen.WorkingArea.Size, formTheme1);
             }
             else
             {
-                ResizeForm(new Size(1280, 800), this);
-                ResizeForm(new Size(1280, 800), formTheme1);
+                ResizeForm(minimizedSize, this);
+                ResizeForm(minimizedSize, formTheme1);
             }
+            isMaximized = !isMaximized;
         }
         internal void SettingButton_Click(object sender, EventArgs e)
         {
